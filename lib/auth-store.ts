@@ -50,7 +50,15 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   clearAuthError: () => set({ authError: null }),
 
   signInWithGoogle: async () => {
-    if (!supabase) return;
+    if (!supabase) {
+      // env vars が Vercel に設定されていても build 時に未反映の場合がある
+      set({
+        authError:
+          "Supabase が初期化できませんでした。Vercel の環境変数 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY を確認し、再デプロイしてください。",
+        authLoading: false,
+      });
+      return;
+    }
     set({ authLoading: true, authError: null });
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -68,7 +76,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       // リダイレクトが始まるので authLoading は true のまま（画面遷移される）
     } catch (e) {
       set({
-        authError: e instanceof Error ? e.message : "ログインに失敗しました",
+        authError: e instanceof Error ? e.message : "ログインに失敗しました。Supabaseの設定を確認してください。",
         authLoading: false,
       });
     }
