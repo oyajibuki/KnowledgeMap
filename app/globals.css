@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+:root {
+  --background: #060a14;
+  --foreground: #e2e8f0;
+}
+
+html, body {
+  /* モバイルでのアドレスバー考慮: dvh を使い、フォールバックは 100vh */
+  height: 100%;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* iOS Safari のセーフエリア対応 */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* React Flow カスタム */
+.react-flow__node {
+  cursor: pointer;
+}
+
+.react-flow__controls {
+  gap: 4px !important;
+}
+
+.react-flow__controls button {
+  background: rgba(9,11,20,0.9) !important;
+  border-color: #1e293b !important;
+  color: #64748b !important;
+  fill: #64748b !important;
+  border-radius: 6px !important;
+}
+
+.react-flow__controls button:hover {
+  background: #1e293b !important;
+  color: #94a3b8 !important;
+  fill: #94a3b8 !important;
+}
+
+/* エッジのグロー */
+.react-flow__edge-path {
+  transition: stroke 0.3s, stroke-width 0.3s;
+}
+
+/* アニメーション付きエッジの光点 */
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 8 4;
+}
+
+/* 回転アニメーション（試験頻出リング） */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* 選択パルス */
+@keyframes pulse-select {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.05); }
+}
+
+/* スクロールバー */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
