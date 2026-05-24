@@ -1,8 +1,6 @@
-"use client";
-
 import { create } from "zustand";
 import type { User, Session } from "@supabase/supabase-js";
-import { supabase, loadProgress, saveProgress } from "@/lib/supabase";
+import { supabase, saveProgress } from "@/lib/supabase";
 
 interface SyncPayload {
   node_statuses: Record<string, "locked" | "viewed" | "mastered">;
@@ -25,28 +23,6 @@ interface AuthStore {
   syncToSupabase: (payload: SyncPayload) => Promise<void>;
 }
 
-async function applyRemoteProgress(userId: string) {
-  const row = await loadProgress(userId);
-  if (!row) return;
-
-  const { useGameStore } = await import("@/lib/store");
-  const store = useGameStore.getState();
-
-  const localMastered = store.nodes.filter((n) => n.status === "mastered").length;
-  const remoteMastered = Object.values(row.node_statuses).filter(
-    (s) => s === "mastered"
-  ).length;
-
-  // Supabaseの方が進んでいるかフラグが有効な場合に反映
-  if (
-    remoteMastered >= localMastered ||
-    row.galaxy_completed ||
-    row.exam_completed
-  ) {
-    store.loadFromRemote(row);
-  }
-}
-
 export const useAuthStore = create<AuthStore>((set, get) => ({
   user: null,
   session: null,
@@ -56,22 +32,11 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   init: async () => {
     if (!supabase) return;
 
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
+    const { data: { session } } = await supabase.auth.getSession();
     set({ user: session?.user ?? null, session });
 
-    if (session?.user) {
-      await applyRemoteProgress(session.user.id);
-    }
-
-    supabase.auth.onAuthStateChange(async (_event, session) => {
-      const prevUser = get().user;
+    supabase.auth.onAuthStateChange((_event, session) => {
       set({ user: session?.user ?? null, session });
-      if (session?.user && !prevUser) {
-        // 新規ログイン → Supabaseから進捗をロード
-        await applyRemoteProgress(session.user.id);
-      }
     });
   },
 
@@ -101,7 +66,12 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     const { user } = get();
     if (!user) return;
     set({ syncing: true });
-    await saveProgress(user.id, payload);
-    set({ syncing: false });
+    try {
+      await saveProgress(user.id, payload);
+    } catch {
+      // ネットワークエラーは静かに無視
+    } finally {
+      set({ syncing: false });
+    }
   },
 }));

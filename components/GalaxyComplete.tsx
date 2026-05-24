@@ -208,7 +208,7 @@ export default function GalaxyComplete() {
               <button
                 onClick={() => {
                   dismissGalaxyComplete();
-                  router.push("/universe");
+                  router.push("/universe");  // 宇宙ビューへ
                 }}
                 style={{
                   padding: "14px 28px",

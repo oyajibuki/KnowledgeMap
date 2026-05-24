@@ -182,10 +182,10 @@ export default function FEPage() {
             fontWeight: "600",
           }}
         >
-          ← 宇宙ビューに戻る
+          ← 銀河系マップに戻る
         </Link>
         <Link
-          href="/"
+          href="/itp"
           style={{
             padding: "12px 24px",
             borderRadius: "12px",
