@@ -15,12 +15,15 @@ interface AuthStore {
   session: Session | null;
   authModalOpen: boolean;
   syncing: boolean;
+  authLoading: boolean;
+  authError: string | null;
   init: () => Promise<void>;
   openAuthModal: () => void;
   closeAuthModal: () => void;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   syncToSupabase: (payload: SyncPayload) => Promise<void>;
+  clearAuthError: () => void;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -28,6 +31,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   session: null,
   authModalOpen: false,
   syncing: false,
+  authLoading: false,
+  authError: null,
 
   init: async () => {
     if (!supabase) return;
@@ -40,20 +45,33 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     });
   },
 
-  openAuthModal: () => set({ authModalOpen: true }),
-  closeAuthModal: () => set({ authModalOpen: false }),
+  openAuthModal: () => set({ authModalOpen: true, authError: null }),
+  closeAuthModal: () => set({ authModalOpen: false, authError: null }),
+  clearAuthError: () => set({ authError: null }),
 
   signInWithGoogle: async () => {
     if (!supabase) return;
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo:
-          typeof window !== "undefined"
-            ? `${window.location.origin}/auth/callback`
-            : undefined,
-      },
-    });
+    set({ authLoading: true, authError: null });
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo:
+            typeof window !== "undefined"
+              ? `${window.location.origin}/auth/callback`
+              : undefined,
+        },
+      });
+      if (error) {
+        set({ authError: error.message, authLoading: false });
+      }
+      // リダイレクトが始まるので authLoading は true のまま（画面遷移される）
+    } catch (e) {
+      set({
+        authError: e instanceof Error ? e.message : "ログインに失敗しました",
+        authLoading: false,
+      });
+    }
   },
 
   signOut: async () => {

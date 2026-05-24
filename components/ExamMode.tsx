@@ -51,22 +51,25 @@ export default function ExamMode() {
     finishExam(score);
   };
 
-  // カウントダウンタイマー
+  // handleFinish を ref で安定化（タイマーeffectから安全に呼べるように）
+  const handleFinishRef = useRef(handleFinish);
+  useEffect(() => { handleFinishRef.current = handleFinish; });
+
+  // カウントダウンタイマー（setState updater 内で setState を呼ばないよう分離）
   useEffect(() => {
     if (!examMode || finished) return;
     const id = setInterval(() => {
-      setTimeLeft((t) => {
-        if (t <= 1) {
-          clearInterval(id);
-          handleFinish(correctRef.current);
-          return 0;
-        }
-        return t - 1;
-      });
+      setTimeLeft((t) => Math.max(0, t - 1));
     }, 1000);
     return () => clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [examMode, finished]);
+
+  // タイムアップ検知（timer effect とは別 effect で管理）
+  useEffect(() => {
+    if (timeLeft === 0 && !finished && examMode) {
+      handleFinishRef.current(correctRef.current);
+    }
+  }, [timeLeft, finished, examMode]);
 
   // examMode が false になったらローカル状態もリセット
   useEffect(() => {
