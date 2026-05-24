@@ -89,12 +89,14 @@ export default function ExamMode() {
 
   if (!examMode) return null;
 
+  // 実際の問題数（questions 配列が 100 未満でも安全に動く）
+  const ACTUAL_TOTAL = examQuestions.length;
   const q = examQuestions[current];
   const minutes = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
   const timerColor =
     timeLeft < 300 ? "#ef4444" : timeLeft < 600 ? "#f59e0b" : "#34d399";
-  const progress = (current / EXAM_TOTAL) * 100;
+  const progress = (current / ACTUAL_TOTAL) * 100;
   const isCorrectNow = selected === q?.answer;
 
   const handleSelect = (idx: number) => {
@@ -109,7 +111,7 @@ export default function ExamMode() {
     correctRef.current = newScore;
     setCorrectCount(newScore);
 
-    if (current + 1 >= EXAM_TOTAL) {
+    if (current + 1 >= ACTUAL_TOTAL) {
       handleFinish(newScore);
     } else {
       setCurrent((c) => c + 1);
@@ -239,7 +241,7 @@ export default function ExamMode() {
             >
               {finalScore}
               <span style={{ fontSize: "24px", color: "#475569" }}>
-                {" "}/ {EXAM_TOTAL}
+                {" "}/ {ACTUAL_TOTAL}
               </span>
             </div>
             <p style={{ color: "#334155", fontSize: "12px", marginBottom: "32px" }}>
@@ -328,7 +330,7 @@ export default function ExamMode() {
         {/* 問題番号 */}
         <div style={{ fontSize: "13px", color: "#64748b", minWidth: "60px" }}>
           <span style={{ color: "#e2e8f0", fontWeight: "700" }}>{current + 1}</span>
-          <span> / {EXAM_TOTAL}</span>
+          <span> / {ACTUAL_TOTAL}</span>
         </div>
 
         {/* タイマー */}
@@ -521,7 +523,7 @@ export default function ExamMode() {
                   boxShadow: "0 4px 18px rgba(79,70,229,0.35)",
                 }}
               >
-                {current + 1 >= EXAM_TOTAL ? "結果を見る 🏆" : "次の問題へ →"}
+                {current + 1 >= ACTUAL_TOTAL ? "結果を見る 🏆" : "次の問題へ →"}
               </motion.button>
             )}
           </motion.div>
