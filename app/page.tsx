@@ -3,8 +3,13 @@
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import NodeDetail from "@/components/NodeDetail";
+import BossCircle from "@/components/BossCircle";
+import GalaxyComplete from "@/components/GalaxyComplete";
 
 const KnowledgeMap = dynamic(() => import("@/components/KnowledgeMap"), {
+  ssr: false,
+});
+const ExamMode = dynamic(() => import("@/components/ExamMode"), {
   ssr: false,
 });
 
@@ -76,7 +81,17 @@ export default function Home() {
         <KnowledgeMap />
       </main>
 
+      {/* ノード詳細パネル（モバイル: ボトムシート / デスクトップ: 右サイドパネル） */}
       <NodeDetail />
+
+      {/* ボスサークル（マップ下部中央に浮かぶ） */}
+      <BossCircle />
+
+      {/* 試験モード（フルスクリーン） */}
+      <ExamMode />
+
+      {/* 銀河系制覇セレブレーション */}
+      <GalaxyComplete />
     </div>
   );
 }
