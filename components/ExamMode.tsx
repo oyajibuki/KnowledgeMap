@@ -7,9 +7,9 @@ import { useGameStore } from "@/lib/store";
 import { questions } from "@/lib/data";
 import { Question } from "@/types";
 
-const EXAM_TOTAL = 100;
+const EXAM_TOTAL = 100;   // 毎回 211問プールからランダム100問を出題
 const EXAM_PASS = 70;
-const EXAM_TIME = 7200; // 120 分
+const EXAM_TIME = 7200; // 120 分（本番と同じ）
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -24,8 +24,8 @@ export default function ExamMode() {
   const router = useRouter();
   const { examMode, closeExam, finishExam } = useGameStore();
 
-  // 100問をシャッフルして1度だけ生成
-  const [examQuestions] = useState<Question[]>(() =>
+  // 100問をシャッフル（試験開始ごとに再生成）
+  const [examQuestions, setExamQuestions] = useState<Question[]>(() =>
     shuffle(questions).slice(0, EXAM_TOTAL)
   );
 
@@ -71,10 +71,9 @@ export default function ExamMode() {
     }
   }, [timeLeft, finished, examMode]);
 
-  // examMode が false になったらローカル状態もリセット
+  // examMode が false になったら状態リセット＆次回用に問題を再シャッフル
   useEffect(() => {
     if (!examMode) {
-      // 次回起動のためにリセット
       setCurrent(0);
       setSelected(null);
       setAnswered(false);
@@ -84,6 +83,8 @@ export default function ExamMode() {
       setFinalScore(0);
       correctRef.current = 0;
       finishedRef.current = false;
+      // 次の試験セッションのために 211問からランダム100問を再抽出
+      setExamQuestions(shuffle(questions).slice(0, EXAM_TOTAL));
     }
   }, [examMode]);
 
