@@ -1,4 +1,5 @@
 import { KnowledgeNode, Connection, Question } from "@/types";
+import { extraQuestions } from "./questions-extra";
 
 // ボスノード解放の閾値（31ノード中）
 export const BOSS_UNLOCK_THRESHOLD = 25;
@@ -433,7 +434,7 @@ export const connections: Connection[] = [
 // ─────────────────────────────────────────────────────────
 // 問題集  (令和8年春 ITパスポート 過去問に基づく)
 // ─────────────────────────────────────────────────────────
-export const questions: Question[] = [
+const baseQuestions: Question[] = [
   // ── binary ──
   {
     id: "q-bin1", nodeId: "binary",
@@ -1424,7 +1425,7 @@ export const questions: Question[] = [
     explanation: "1×2³ + 0×2² + 1×2¹ + 1×2⁰ = 8 + 0 + 2 + 1 = 11。2進数→10進数の変換は各桁に2の累乗を掛けて合計する。",
   },
   {
-    id: "q-extra2", nodeId: "security-basics",
+    id: "q-extra2", nodeId: "malware",
     question: "フィッシング詐欺の説明として最も適切なものはどれか。",
     choices: [
       "ネットワーク上の通信を盗聴してIDやパスワードを取得する攻撃",
@@ -1436,3 +1437,6 @@ export const questions: Question[] = [
     explanation: "フィッシング（phishing）は、実在の金融機関やショッピングサイトに偽装したメール・サイトで、利用者を誘導してID・パスワード・クレジットカード情報などを詐取する社会工学的攻撃。ア=盗聴、ウ=不正アクセス、エ=DoS攻撃の説明。",
   },
 ];
+
+// 全問題（ベース + 追加）を結合してエクスポート
+export const questions: Question[] = [...baseQuestions, ...extraQuestions];
