@@ -23,7 +23,7 @@ export default function Header() {
         height: "52px",
       }}
     >
-      {/* 左: 銀河系に戻る */}
+      {/* 左: マップに戻る */}
       <Link
         href="/universe"
         style={{ textDecoration: "none", flexShrink: 0 }}
@@ -39,7 +39,7 @@ export default function Header() {
             whiteSpace: "nowrap",
           }}
         >
-          銀河系
+          マップ
         </span>
         <span
           className="hidden sm:inline"

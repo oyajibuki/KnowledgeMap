@@ -135,7 +135,7 @@ export default function GalaxyComplete() {
                 letterSpacing: "-0.01em",
               }}
             >
-              ITパスポート銀河系
+              ITパスポート
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 16 }}

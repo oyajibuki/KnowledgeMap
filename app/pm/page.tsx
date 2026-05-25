@@ -157,7 +157,7 @@ export default function PMPage() {
             fontWeight: "600",
           }}
         >
-          ← 銀河系マップに戻る
+          ← Knowledge Map に戻る
         </Link>
       </motion.div>
     </div>

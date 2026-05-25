@@ -76,7 +76,7 @@ export default function BossCircle() {
               pointerEvents: "none",
             }}
           >
-            🏆 ITパスポート銀河系 制覇！
+            🏆 ITパスポート 制覇！
           </motion.div>
         )}
         {!isUnlocked && masteredCount > 0 && (

@@ -5,30 +5,42 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/lib/auth-store";
 
+/* 背景星 */
 const STARS = [
-  { id: 0, x: 8, y: 12, s: 1.8 }, { id: 1, x: 15, y: 55, s: 1.2 },
-  { id: 2, x: 22, y: 78, s: 2.2 }, { id: 3, x: 30, y: 25, s: 1.5 },
-  { id: 4, x: 38, y: 68, s: 1.0 }, { id: 5, x: 48, y: 10, s: 2.0 },
-  { id: 6, x: 55, y: 88, s: 1.4 }, { id: 7, x: 63, y: 40, s: 1.8 },
-  { id: 8, x: 72, y: 20, s: 1.2 }, { id: 9, x: 80, y: 72, s: 2.4 },
-  { id: 10, x: 88, y: 35, s: 1.6 }, { id: 11, x: 93, y: 60, s: 1.0 },
-  { id: 12, x: 5, y: 85, s: 2.0 }, { id: 13, x: 42, y: 48, s: 1.3 },
-  { id: 14, x: 68, y: 92, s: 1.7 }, { id: 15, x: 97, y: 18, s: 1.5 },
-  { id: 16, x: 18, y: 38, s: 1.1 }, { id: 17, x: 52, y: 62, s: 2.1 },
-  { id: 18, x: 76, y: 48, s: 1.4 }, { id: 19, x: 35, y: 5, s: 1.9 },
+  { id:0,x:8,y:12,s:1.8 },{id:1,x:15,y:55,s:1.2},{id:2,x:22,y:78,s:2.2},
+  {id:3,x:30,y:25,s:1.5},{id:4,x:38,y:68,s:1.0},{id:5,x:48,y:10,s:2.0},
+  {id:6,x:55,y:88,s:1.4},{id:7,x:63,y:40,s:1.8},{id:8,x:72,y:20,s:1.2},
+  {id:9,x:80,y:72,s:2.4},{id:10,x:88,y:35,s:1.6},{id:11,x:93,y:60,s:1.0},
+  {id:12,x:5,y:85,s:2.0},{id:13,x:42,y:48,s:1.3},{id:14,x:68,y:92,s:1.7},
+  {id:15,x:97,y:18,s:1.5},{id:16,x:18,y:38,s:1.1},{id:17,x:52,y:62,s:2.1},
+  {id:18,x:76,y:48,s:1.4},{id:19,x:35,y:5,s:1.9},
 ];
 
-const GALAXIES = [
-  { icon: "⚡", name: "ITパスポート", color: "#06b6d4", delay: 0.6 },
-  { icon: "💻", name: "基本情報技術者", color: "#818cf8", delay: 0.75 },
-  { icon: "🗂️", name: "PM", color: "#a78bfa", delay: 0.9 },
+/* ミニ資格コンステレーション */
+const NODES = [
+  { icon:"⚡", color:"#06b6d4", size:42, x:48, y:38, delay:0.0, label:"IT"     },
+  { icon:"💻", color:"#06b6d4", size:32, x:78, y:15, delay:0.1, label:"FE"     },
+  { icon:"🔒", color:"#38bdf8", size:28, x:18, y:15, delay:0.2, label:"SG"     },
+  { icon:"💰", color:"#10b981", size:30, x:5,  y:50, delay:0.3, label:"FP"     },
+  { icon:"📊", color:"#818cf8", size:28, x:22, y:82, delay:0.4, label:"簿記"   },
+  { icon:"🏠", color:"#f59e0b", size:30, x:92, y:60, delay:0.5, label:"宅建"   },
+  { icon:"🔵", color:"#38bdf8", size:28, x:68, y:78, delay:0.6, label:"Cisco"  },
+  { icon:"☁️", color:"#34d399", size:32, x:86, y:32, delay:0.7, label:"Cloud"  },
+  { icon:"⚖️", color:"#f87171", size:26, x:38, y:90, delay:0.8, label:"法務"   },
+  { icon:"🗂️", color:"#c084fc", size:30, x:62, y:60, delay:0.9, label:"PM"     },
+  { icon:"🌍", color:"#60a5fa", size:26, x:32, y:20, delay:1.0, label:"文化"   },
+  { icon:"🐧", color:"#fb923c", size:26, x:70, y:5,  delay:1.1, label:"Linux"  },
+];
+
+/* コンステレーション接続線（SVG用） */
+const LINES = [
+  [0,1],[0,2],[0,9],[0,7],[1,7],[0,4],[0,6],[9,6],
 ];
 
 export default function LandingPage() {
   const router = useRouter();
   const { user, signInWithGoogle } = useAuthStore();
 
-  // ログイン済みなら宇宙ページへスキップ
   useEffect(() => {
     if (user) router.replace("/universe");
   }, [user, router]);
@@ -51,37 +63,30 @@ export default function LandingPage() {
       {/* 背景：同心円 */}
       <div
         style={{
-          position: "fixed",
-          inset: 0,
+          position: "fixed", inset: 0, pointerEvents: "none",
           backgroundImage: [
-            "radial-gradient(circle at 50% 55%, transparent 18%, rgba(6,182,212,0.03) 18.5%, transparent 19%)",
-            "radial-gradient(circle at 50% 55%, transparent 38%, rgba(6,182,212,0.02) 38.5%, transparent 39%)",
-            "radial-gradient(circle at 50% 55%, transparent 60%, rgba(6,182,212,0.015) 60.5%, transparent 61%)",
+            "radial-gradient(circle at 50% 55%, transparent 18%, rgba(6,182,212,0.025) 18.5%, transparent 19%)",
+            "radial-gradient(circle at 50% 55%, transparent 38%, rgba(6,182,212,0.018) 38.5%, transparent 39%)",
+            "radial-gradient(circle at 50% 55%, transparent 60%, rgba(6,182,212,0.012) 60.5%, transparent 61%)",
           ].join(", "),
-          pointerEvents: "none",
         }}
       />
 
       {/* 星 */}
-      {STARS.map((star) => (
+      {STARS.map((s) => (
         <motion.div
-          key={star.id}
-          animate={{ opacity: [0.15, 0.6, 0.15] }}
-          transition={{ duration: 3 + star.id * 0.2, repeat: Infinity }}
+          key={s.id}
+          animate={{ opacity: [0.1, 0.5, 0.1] }}
+          transition={{ duration: 3 + s.id * 0.2, repeat: Infinity }}
           style={{
-            position: "absolute",
-            left: `${star.x}%`,
-            top: `${star.y}%`,
-            width: `${star.s}px`,
-            height: `${star.s}px`,
-            borderRadius: "50%",
-            background: "white",
-            pointerEvents: "none",
+            position: "absolute", left:`${s.x}%`, top:`${s.y}%`,
+            width:`${s.s}px`, height:`${s.s}px`,
+            borderRadius: "50%", background: "white", pointerEvents: "none",
           }}
         />
       ))}
 
-      {/* メインコンテンツ */}
+      {/* ── メインコンテンツ ── */}
       <div style={{ position: "relative", width: "100%", maxWidth: "400px", textAlign: "center" }}>
 
         {/* ロゴ */}
@@ -89,7 +94,7 @@ export default function LandingPage() {
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: "spring", damping: 14, delay: 0.1 }}
-          style={{ fontSize: "72px", marginBottom: "16px" }}
+          style={{ fontSize: "64px", marginBottom: "14px" }}
         >
           🌌
         </motion.div>
@@ -99,7 +104,7 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           style={{
-            fontSize: "clamp(26px, 7vw, 40px)",
+            fontSize: "clamp(26px, 7vw, 38px)",
             fontWeight: "900",
             letterSpacing: "-0.02em",
             marginBottom: "8px",
@@ -115,67 +120,124 @@ export default function LandingPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.45 }}
-          style={{ color: "#475569", fontSize: "14px", marginBottom: "32px", lineHeight: 1.6 }}
+          style={{ color: "#475569", fontSize: "13px", marginBottom: "28px", lineHeight: 1.6 }}
         >
-          資格の知識を銀河系として攻略しよう
+          すべての資格を、ひとつの知識宇宙で管理しよう
         </motion.p>
 
-        {/* 銀河プレビュー */}
+        {/* ── コンステレーション ── */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
           style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "16px",
-            marginBottom: "36px",
+            position: "relative",
+            width: "100%",
+            height: "170px",
+            marginBottom: "28px",
           }}
         >
-          {GALAXIES.map((g) => (
+          {/* 接続線（SVG） */}
+          <svg
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
+            {LINES.map(([a, b], i) => (
+              <motion.line
+                key={i}
+                x1={NODES[a].x} y1={NODES[a].y}
+                x2={NODES[b].x} y2={NODES[b].y}
+                stroke="rgba(129,140,248,0.18)"
+                strokeWidth="0.4"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ delay: 0.8 + i * 0.06, duration: 0.6 }}
+              />
+            ))}
+          </svg>
+
+          {/* 資格スフィア */}
+          {NODES.map((n, i) => (
             <motion.div
-              key={g.name}
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: g.delay, type: "spring" }}
+              key={i}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                y: [0, i % 2 === 0 ? -5 : -8, 0],
+              }}
+              transition={{
+                opacity: { delay: 0.5 + n.delay, duration: 0.4 },
+                scale:   { delay: 0.5 + n.delay, duration: 0.4, type: "spring" },
+                y: { delay: 1.2 + n.delay * 0.3, duration: 2.5 + i * 0.25, repeat: Infinity, ease: "easeInOut" },
+              }}
               style={{
+                position: "absolute",
+                left: `${n.x}%`,
+                top: `${n.y}%`,
+                transform: "translate(-50%, -50%)",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: "4px",
+                gap: "3px",
               }}
             >
               <div
                 style={{
-                  width: "48px",
-                  height: "48px",
+                  width: `${n.size}px`,
+                  height: `${n.size}px`,
                   borderRadius: "50%",
-                  background: `radial-gradient(circle at 35% 30%, rgba(255,255,255,0.1), rgba(0,0,0,0))`,
-                  border: `1px solid ${g.color}50`,
-                  boxShadow: `0 0 16px ${g.color}30`,
+                  background: `radial-gradient(circle at 32% 28%, ${n.color}30, ${n.color}08 70%, transparent 100%), radial-gradient(circle, #1a2234, #0c1018)`,
+                  border: `1px solid ${n.color}40`,
+                  boxShadow: `0 0 10px ${n.color}25, inset 0 -3px 8px rgba(0,0,0,0.6)`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "22px",
+                  fontSize: `${n.size * 0.44}px`,
                 }}
               >
-                {g.icon}
+                {n.icon}
               </div>
-              <span style={{ fontSize: "9px", color: g.color, fontWeight: "700", letterSpacing: "0.05em" }}>
-                {g.name.length > 6 ? g.name.slice(0, 6) + "…" : g.name}
-              </span>
+              {n.size >= 36 && (
+                <span style={{ fontSize: "7px", color: n.color + "99", fontWeight: "700", letterSpacing: "0.04em" }}>
+                  {n.label}
+                </span>
+              )}
             </motion.div>
           ))}
+
+          {/* 資格数バッジ */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.6 }}
+            style={{
+              position: "absolute",
+              bottom: "4px",
+              right: "0px",
+              padding: "3px 10px",
+              borderRadius: "20px",
+              background: "rgba(5,10,20,0.85)",
+              border: "1px solid rgba(129,140,248,0.2)",
+              fontSize: "9px",
+              color: "#818cf8",
+              fontWeight: "700",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            50+ 資格を収録
+          </motion.div>
         </motion.div>
 
-        {/* ログイン選択 */}
+        {/* ── ボタン ── */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.95 }}
+          transition={{ delay: 0.9 }}
           style={{ display: "flex", flexDirection: "column", gap: "10px" }}
         >
-          {/* Google ログインボタン */}
+          {/* Google ログイン */}
           <button
             onClick={signInWithGoogle}
             style={{
@@ -204,15 +266,15 @@ export default function LandingPage() {
             Googleでログイン（進捗クラウド保存）
           </button>
 
-          {/* ゲストとして試す */}
+          {/* ゲスト */}
           <button
             onClick={() => router.push("/universe")}
             style={{
               width: "100%",
               padding: "15px",
               borderRadius: "14px",
-              background: "rgba(129,140,248,0.12)",
-              border: "1px solid rgba(129,140,248,0.3)",
+              background: "rgba(129,140,248,0.1)",
+              border: "1px solid rgba(129,140,248,0.28)",
               color: "#a5b4fc",
               fontWeight: "700",
               fontSize: "15px",
@@ -223,17 +285,11 @@ export default function LandingPage() {
           </button>
         </motion.div>
 
-        {/* 補足 */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          style={{
-            color: "#334155",
-            fontSize: "11px",
-            marginTop: "20px",
-            lineHeight: 1.6,
-          }}
+          style={{ color: "#334155", fontSize: "11px", marginTop: "18px", lineHeight: 1.6 }}
         >
           ゲストでも全機能が使えます。<br />
           後からGoogleログインで進捗を引き継げます。

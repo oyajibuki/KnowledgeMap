@@ -221,7 +221,7 @@ export default function ExamMode() {
             style={{ color: "#64748b", fontSize: "14px", marginBottom: "24px", lineHeight: 1.6 }}
           >
             {passed
-              ? "おめでとうございます！\nITパスポート銀河系を制覇しました！"
+              ? "おめでとうございます！\nITパスポートを完全制覇しました！"
               : `合格ライン ${EXAM_PASS} 点まであと ${EXAM_PASS - finalScore} 点。\n再挑戦しましょう！`}
           </motion.p>
 

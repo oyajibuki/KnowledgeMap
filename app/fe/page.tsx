@@ -182,7 +182,7 @@ export default function FEPage() {
             fontWeight: "600",
           }}
         >
-          ← 銀河系マップに戻る
+          ← Knowledge Map に戻る
         </Link>
         <Link
           href="/itp"

@@ -2,36 +2,38 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { useAuthStore } from "@/lib/auth-store";
 
+/**
+ * OAuth コールバックページ
+ *
+ * Supabase JS v2 は createClient 時に detectSessionInUrl: true (デフォルト) で
+ * URL の ?code= を自動検出し exchangeCodeForSession を実行する。
+ * ここで手動に exchangeCodeForSession を呼ぶと「コードの二重利用」になり
+ * 必ず一方が失敗してトップページへループする。
+ *
+ * → 手動交換は行わず、auth-store の onAuthStateChange が発火して
+ *   user が設定されるのを待ってリダイレクトする。
+ */
 export default function AuthCallbackPage() {
   const router = useRouter();
+  const user = useAuthStore((s) => s.user);
 
+  // user が設定されたら宇宙ページへ
   useEffect(() => {
-    const handle = async () => {
-      if (!supabase) {
-        router.replace("/");
-        return;
-      }
-
-      // PKCE フロー: ブラウザの localStorage に code_verifier があるので
-      // クライアントサイドで exchangeCodeForSession を呼ぶ必要がある
-      const code = new URLSearchParams(window.location.search).get("code");
-      if (code) {
-        try {
-          await supabase.auth.exchangeCodeForSession(code);
-        } catch {
-          // エラーは無視してホームへ
-          router.replace("/");
-          return;
-        }
-      }
-
-      // セッション確立後、宇宙ページへ
+    if (user) {
       router.replace("/universe");
-    };
+    }
+  }, [user, router]);
 
-    handle();
+  // タイムアウト: 12秒後もログインできなければトップへ
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (!useAuthStore.getState().user) {
+        router.replace("/");
+      }
+    }, 12000);
+    return () => clearTimeout(t);
   }, [router]);
 
   return (
@@ -44,44 +46,38 @@ export default function AuthCallbackPage() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: "20px",
+        gap: "24px",
       }}
     >
-      <div style={{ fontSize: "56px" }}>🌌</div>
+      <div style={{ fontSize: "60px" }}>🌌</div>
       <p
         style={{
           color: "#818cf8",
           fontSize: "16px",
-          fontWeight: "600",
-          letterSpacing: "0.04em",
+          fontWeight: "700",
+          letterSpacing: "0.05em",
         }}
       >
         ログイン処理中...
       </p>
-      <div
-        style={{
-          width: "40px",
-          height: "4px",
-          borderRadius: "2px",
-          background: "rgba(129,140,248,0.2)",
-          overflow: "hidden",
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(90deg, #818cf8, #c084fc)",
-            animation: "slide 1.2s ease-in-out infinite",
-            borderRadius: "2px",
-          }}
-        />
+      <div style={{ display: "flex", gap: "8px" }}>
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            style={{
+              width: "9px",
+              height: "9px",
+              borderRadius: "50%",
+              background: "#818cf8",
+              animation: `dot 1.4s ease-in-out ${i * 0.24}s infinite`,
+            }}
+          />
+        ))}
       </div>
       <style>{`
-        @keyframes slide {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
+        @keyframes dot {
+          0%, 80%, 100% { opacity: 0.2; transform: scale(0.75); }
+          40% { opacity: 1; transform: scale(1.25); }
         }
       `}</style>
     </div>
