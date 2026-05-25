@@ -17,50 +17,70 @@ import { connections, initialNodes } from "@/lib/data";
 import { KnowledgeNode } from "@/types";
 import SphereNode from "./SphereNode";
 import GroupBubble from "./GroupBubble";
+import ExamNode from "./ExamNode";
 
-const nodeTypes = { sphere: SphereNode, groupBubble: GroupBubble };
+const nodeTypes = { sphere: SphereNode, groupBubble: GroupBubble, examNode: ExamNode };
 
 /* ──────────────────────────────────────────
    グループバブル設定
+
+   Venn図レイアウト:
    ITP: 中心 (700,700) 半径950 — 薄い黄色
-   FE:  中心 (2100,700) 半径750 — 薄いインディゴ
-   ※ 二つが x≈1350〜1650 で重なる
+   FE:  中心 (1600,700) 半径1000 — 薄いインディゴ
+   ※ 二つが x≈700〜1650 で大きく重なる
+      重なり部分に binary・cpu・メモリ等の共通知識が入る
+   ※ FE 固有ノード (fe-*) は x≈1800 以降に配置
 ────────────────────────────────────────── */
 const ITP_CX = 700,  ITP_CY = 700,  ITP_R = 950;
-const FE_CX  = 2100, FE_CY  = 700,  FE_R  = 750;
+const FE_CX  = 1600, FE_CY  = 700,  FE_R  = 1000;
 
-const GROUP_BUBBLE_NODES: Node[] = [
-  {
-    id: "__group-itp",
-    type: "groupBubble",
-    position: { x: ITP_CX - ITP_R, y: ITP_CY - ITP_R },
-    data: {
-      label: "ITパスポート",
-      radius: ITP_R,
-      fillColor: "rgba(251,191,36,0.035)",
-      strokeColor: "rgba(251,191,36,0.28)",
+/* 過去問ノード（ITP バブル内・下部）*/
+const EXAM_NODE: Node = {
+  id: "__exam",
+  type: "examNode",
+  position: { x: ITP_CX - 45, y: 1430 }, // ITP 下部に配置（中心 y=700+730≈1430 ← r=950 内）
+  data: {},
+  draggable: false,
+  selectable: false,
+  focusable: false,
+  zIndex: 5,
+};
+
+function buildGroupBubbleNodes(galaxyCompleted: boolean): Node[] {
+  return [
+    {
+      id: "__group-itp",
+      type: "groupBubble",
+      position: { x: ITP_CX - ITP_R, y: ITP_CY - ITP_R },
+      data: {
+        label: "ITパスポート",
+        radius: ITP_R,
+        fillColor: "rgba(251,191,36,0.035)",
+        strokeColor: "rgba(251,191,36,0.28)",
+        isCompleted: galaxyCompleted,
+      },
+      draggable: false,
+      selectable: false,
+      focusable: false,
+      zIndex: -10,
     },
-    draggable: false,
-    selectable: false,
-    focusable: false,
-    zIndex: -10,
-  },
-  {
-    id: "__group-fe",
-    type: "groupBubble",
-    position: { x: FE_CX - FE_R, y: FE_CY - FE_R },
-    data: {
-      label: "基本情報技術者",
-      radius: FE_R,
-      fillColor: "rgba(129,140,248,0.04)",
-      strokeColor: "rgba(129,140,248,0.28)",
+    {
+      id: "__group-fe",
+      type: "groupBubble",
+      position: { x: FE_CX - FE_R, y: FE_CY - FE_R },
+      data: {
+        label: "基本情報技術者",
+        radius: FE_R,
+        fillColor: "rgba(129,140,248,0.04)",
+        strokeColor: "rgba(129,140,248,0.28)",
+      },
+      draggable: false,
+      selectable: false,
+      focusable: false,
+      zIndex: -10,
     },
-    draggable: false,
-    selectable: false,
-    focusable: false,
-    zIndex: -10,
-  },
-];
+  ];
+}
 
 function makeFlowNode(kn: KnowledgeNode, selectedNodeId: string | null, bouncing: boolean): Node {
   return {
@@ -81,7 +101,7 @@ function makeFlowNode(kn: KnowledgeNode, selectedNodeId: string | null, bouncing
 }
 
 export default function KnowledgeMap() {
-  const { nodes: znodes, selectedNodeId, setSelectedNode } = useGameStore();
+  const { nodes: znodes, selectedNodeId, setSelectedNode, galaxyCompleted } = useGameStore();
   const [droppedId, setDroppedId] = useState<string | null>(null);
 
   /* ──────────────────────────
@@ -89,7 +109,8 @@ export default function KnowledgeMap() {
      （マウント時に1度だけ計算）
   ────────────────────────── */
   const [rfNodes, setRfNodes, onNodesChange] = useNodesState([
-    ...GROUP_BUBBLE_NODES,
+    ...buildGroupBubbleNodes(galaxyCompleted),
+    EXAM_NODE,
     ...znodes.map((kn) => makeFlowNode(kn, null, false)),
   ]);
 
@@ -100,6 +121,10 @@ export default function KnowledgeMap() {
   useEffect(() => {
     setRfNodes((prev) =>
       prev.map((n) => {
+        // ITP バブルの完了グロー更新
+        if (n.id === "__group-itp") {
+          return { ...n, data: { ...n.data, isCompleted: galaxyCompleted } };
+        }
         if (n.type !== "sphere") return n;
         const kn = znodes.find((k) => k.id === n.id);
         if (!kn) return n;
@@ -114,7 +139,7 @@ export default function KnowledgeMap() {
         };
       })
     );
-  }, [znodes, selectedNodeId, droppedId, setRfNodes]);
+  }, [znodes, selectedNodeId, droppedId, setRfNodes, galaxyCompleted]);
 
   /* ──────────────────────────
      ドロップ時にバウンス演出

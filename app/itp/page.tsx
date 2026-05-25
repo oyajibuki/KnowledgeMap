@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import NodeDetail from "@/components/NodeDetail";
-import BossCircle from "@/components/BossCircle";
 import GalaxyComplete from "@/components/GalaxyComplete";
 
 const KnowledgeMap = dynamic(() => import("@/components/KnowledgeMap"), {
@@ -78,7 +77,6 @@ export default function ITPPage() {
       </main>
 
       <NodeDetail />
-      <BossCircle />
       <ExamMode />
       <GalaxyComplete />
     </div>
