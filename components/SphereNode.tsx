@@ -10,6 +10,7 @@ interface SphereNodeData {
   isExamFrequent: boolean;
   isCenter: boolean;
   selected: boolean;
+  bouncing?: boolean;
   [key: string]: unknown;
 }
 
@@ -52,7 +53,7 @@ function SphereNode({ data }: NodeProps) {
 
   return (
     <div
-      className="flex flex-col items-center select-none"
+      className={`flex flex-col items-center select-none${d.bouncing ? " node-bounce" : ""}`}
       style={{ width: 90, cursor: isLocked ? "not-allowed" : "pointer" }}
     >
       {/* ハンドルを球体中心に固定 → straight エッジがノード中心から描画される */}

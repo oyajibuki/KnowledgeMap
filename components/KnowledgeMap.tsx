@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useEffect, useState } from "react";
 import {
   ReactFlow,
   Background,
@@ -9,76 +9,191 @@ import {
   Edge,
   NodeMouseHandler,
   BackgroundVariant,
+  useNodesState,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useGameStore } from "@/lib/store";
-import { connections } from "@/lib/data";
+import { connections, initialNodes } from "@/lib/data";
 import { KnowledgeNode } from "@/types";
 import SphereNode from "./SphereNode";
+import GroupBubble from "./GroupBubble";
 
-const nodeTypes = { sphere: SphereNode };
+const nodeTypes = { sphere: SphereNode, groupBubble: GroupBubble };
+
+/* ──────────────────────────────────────────
+   グループバブル設定
+   ITP: 中心 (700,700) 半径950 — 薄い黄色
+   FE:  中心 (2100,700) 半径750 — 薄いインディゴ
+   ※ 二つが x≈1350〜1650 で重なる
+────────────────────────────────────────── */
+const ITP_CX = 700,  ITP_CY = 700,  ITP_R = 950;
+const FE_CX  = 2100, FE_CY  = 700,  FE_R  = 750;
+
+const GROUP_BUBBLE_NODES: Node[] = [
+  {
+    id: "__group-itp",
+    type: "groupBubble",
+    position: { x: ITP_CX - ITP_R, y: ITP_CY - ITP_R },
+    data: {
+      label: "ITパスポート",
+      radius: ITP_R,
+      fillColor: "rgba(251,191,36,0.035)",
+      strokeColor: "rgba(251,191,36,0.28)",
+    },
+    draggable: false,
+    selectable: false,
+    focusable: false,
+    zIndex: -10,
+  },
+  {
+    id: "__group-fe",
+    type: "groupBubble",
+    position: { x: FE_CX - FE_R, y: FE_CY - FE_R },
+    data: {
+      label: "基本情報技術者",
+      radius: FE_R,
+      fillColor: "rgba(129,140,248,0.04)",
+      strokeColor: "rgba(129,140,248,0.28)",
+    },
+    draggable: false,
+    selectable: false,
+    focusable: false,
+    zIndex: -10,
+  },
+];
+
+function makeFlowNode(kn: KnowledgeNode, selectedNodeId: string | null, bouncing: boolean): Node {
+  return {
+    id: kn.id,
+    type: "sphere",
+    position: kn.position,
+    data: {
+      label: kn.title,
+      status: kn.status,
+      isExamFrequent: kn.isExamFrequent,
+      isCenter: kn.id === "binary",
+      selected: selectedNodeId === kn.id,
+      bouncing,
+    },
+    draggable: true,
+    zIndex: 1,
+  };
+}
 
 export default function KnowledgeMap() {
-  const { nodes: knowledgeNodes, selectedNodeId, setSelectedNode } = useGameStore();
+  const { nodes: znodes, selectedNodeId, setSelectedNode } = useGameStore();
+  const [droppedId, setDroppedId] = useState<string | null>(null);
 
-  const flowNodes: Node[] = useMemo(
-    () =>
-      knowledgeNodes.map((kn: KnowledgeNode) => ({
-        id: kn.id,
-        type: "sphere",
-        position: kn.position,
-        data: {
-          label: kn.title,
-          status: kn.status,
-          isExamFrequent: kn.isExamFrequent,
-          isCenter: kn.id === "binary",
-          selected: selectedNodeId === kn.id,
-        },
-        draggable: false,
-      })),
-    [knowledgeNodes, selectedNodeId]
-  );
+  /* ──────────────────────────
+     ReactFlow ノード初期化
+     （マウント時に1度だけ計算）
+  ────────────────────────── */
+  const [rfNodes, setRfNodes, onNodesChange] = useNodesState([
+    ...GROUP_BUBBLE_NODES,
+    ...znodes.map((kn) => makeFlowNode(kn, null, false)),
+  ]);
 
-  const flowEdges: Edge[] = useMemo(
-    () =>
-      connections.map((c) => {
-        const fromNode = knowledgeNodes.find((n) => n.id === c.fromNodeId);
-        const toNode = knowledgeNodes.find((n) => n.id === c.toNodeId);
-
-        const fromUnlocked = fromNode?.status !== "locked";
-        const toUnlocked = toNode?.status !== "locked";
-        const bothUnlocked = fromUnlocked && toUnlocked;
-        const eitherUnlocked = fromUnlocked || toUnlocked;
-
-        // 接続ライン色: dependency=シアン系、related=紫系
-        const baseColor = c.relationType === "dependency" ? "#06b6d4" : "#818cf8";
-        const dimColor = "#1e3a4a";
-
+  /* ──────────────────────────
+     Zustand のステータス/選択変更を
+     ReactFlow ノードへ反映（位置は変えない）
+  ────────────────────────── */
+  useEffect(() => {
+    setRfNodes((prev) =>
+      prev.map((n) => {
+        if (n.type !== "sphere") return n;
+        const kn = znodes.find((k) => k.id === n.id);
+        if (!kn) return n;
         return {
-          id: `${c.fromNodeId}-${c.toNodeId}`,
-          source: c.fromNodeId,
-          target: c.toNodeId,
-          type: "straight",
-          animated: bothUnlocked,
-          style: {
-            stroke: eitherUnlocked ? baseColor : dimColor,
-            strokeWidth: bothUnlocked ? 3 : eitherUnlocked ? 2 : 1,
-            opacity: bothUnlocked ? 1 : eitherUnlocked ? 0.5 : 0.15,
-            filter: bothUnlocked ? `drop-shadow(0 0 4px ${baseColor})` : "none",
+          ...n,
+          data: {
+            ...n.data,
+            status: kn.status,
+            selected: selectedNodeId === n.id,
+            bouncing: droppedId === n.id,
           },
         };
-      }),
-    [knowledgeNodes]
+      })
+    );
+  }, [znodes, selectedNodeId, droppedId, setRfNodes]);
+
+  /* ──────────────────────────
+     ドロップ時にバウンス演出
+  ────────────────────────── */
+  const onNodeDragStop: NodeMouseHandler = useCallback(
+    (_, node) => {
+      if (node.type !== "sphere") return;
+      setDroppedId(node.id);
+      setTimeout(() => setDroppedId(null), 700);
+    },
+    []
   );
 
+  /* ──────────────────────────
+     位置リセット（全ノードを初期位置へ）
+  ────────────────────────── */
+  const handleReset = useCallback(() => {
+    setRfNodes((prev) =>
+      prev.map((n) => {
+        if (n.type !== "sphere") return n;
+        const orig = znodes.find((k) => k.id === n.id);
+        if (!orig) return n;
+        return { ...n, position: orig.position };
+      })
+    );
+  }, [znodes, setRfNodes]);
+
+  /* ──────────────────────────
+     エッジ（接続線）
+  ────────────────────────── */
+  const flowEdges: Edge[] = useMemo(() => {
+    const allNodes = [...znodes, ...initialNodes.filter((n) => !znodes.find((z) => z.id === n.id))];
+    return connections.map((c) => {
+      const fromNode = allNodes.find((n) => n.id === c.fromNodeId);
+      const toNode   = allNodes.find((n) => n.id === c.toNodeId);
+
+      const fromUnlocked = fromNode?.status !== "locked";
+      const toUnlocked   = toNode?.status   !== "locked";
+      const bothUnlocked = fromUnlocked && toUnlocked;
+      const eitherUnlocked = fromUnlocked || toUnlocked;
+
+      // ITP↔FE 横断接続は紫破線
+      const isCross = (fromNode?.topicId === "fe") !== (toNode?.topicId === "fe");
+      const baseColor = isCross
+        ? "#a78bfa"
+        : c.relationType === "dependency"
+        ? "#06b6d4"
+        : "#818cf8";
+
+      return {
+        id: `${c.fromNodeId}-${c.toNodeId}`,
+        source: c.fromNodeId,
+        target: c.toNodeId,
+        type: "straight",
+        animated: bothUnlocked,
+        style: {
+          stroke: eitherUnlocked ? baseColor : "#1e3a4a",
+          strokeWidth: bothUnlocked ? (isCross ? 1.5 : 3) : eitherUnlocked ? 1.5 : 1,
+          opacity: bothUnlocked ? (isCross ? 0.55 : 1) : eitherUnlocked ? 0.4 : 0.12,
+          filter: bothUnlocked && !isCross ? `drop-shadow(0 0 4px ${baseColor})` : "none",
+          strokeDasharray: isCross ? "5 4" : undefined,
+        },
+      };
+    });
+  }, [znodes]);
+
+  /* ──────────────────────────
+     クリックハンドラ
+  ────────────────────────── */
   const onNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
-      const kn = knowledgeNodes.find((n) => n.id === node.id);
+      if (node.type !== "sphere") return;
+      const allNodes = [...znodes, ...initialNodes.filter((n) => !znodes.find((z) => z.id === n.id))];
+      const kn = allNodes.find((n) => n.id === node.id);
       if (kn && kn.status !== "locked") {
         setSelectedNode(node.id);
       }
     },
-    [knowledgeNodes, setSelectedNode]
+    [znodes, setSelectedNode]
   );
 
   const onPaneClick = useCallback(() => {
@@ -86,21 +201,24 @@ export default function KnowledgeMap() {
   }, [setSelectedNode]);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full relative">
       <ReactFlow
-        nodes={flowNodes}
+        nodes={rfNodes}
         edges={flowEdges}
         nodeTypes={nodeTypes}
+        onNodesChange={onNodesChange}
         onNodeClick={onNodeClick}
+        onNodeDragStop={onNodeDragStop}
         onPaneClick={onPaneClick}
         fitView
-        fitViewOptions={{ padding: 0.12 }}
-        minZoom={0.2}
+        fitViewOptions={{ padding: 0.08 }}
+        minZoom={0.1}
         maxZoom={2.5}
         style={{ background: "transparent" }}
         proOptions={{ hideAttribution: true }}
+        nodesDraggable
+        elementsSelectable={false}
       >
-        {/* 星空っぽいドットグリッド */}
         <Background
           variant={BackgroundVariant.Dots}
           gap={48}
@@ -116,6 +234,41 @@ export default function KnowledgeMap() {
           }}
         />
       </ReactFlow>
+
+      {/* 配置リセットボタン */}
+      <button
+        onClick={handleReset}
+        title="全ノードを初期位置に戻す"
+        style={{
+          position: "absolute",
+          bottom: "16px",
+          right: "16px",
+          zIndex: 20,
+          padding: "7px 14px",
+          borderRadius: "12px",
+          background: "rgba(9,11,20,0.85)",
+          border: "1px solid #334155",
+          color: "#64748b",
+          fontSize: "11px",
+          fontWeight: "700",
+          cursor: "pointer",
+          backdropFilter: "blur(8px)",
+          display: "flex",
+          alignItems: "center",
+          gap: "5px",
+          transition: "all 0.15s",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = "#94a3b8";
+          e.currentTarget.style.borderColor = "#475569";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = "#64748b";
+          e.currentTarget.style.borderColor = "#334155";
+        }}
+      >
+        🔄 配置リセット
+      </button>
     </div>
   );
 }

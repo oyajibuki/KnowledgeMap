@@ -15,7 +15,7 @@ export default function BossCircle() {
     startExam,
   } = useGameStore();
 
-  const masteredCount = nodes.filter((n) => n.status === "mastered").length;
+  const masteredCount = nodes.filter((n) => n.status === "mastered" && n.topicId !== "fe").length;
   const isUnlocked = masteredCount >= BOSS_UNLOCK_THRESHOLD;
   const canStart = isUnlocked;
   const pct = Math.round((masteredCount / BOSS_UNLOCK_THRESHOLD) * 100);
@@ -57,7 +57,7 @@ export default function BossCircle() {
               pointerEvents: "none",
             }}
           >
-            ✨ 過去問ボス解放！タップで挑戦
+            ✨ 過去問 解放！タップで挑戦
           </motion.div>
         )}
         {galaxyCompleted && (

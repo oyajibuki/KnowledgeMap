@@ -8,8 +8,9 @@ export default function Header() {
   const { nodes, galaxyCompleted } = useGameStore();
   const { user, openAuthModal, signOut } = useAuthStore();
 
-  const total = nodes.length;
-  const mastered = nodes.filter((n) => n.status === "mastered").length;
+  const itpNodes = nodes.filter((n) => n.topicId !== "fe");
+  const total = itpNodes.length;
+  const mastered = itpNodes.filter((n) => n.status === "mastered").length;
   const progress = Math.round((mastered / total) * 100);
 
   return (

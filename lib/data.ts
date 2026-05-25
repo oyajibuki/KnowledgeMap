@@ -324,6 +324,93 @@ export const initialNodes: KnowledgeNode[] = [
     wikiUrl: "https://ja.wikipedia.org/wiki/%E7%9F%A5%E7%9A%84%E8%B2%A1%E7%94%A3%E6%A8%A9",
   },
 
+  // ──────────────────────────────────────────────────────────────
+  // 基本情報技術者 ノード群 (topicId: "fe")
+  // ITP クラスタの右側 (中心 x=2100, y=700) に 3×3 グリッド配置
+  // ITP バブル(半径950)と FE バブル(半径750)が重なる
+  // ──────────────────────────────────────────────────────────────
+  {
+    id: "fe-algo",
+    topicId: "fe",
+    title: "アルゴリズムと計算量",
+    description: "O記法・整列アルゴリズム・探索・再帰。FE最重要分野。",
+    detail: "**計算量（O記法）**\nアルゴリズムの効率を入力サイズ n の関数で評価。\n・O(1) — 定数時間：配列インデックスアクセス\n・O(log n) — 対数時間：2分探索\n・O(n) — 線形時間：線形探索\n・O(n log n) — クイックソート平均・マージソート\n・O(n²) — バブルソート・選択ソート最悪\n\n**主な整列アルゴリズム**\n・バブルソート：隣接要素を比較交換。O(n²)。安定。\n・選択ソート：最小値を先頭へ。O(n²)。不安定。\n・クイックソート：ピボットで分割。平均O(n log n)。不安定。\n・マージソート：分割して結合。常にO(n log n)。安定。\n・ヒープソート：ヒープ構造を利用。O(n log n)。不安定。\n\n**探索アルゴリズム**\n・線形探索：先頭から順番に比較。O(n)。\n・2分探索：ソート済み配列を半分に絞る。O(log n)。\n・ハッシュ探索：ハッシュ関数で格納先を計算。平均O(1)。\n\n**再帰アルゴリズム**\n・終了条件（基底ケース）が必須\n・ハノイの塔：移動回数 = 2ⁿ - 1\n・フィボナッチ：F(n) = F(n-1) + F(n-2)",
+    difficulty: 4, importance: 5, isExamFrequent: true, status: "locked",
+    position: { x: 1750, y: 250 },
+  },
+  {
+    id: "fe-ds",
+    topicId: "fe",
+    title: "データ構造詳細",
+    description: "2分探索木・ヒープ・グラフ・ハッシュテーブル。ITPより深化。",
+    detail: "**2分探索木（BST）**\n左の子 < 親 < 右の子 の性質を保つ木。\n・中順走査（In-order）: 昇順でデータを出力\n・前順（Pre-order）: 根→左→右\n・後順（Post-order）: 左→右→根\n\n**ヒープ（Heap）**\n完全2分木で親が常に子より大きい(最大)/小さい(最小)。\n・最大要素の取得：O(1)\n・挿入・削除：O(log n)\n\n**グラフ探索**\n・BFS（幅優先探索）：キューを使用。最短経路に適する。\n・DFS（深さ優先探索）：スタックまたは再帰。連結成分の検出。\n\n**ハッシュテーブル**\n・チェイン法：同じハッシュ値の要素をリンクリストでつなぐ\n・オープンアドレス法：別のスロットを探索\n・平均探索時間：O(1)",
+    difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
+    position: { x: 2100, y: 250 },
+  },
+  {
+    id: "fe-cpu",
+    topicId: "fe",
+    title: "コンピュータ構成詳細",
+    description: "パイプライン・割り込み・DMA・TLB・スラッシング。",
+    detail: "**パイプライン処理**\n複数命令をフェッチ→デコード→実行→書き戻しの各段階で並列実行。\n・スループット向上：複数命令を同時処理\n・ハザード：データ依存・制御依存・構造ハザードが発生\n\n**キャッシュメモリ**\n・L1/L2/L3キャッシュ：CPU近傍順に高速・小容量\n・実効アクセス時間 = ヒット率×キャッシュ時間 + (1-ヒット率)×主記憶時間\n\n**割り込み（Interrupt）**\n・ハードウェア割り込み：外部デバイス（キーボード・タイマー）\n・ソフトウェア割り込み：例外・システムコール\n\n**DMA（Direct Memory Access）**\nCPUを介さずメモリとI/O装置が直接データ転送。\n・CPU負荷軽減・転送完了時に割り込みで通知\n\n**仮想記憶とページング**\n・TLB：ページテーブルのキャッシュ。アドレス変換を高速化\n・ページフォルト：アクセスしたページがRAMにない→スワップから読込\n・スラッシング：ページフォルト頻発でパフォーマンスが著しく低下",
+    difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
+    position: { x: 2450, y: 250 },
+  },
+  {
+    id: "fe-net",
+    topicId: "fe",
+    title: "ネットワーク詳細",
+    description: "OSI7層詳細・サブネット計算・VLAN・ルーティングプロトコル。",
+    detail: "**OSI参照モデル（7層）**\n第7層 応用層：HTTP・FTP・SMTP・DNS\n第6層 プレゼンテーション層：データ形式変換・暗号化\n第5層 セッション層：通信セッション管理\n第4層 トランスポート層：TCP・UDP・ポート番号・信頼性制御\n第3層 ネットワーク層：IP・ルーティング\n第2層 データリンク層：MACアドレス・フレーム・スイッチ\n第1層 物理層：ビット転送・ケーブル・ハブ\n\n**サブネット計算**\n・/24 = 255.255.255.0 → ホスト部8ビット → 254台使用可\n・ホスト数 = 2^(ホストビット数) - 2\n\n**ルーティングプロトコル**\n・RIP：ホップ数で経路選択。最大15ホップ。\n・OSPF：コストで経路選択。大規模NWに適す。\n・BGP：ISP間の経路交換。インターネットの基盤。\n\n**VLAN（仮想LAN）**\n物理的なLANを論理的に分割。セキュリティとブロードキャスト制御。\n802.1Q タグVLAN：スイッチ間でVLAN情報をタグで伝送",
+    difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
+    position: { x: 1750, y: 700 },
+  },
+  {
+    id: "fe-db",
+    topicId: "fe",
+    title: "データベース詳細",
+    description: "SQL応用・正規化手順・ロック制御・MVCC・B+木。",
+    detail: "**SQL応用**\n・サブクエリ：SELECT文の中にSELECT文を記述\n・HAVING句：GROUP BY後の集計結果に条件を付ける\n・UNION：複数SELECT結果を統合（重複除去）\n・UNION ALL：重複を含めて統合\n\n**正規化の手順**\n・第1NF：繰り返し項目を排除。1セルに1値。\n・第2NF：主キーの一部への部分関数従属を排除。\n・第3NF：推移的関数従属を排除。\n・BCNF：全ての決定子が候補キー。\n\n**ロック制御（並行制御）**\n・共有ロック（S）：READ操作。複数トランザクション同時保持可。\n・排他ロック（X）：WRITE操作。他のロックと競合。\n・デッドロック：T1がAをロックしBを待ち、T2がBをロックしAを待つ状態\n\n**MVCC（Multi-Version Concurrency Control）**\nデータ更新時に新バージョンを作成し読み取りは古いバージョンを参照。\nPostgreSQL・MySQLのInnoDBが採用。\n\n**インデックス**\n・B+木：葉ノードがリンクリストで連結。範囲検索に優れる。\n・ハッシュ：等値検索に最速。範囲検索不可。",
+    difficulty: 3, importance: 5, isExamFrequent: true, status: "locked",
+    position: { x: 2100, y: 700 },
+  },
+  {
+    id: "fe-sec",
+    topicId: "fe",
+    title: "セキュリティ詳細",
+    description: "PKI詳細・攻撃手法・AES/RSA/ECC・セキュリティ設計原則。",
+    detail: "**PKI（公開鍵基盤）の詳細**\n・CA（認証局）：電子証明書を発行する第三者機関\n・ルートCA：信頼の起点。OSやブラウザが事前に信頼リストに保持。\n・CRL：失効した証明書のシリアル番号リスト\n・OCSP：リアルタイムで証明書の失効状態を確認するプロトコル\n\n**主要な攻撃手法**\n・SQLインジェクション：対策＝プリペアドステートメント\n・XSS：対策＝エスケープ処理\n・CSRF：対策＝CSRFトークン\n・ディレクトリトラバーサル：対策＝パス検証\n・バッファオーバーフロー：対策＝入力長チェック\n\n**暗号化アルゴリズム**\n・AES：共通鍵暗号。128/192/256ビット鍵。\n・RSA：公開鍵暗号。大きな素数の積の因数分解困難性に基づく。\n・ECC（楕円曲線暗号）：RSAより短い鍵長で同等の安全性。\n・SHA-256/SHA-3：ハッシュ関数。256ビットのダイジェスト値。\n\n**セキュリティ設計原則**\n・最小権限の原則：必要最小限の権限のみ付与\n・多層防御（Defense in Depth）：複数の防御層を設ける\n・フェイルセーフ：障害時に安全側に倒す設計",
+    difficulty: 4, importance: 5, isExamFrequent: true, status: "locked",
+    position: { x: 2450, y: 700 },
+  },
+  {
+    id: "fe-design",
+    topicId: "fe",
+    title: "ソフトウェア設計",
+    description: "UML・デザインパターン（GoF）・SOLID原則・オブジェクト指向。",
+    detail: "**UML図の種類**\n構造図（静的）：クラス図・コンポーネント図・配置図\n振る舞い図（動的）：シーケンス図・ユースケース図・アクティビティ図・状態機械図\n\n**オブジェクト指向の3大原則**\n・カプセル化：データと操作を1クラスに封じ外部からのアクセスを制御\n・継承：親クラスの属性・操作を子クラスが引き継ぐ\n・ポリモーフィズム：同じメッセージに対して異なるクラスが異なる振る舞いをする\n\n**SOLID原則**\n・S：単一責任の原則（1クラス1責任）\n・O：開放閉鎖の原則（拡張に開いて修正に閉じる）\n・L：リスコフの置換原則\n・I：インタフェース分離の原則\n・D：依存性逆転の原則\n\n**主要デザインパターン（GoF）**\n・Singleton：インスタンスを1つに制限\n・Adapter：インタフェースを変換して互換性を持たせる\n・Observer：状態変化を他のオブジェクトに通知\n・Strategy：アルゴリズムを差し替え可能にする",
+    difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
+    position: { x: 1750, y: 1150 },
+  },
+  {
+    id: "fe-test",
+    topicId: "fe",
+    title: "テスト技法・品質管理",
+    description: "ブラックボックス/ホワイトボックステスト・境界値分析・回帰テスト。",
+    detail: "**ブラックボックステスト技法**\n内部構造を考慮せず仕様書から入出力を検証。\n・同値分割法：入力を「有効クラス」「無効クラス」に分類し代表値でテスト\n・境界値分析：クラスの境界上の値（直前・ちょうど・直後）でテスト\n  例：有効範囲1〜120 → 0, 1, 120, 121 をテスト\n・デシジョンテーブル：複数条件の組み合わせを表で網羅\n\n**ホワイトボックステスト技法**\n内部ロジック（コード）を検証。\n・命令網羅（C0）：全命令を1回以上実行。最も基本。\n・分岐網羅（C1）：全分岐（true/false）を1回以上通過。\n\n**テストの種類と順序**\n・単体テスト → 結合テスト → システムテスト → 受入テスト（UAT）\n・トップダウン結合：スタブ（仮下位モジュール）を使用\n・ボトムアップ結合：ドライバ（仮上位モジュール）を使用\n\n**回帰テスト（リグレッションテスト）**\n修正後に既存機能が壊れていないかを確認。CI/CDで自動化が一般的。",
+    difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
+    position: { x: 2100, y: 1150 },
+  },
+  {
+    id: "fe-prog",
+    topicId: "fe",
+    title: "プログラミング基礎",
+    description: "FE試験の擬似言語・再帰・オーバーライド・スコープ。",
+    detail: "**FE試験の擬似言語**\n・if（条件）→ 分岐\n・while（条件）→ 繰り返し\n・for（変数：開始 to 終了）→ 繰り返し\n・配列：a[i] のように表記\n\n**再帰アルゴリズムの読み方**\nfactorial(n) = n × factorial(n-1)、factorial(0) = 1\nfactorial(5) = 5×4×3×2×1 = 120\n\n**オブジェクト指向**\n・クラス：オブジェクトの設計図（属性＋メソッド）\n・コンストラクタ：インスタンス生成時に呼ばれる特殊メソッド\n・オーバーライド：継承したメソッドを子クラスで再定義\n・オーバーロード：同名メソッドを引数の型・数で区別\n\n**プログラミングパラダイム**\n・手続き型：処理を順番に記述（C言語等）\n・オブジェクト指向：データと操作をクラスにまとめる（Java・Python等）\n・関数型：副作用のない純粋関数で処理（Haskell・Scala等）\n\n**変数のスコープ**\n・局所変数（ローカル変数）：関数内で宣言。関数が終わると消える。\n・大域変数（グローバル変数）：プログラム全体でアクセス可。多用は危険。",
+    difficulty: 4, importance: 5, isExamFrequent: true, status: "locked",
+    position: { x: 2450, y: 1150 },
+  },
+
   // ── マネジメント系 ARM (-35°) : プロジェクト管理 → システム開発 → サービス管理 ──
   {
     id: "pj-mgmt",
@@ -429,6 +516,27 @@ export const connections: Connection[] = [
   { fromNodeId: "sys-dev",      toNodeId: "process",       relationType: "related" },
   { fromNodeId: "service-mgmt", toNodeId: "cloud",         relationType: "related" },
   { fromNodeId: "marketing",    toNodeId: "ai-ml",         relationType: "related" },
+
+  // ── ITP → FE 横断接続（クラスタ間ブリッジ）──
+  { fromNodeId: "sort",           toNodeId: "fe-algo",    relationType: "related" },
+  { fromNodeId: "data-structure", toNodeId: "fe-ds",      relationType: "related" },
+  { fromNodeId: "cpu-basic",      toNodeId: "fe-cpu",     relationType: "related" },
+  { fromNodeId: "tcp-ip",         toNodeId: "fe-net",     relationType: "related" },
+  { fromNodeId: "rdbms",          toNodeId: "fe-db",      relationType: "related" },
+  { fromNodeId: "encryption",     toNodeId: "fe-sec",     relationType: "related" },
+  { fromNodeId: "sys-dev",        toNodeId: "fe-design",  relationType: "related" },
+  { fromNodeId: "sys-dev",        toNodeId: "fe-test",    relationType: "related" },
+  { fromNodeId: "logic",          toNodeId: "fe-prog",    relationType: "related" },
+
+  // ── FE 内部接続 ──
+  { fromNodeId: "fe-algo",   toNodeId: "fe-ds",     relationType: "related" },
+  { fromNodeId: "fe-algo",   toNodeId: "fe-prog",   relationType: "related" },
+  { fromNodeId: "fe-ds",     toNodeId: "fe-cpu",    relationType: "related" },
+  { fromNodeId: "fe-cpu",    toNodeId: "fe-net",    relationType: "related" },
+  { fromNodeId: "fe-net",    toNodeId: "fe-db",     relationType: "related" },
+  { fromNodeId: "fe-db",     toNodeId: "fe-sec",    relationType: "related" },
+  { fromNodeId: "fe-design", toNodeId: "fe-test",   relationType: "related" },
+  { fromNodeId: "fe-test",   toNodeId: "fe-prog",   relationType: "related" },
 ];
 
 // ─────────────────────────────────────────────────────────
