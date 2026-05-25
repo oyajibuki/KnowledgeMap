@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -15,26 +15,30 @@ interface FEQuestion {
   exp: string;
 }
 
-interface FETopic {
+interface FENode {
   id: string;
   icon: string;
-  name: string;
+  title: string;
   sub: string;
-  color: string;
   detail: string;
   questions: FEQuestion[];
+  isExamFrequent: boolean;
+  difficulty: number;
 }
 
+type NodeStatus = "default" | "viewed" | "mastered";
+
 /* ─────────────────────────────────────────
-   学習コンテンツ定義
+   ノードデータ
 ───────────────────────────────────────── */
-const FE_TOPICS: FETopic[] = [
+const FE_NODES: FENode[] = [
   {
     id: "algorithm",
     icon: "🔢",
-    name: "アルゴリズムと計算量",
+    title: "アルゴリズムと計算量",
     sub: "O記法・整列・探索・再帰",
-    color: "#818cf8",
+    isExamFrequent: true,
+    difficulty: 4,
     detail: `**計算量（O記法）**
 アルゴリズムの効率を入力サイズ n の関数で評価します。
 ・O(1) — 定数時間：配列のインデックスアクセス
@@ -79,7 +83,7 @@ const FE_TOPICS: FETopic[] = [
       },
       {
         id: "fe-alg3",
-        q: "n=1から始まり、1ステップごとに2倍するアルゴリズムが終了するまでの計算量はどれか。n個の要素を処理する場合。",
+        q: "n=1から始まり、1ステップごとに2倍するアルゴリズムが終了するまでの計算量はどれか。",
         choices: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
         answer: 1,
         exp: "2倍ずつ増えるステップ数はlog₂(n)回。このパターンはO(log n)。2分探索も同様に毎回半分に絞るためO(log n)となる。",
@@ -96,9 +100,10 @@ const FE_TOPICS: FETopic[] = [
   {
     id: "data-structure",
     icon: "🌳",
-    name: "データ構造詳細",
+    title: "データ構造詳細",
     sub: "木・グラフ・ヒープ・ハッシュ",
-    color: "#34d399",
+    isExamFrequent: true,
+    difficulty: 4,
     detail: `**木構造（Tree）**
 ・根（Root）：最上位ノード
 ・葉（Leaf）：子を持たないノード
@@ -113,7 +118,7 @@ const FE_TOPICS: FETopic[] = [
 
 **木の走査**
 ・前順（Pre-order）：根→左→右
-・中順（In-order）：左→根→右（BST では昇順）
+・中順（In-order）：左→根→右（BSTでは昇順）
 ・後順（Post-order）：左→右→根
 
 **ヒープ（Heap）**
@@ -125,16 +130,14 @@ const FE_TOPICS: FETopic[] = [
 **グラフ（Graph）**
 ・有向グラフ：エッジに向きがある
 ・無向グラフ：向きなし
-・重み付きグラフ：エッジに重みがある
-・隣接行列：O(V²) の空間、エッジの有無確認 O(1)
-・隣接リスト：O(V+E) の空間
+・隣接行列：O(V²)の空間、エッジ確認O(1)
+・隣接リスト：O(V+E)の空間
 
 **グラフ探索**
 ・BFS（幅優先探索）：キューを使用。最短経路に適する。
-・DFS（深さ優先探索）：スタックまたは再帰を使用。連結成分の検出に適する。
+・DFS（深さ優先探索）：スタックまたは再帰。連結成分の検出に適する。
 
 **ハッシュテーブル**
-キーをハッシュ関数で変換しインデックスに対応させる。
 ・衝突解決：チェイン法（リンクリスト）、オープンアドレス法（線形探索）
 ・平均探索時間：O(1)`,
     questions: [
@@ -181,28 +184,26 @@ const FE_TOPICS: FETopic[] = [
   {
     id: "computer",
     icon: "💻",
-    name: "コンピュータ構成",
+    title: "コンピュータ構成",
     sub: "パイプライン・割り込み・DMA・キャッシュ",
-    color: "#60a5fa",
+    isExamFrequent: true,
+    difficulty: 3,
     detail: `**パイプライン処理**
 複数の命令を並列に実行する技術。各命令を段階（フェッチ→デコード→実行→書き戻し）に分割し、異なる命令が同時に異なる段階を実行する。
 ・スループット向上：複数命令を同時処理
 ・ハザード：データ依存・制御依存・構造ハザードが発生する場合がある
-・パイプライン深度：段数が多いほど高スループットだが、ハザード時のペナルティも大きい
 
 **キャッシュメモリ**
 ・L1キャッシュ：CPU最近傍。最高速。数KB〜数十KB。
 ・L2キャッシュ：L1より大容量・低速。数百KB。
 ・L3キャッシュ：複数コアで共有。数MB〜数十MB。
-・ヒット率：アクセスのうちキャッシュから取得できた割合
 ・実効アクセス時間 = ヒット率 × キャッシュ時間 + (1-ヒット率) × 主記憶時間
 
 **割り込み（Interrupt）**
-CPU の通常処理を中断し、優先度の高い処理を行う仕組み。
+CPUの通常処理を中断し、優先度の高い処理を行う仕組み。
 ・ハードウェア割り込み：外部デバイス（キーボード・タイマー等）
 ・ソフトウェア割り込み：例外・システムコール
 ・割り込みハンドラ（ISR）：割り込み時に実行されるルーティン
-・多重割り込み：割り込み中に別の割り込みを受け付ける
 
 **DMA（Direct Memory Access）**
 CPUを介さずにメモリと入出力装置が直接データ転送する仕組み。
@@ -213,7 +214,7 @@ CPUを介さずにメモリと入出力装置が直接データ転送する仕�
 **仮想記憶とページング**
 ・ページング：仮想アドレスを固定サイズのページに分割
 ・TLB（Translation Lookaside Buffer）：ページテーブルのキャッシュ
-・ページフォルト：アクセスしたページがRAMにない場合に発生→スワップから読み込み
+・ページフォルト：アクセスしたページがRAMにない場合に発生
 ・スラッシング：ページフォルトが頻発しパフォーマンスが著しく低下する状態`,
     questions: [
       {
@@ -264,9 +265,10 @@ CPUを介さずにメモリと入出力装置が直接データ転送する仕�
   {
     id: "network",
     icon: "🌐",
-    name: "ネットワーク詳細",
+    title: "ネットワーク詳細",
     sub: "OSI参照モデル・サブネット・ルーティング",
-    color: "#38bdf8",
+    isExamFrequent: true,
+    difficulty: 3,
     detail: `**OSI参照モデル（7層）**
 第7層（応用層）：HTTP・FTP・SMTP・DNS
 第6層（プレゼンテーション層）：データ形式変換・暗号化
@@ -283,18 +285,18 @@ CPUを介さずにメモリと入出力装置が直接データ転送する仕�
 ・ホスト数 = 2^(ホストビット数) - 2（ネットワークアドレスとブロードキャスト除く）
 
 **ルーティングプロトコル**
-・RIP（Routing Information Protocol）：ホップ数で経路選択。最大15ホップ。
-・OSPF（Open Shortest Path First）：コストで経路選択。大規模NWに適す。
-・BGP（Border Gateway Protocol）：ISP間の経路交換。インターネットの基盤。
+・RIP：ホップ数で経路選択。最大15ホップ。
+・OSPF：コストで経路選択。大規模NWに適す。
+・BGP：ISP間の経路交換。インターネットの基盤。
 
 **VLANと無線LAN**
-・VLAN（仮想LAN）：物理的なLANを論理的に分割。セキュリティとブロードキャスト域制御。
+・VLAN：物理的なLANを論理的に分割。セキュリティとブロードキャスト域制御。
 ・タグVLAN（802.1Q）：スイッチ間でVLAN情報をタグで伝送
 ・SSID：無線LANのネットワーク識別子
 ・WPA3：現在最も安全な無線LAN認証規格
 
 **QoSとフロー制御**
-・QoS（Quality of Service）：優先トラフィックを保証する仕組み
+・QoS：優先トラフィックを保証する仕組み
 ・TCPのフロー制御：スライディングウィンドウ方式
 ・輻輳制御：ネットワーク混雑を防ぐTCP制御機能`,
     questions: [
@@ -346,13 +348,13 @@ CPUを介さずにメモリと入出力装置が直接データ転送する仕�
   {
     id: "database",
     icon: "🗄️",
-    name: "データベース詳細",
-    sub: "SQL高度・正規化手順・並行制御",
-    color: "#f59e0b",
+    title: "データベース詳細",
+    sub: "SQL応用・正規化・並行制御",
+    isExamFrequent: true,
+    difficulty: 3,
     detail: `**SQL応用**
 ・サブクエリ：SELECT文の中にSELECT文を記述
   例：SELECT * FROM emp WHERE sal > (SELECT AVG(sal) FROM emp);
-・相関サブクエリ：外側クエリの行を参照するサブクエリ
 ・HAVING句：GROUP BY後の集計結果に条件を付ける
   例：SELECT dept, COUNT(*) FROM emp GROUP BY dept HAVING COUNT(*) > 5;
 ・UNION：複数SELECT結果を統合（重複除去）
@@ -360,7 +362,7 @@ CPUを介さずにメモリと入出力装置が直接データ転送する仕�
 
 **正規化の手順**
 ・第1正規形（1NF）：繰り返し項目を排除。1セルに1値。
-・第2正規形（2NF）：主キーの一部への部分関数従属を排除。複合キーの全体に従属させる。
+・第2正規形（2NF）：主キーの一部への部分関数従属を排除。
 ・第3正規形（3NF）：推移的関数従属を排除。非キー属性から別の非キー属性への依存を除去。
 ・ボイス-コッド正規形（BCNF）：全ての決定子が候補キー。
 
@@ -432,14 +434,14 @@ PostgreSQL・MySQLのInnoDBが採用。読み取りがブロックされない�
   {
     id: "security",
     icon: "🔐",
-    name: "セキュリティ詳細",
+    title: "セキュリティ詳細",
     sub: "PKI・攻撃手法・セキュリティ設計",
-    color: "#ef4444",
+    isExamFrequent: true,
+    difficulty: 4,
     detail: `**PKI（公開鍵基盤）の詳細**
 ・CA（Certificate Authority/認証局）：電子証明書を発行する第三者機関
 ・ルートCA：信頼の起点。OSやブラウザが事前に信頼リストに保持。
 ・中間CA：ルートCAから委任を受け証明書を発行
-・証明書の検証：証明書チェーンを辿りルートCAまで検証
 ・CRL（Certificate Revocation List）：失効した証明書のリスト
 ・OCSP：リアルタイムで証明書の失効状態を確認するプロトコル
 
@@ -452,7 +454,7 @@ PostgreSQL・MySQLのInnoDBが採用。読み取りがブロックされない�
 ・中間者攻撃（MITM）：通信を傍受・改ざん。対策：TLS/HTTPS。
 
 **暗号化アルゴリズム**
-・AES（Advanced Encryption Standard）：共通鍵暗号。128/192/256ビット鍵。
+・AES：共通鍵暗号。128/192/256ビット鍵。
 ・RSA：公開鍵暗号。大きな素数の積の因数分解困難性に基づく。
 ・楕円曲線暗号（ECC）：RSAより短い鍵長で同等の安全性。
 ・SHA-256/SHA-3：ハッシュ関数。256ビットのダイジェスト値を生成。
@@ -516,9 +518,10 @@ PostgreSQL・MySQLのInnoDBが採用。読み取りがブロックされない�
   {
     id: "software-design",
     icon: "📐",
-    name: "ソフトウェア設計",
-    sub: "UML・デザインパターン・設計原則",
-    color: "#a78bfa",
+    title: "ソフトウェア設計",
+    sub: "UML・デザインパターン・SOLID",
+    isExamFrequent: false,
+    difficulty: 3,
     detail: `**UML図の種類**
 構造図（静的）：
 ・クラス図：クラス・属性・操作・関係を表す。最も重要。
@@ -529,7 +532,7 @@ PostgreSQL・MySQLのInnoDBが採用。読み取りがブロックされない�
 ・シーケンス図：オブジェクト間の時系列メッセージ交換
 ・ユースケース図：システムとアクター間の機能関係
 ・アクティビティ図：処理フロー（フローチャートに類似）
-・状態機械図（ステートマシン図）：オブジェクトの状態遷移
+・状態機械図：オブジェクトの状態遷移
 
 **オブジェクト指向の3大原則**
 ・カプセル化：データと操作を1つのクラスに封じ、外部からのアクセスを制御
@@ -609,9 +612,10 @@ PostgreSQL・MySQLのInnoDBが採用。読み取りがブロックされない�
   {
     id: "testing",
     icon: "🧪",
-    name: "テスト技法・品質管理",
+    title: "テスト技法・品質管理",
     sub: "ホワイト/ブラックボックス・品質指標",
-    color: "#fb7185",
+    isExamFrequent: true,
+    difficulty: 3,
     detail: `**ブラックボックステスト技法**
 内部構造を考慮せず、仕様書に基づいて入出力の観点からテストを設計する。
 ・同値分割法：入力を「有効クラス」「無効クラス」に分類し各代表値でテスト
@@ -626,7 +630,6 @@ PostgreSQL・MySQLのInnoDBが採用。読み取りがブロックされない�
 ・命令網羅（C0）：全命令を1回以上実行。最も基本。
 ・分岐網羅（C1）：全分岐（true/false）を1回以上通過。
 ・条件網羅（C2）：全条件の真偽を1回以上テスト。
-・複合条件網羅（MC/DC）：安全クリティカルシステム向け。
 
 **テストの種類と順序**
 ・単体テスト（Unit Test）：個々のモジュールを独立してテスト
@@ -672,12 +675,7 @@ PostgreSQL・MySQLのInnoDBが採用。読み取りがブロックされない�
       {
         id: "fe-tst3",
         q: "結合テストのボトムアップテストで使用するテスト用コンポーネントはどれか。",
-        choices: [
-          "スタブ（Stub）",
-          "ドライバ（Driver）",
-          "モック（Mock）",
-          "フィクスチャ（Fixture）",
-        ],
+        choices: ["スタブ（Stub）", "ドライバ（Driver）", "モック（Mock）", "フィクスチャ（Fixture）"],
         answer: 1,
         exp: "ボトムアップテストは下位モジュールから順にテストするため、未完成の上位モジュールの代わりに「ドライバ（テスト用の上位モジュール）」を使用する。トップダウンでは「スタブ（仮の下位モジュール）」を使用。",
       },
@@ -698,9 +696,10 @@ PostgreSQL・MySQLのInnoDBが採用。読み取りがブロックされない�
   {
     id: "programming",
     icon: "⚙️",
-    name: "プログラミング基礎",
+    title: "プログラミング基礎",
     sub: "擬似言語・再帰・オブジェクト指向",
-    color: "#10b981",
+    isExamFrequent: true,
+    difficulty: 4,
     detail: `**FE試験の擬似言語**
 基本情報技術者試験では独自の擬似言語を使ってアルゴリズム問題を出題します。
 
@@ -768,16 +767,32 @@ factorial(3) = 3 × factorial(2) = 3 × 2 × factorial(1) = 3 × 2 × 1 = 6
   },
 ];
 
+const LS_KEY = "knowledge-map-fe";
+
+/* ─────────────────────────────────────────
+   useIsMobile
+───────────────────────────────────────── */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 /* ─────────────────────────────────────────
    クイズコンポーネント
 ───────────────────────────────────────── */
-function QuizPanel({ questions, color }: { questions: FEQuestion[]; color: string }) {
+function FEQuiz({ node, onBack }: { node: FENode; onBack: () => void }) {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
 
-  const q = questions[current];
+  const q = node.questions[current];
 
   const handleSelect = (idx: number) => {
     if (selected !== null) return;
@@ -786,7 +801,7 @@ function QuizPanel({ questions, color }: { questions: FEQuestion[]; color: strin
   };
 
   const handleNext = () => {
-    if (current + 1 >= questions.length) {
+    if (current + 1 >= node.questions.length) {
       setFinished(true);
     } else {
       setCurrent((c) => c + 1);
@@ -802,7 +817,7 @@ function QuizPanel({ questions, color }: { questions: FEQuestion[]; color: strin
   };
 
   if (finished) {
-    const pct = Math.round((score / questions.length) * 100);
+    const pct = Math.round((score / node.questions.length) * 100);
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -812,53 +827,83 @@ function QuizPanel({ questions, color }: { questions: FEQuestion[]; color: strin
         <div style={{ fontSize: "48px", marginBottom: "12px" }}>
           {pct >= 80 ? "🏆" : pct >= 60 ? "⭐" : "📚"}
         </div>
-        <p style={{ fontSize: "28px", fontWeight: "900", color, marginBottom: "4px" }}>
-          {score}/{questions.length}
+        <p style={{ fontSize: "28px", fontWeight: "900", color: "#818cf8", marginBottom: "4px" }}>
+          {score}/{node.questions.length}
         </p>
         <p style={{ color: "#94a3b8", fontSize: "13px", marginBottom: "20px" }}>
           {pct >= 80 ? "完璧！" : pct >= 60 ? "良い調子！" : "もう一度復習しよう"}
         </p>
-        <button
-          onClick={handleReset}
-          style={{
-            padding: "10px 24px",
-            borderRadius: "12px",
-            background: `${color}22`,
-            border: `1px solid ${color}66`,
-            color,
-            fontWeight: "700",
-            fontSize: "13px",
-            cursor: "pointer",
-          }}
-        >
-          もう一度チャレンジ
-        </button>
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <button
+            onClick={handleReset}
+            style={{
+              padding: "10px 24px",
+              borderRadius: "12px",
+              background: "rgba(129,140,248,0.15)",
+              border: "1px solid rgba(129,140,248,0.3)",
+              color: "#818cf8",
+              fontWeight: "700",
+              fontSize: "13px",
+              cursor: "pointer",
+            }}
+          >
+            もう一度チャレンジ
+          </button>
+          <button
+            onClick={onBack}
+            style={{
+              padding: "10px 24px",
+              borderRadius: "12px",
+              background: "transparent",
+              border: "1px solid #1e293b",
+              color: "#64748b",
+              fontWeight: "600",
+              fontSize: "13px",
+              cursor: "pointer",
+            }}
+          >
+            ← 解説に戻る
+          </button>
+        </div>
       </motion.div>
     );
   }
 
   return (
     <div>
-      {/* 進捗バー */}
+      {/* 進捗ドット */}
       <div style={{ display: "flex", gap: "4px", marginBottom: "16px" }}>
-        {questions.map((_, i) => (
+        {node.questions.map((_, i) => (
           <div
             key={i}
             style={{
               flex: 1,
               height: "3px",
               borderRadius: "2px",
-              background: i < current ? color : i === current ? `${color}88` : "#1e293b",
+              background:
+                i < current
+                  ? "#818cf8"
+                  : i === current
+                  ? "rgba(129,140,248,0.5)"
+                  : "#1e293b",
             }}
           />
         ))}
       </div>
 
       <p style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>
-        問 {current + 1} / {questions.length}
+        問 {current + 1} / {node.questions.length}
       </p>
 
-      <p style={{ color: "#e2e8f0", fontSize: "14px", lineHeight: 1.7, marginBottom: "16px", fontWeight: "600" }}>
+      <p
+        style={{
+          color: "#e2e8f0",
+          fontSize: "14px",
+          lineHeight: 1.7,
+          marginBottom: "16px",
+          fontWeight: "600",
+        }}
+      >
         {q.q}
       </p>
 
@@ -878,10 +923,6 @@ function QuizPanel({ questions, color }: { questions: FEQuestion[]; color: strin
               border = "rgba(239,68,68,0.4)";
               textColor = "#f87171";
             }
-          } else if (idx === selected) {
-            bg = `${color}22`;
-            border = `${color}66`;
-            textColor = color;
           }
 
           return (
@@ -919,7 +960,9 @@ function QuizPanel({ questions, color }: { questions: FEQuestion[]; color: strin
           }}
         >
           <p style={{ fontSize: "11px", color: "#64748b", marginBottom: "4px" }}>💡 解説</p>
-          <p style={{ color: "#94a3b8", fontSize: "12px", lineHeight: 1.6 }}>{q.exp}</p>
+          <p style={{ color: "#94a3b8", fontSize: "12px", lineHeight: 1.6 }}>
+            {q.exp}
+          </p>
         </motion.div>
       )}
 
@@ -931,7 +974,7 @@ function QuizPanel({ questions, color }: { questions: FEQuestion[]; color: strin
             width: "100%",
             padding: "12px",
             borderRadius: "12px",
-            background: color,
+            background: "linear-gradient(135deg, #4f46e5, #818cf8)",
             border: "none",
             color: "#fff",
             fontWeight: "700",
@@ -939,7 +982,7 @@ function QuizPanel({ questions, color }: { questions: FEQuestion[]; color: strin
             cursor: "pointer",
           }}
         >
-          {current + 1 >= questions.length ? "結果を見る →" : "次の問題 →"}
+          {current + 1 >= node.questions.length ? "結果を見る →" : "次の問題 →"}
         </button>
       )}
     </div>
@@ -947,186 +990,419 @@ function QuizPanel({ questions, color }: { questions: FEQuestion[]; color: strin
 }
 
 /* ─────────────────────────────────────────
-   トピックカード
+   ノード詳細パネル（NodeDetail と同じ構造）
 ───────────────────────────────────────── */
-function TopicCard({
-  topic,
-  masteredTopics,
-  onToggleMastered,
+function FENodeDetail({
+  node,
+  status,
+  isMobile,
+  onClose,
+  onMastered,
 }: {
-  topic: FETopic;
-  masteredTopics: Set<string>;
-  onToggleMastered: (id: string) => void;
+  node: FENode;
+  status: NodeStatus;
+  isMobile: boolean;
+  onClose: () => void;
+  onMastered: () => void;
 }) {
-  const [expanded, setExpanded] = useState(false);
-  const [mode, setMode] = useState<"detail" | "quiz">("detail");
-  const isMastered = masteredTopics.has(topic.id);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const isMastered = status === "mastered";
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      style={{
-        borderRadius: "18px",
-        background: "rgba(15,23,42,0.7)",
-        border: `1px solid ${expanded ? topic.color + "44" : "#1e293b"}`,
-        overflow: "hidden",
-        transition: "border-color 0.2s",
-      }}
-    >
-      {/* ヘッダー */}
-      <div
-        onClick={() => setExpanded((e) => !e)}
-        style={{
-          padding: "18px 20px",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          gap: "14px",
-        }}
+    <>
+      {/* モバイル用: 背景オーバーレイ */}
+      {isMobile && (
+        <motion.div
+          key="fe-backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 40,
+            background: "rgba(0,0,0,0.55)",
+            backdropFilter: "blur(2px)",
+          }}
+          onClick={onClose}
+        />
+      )}
+
+      <motion.div
+        key={node.id}
+        initial={isMobile ? { y: "100%" } : { x: 400, opacity: 0 }}
+        animate={isMobile ? { y: 0 } : { x: 0, opacity: 1 }}
+        exit={isMobile ? { y: "100%" } : { x: 400, opacity: 0 }}
+        transition={{ type: "spring", damping: 28, stiffness: 280 }}
+        style={
+          isMobile
+            ? {
+                position: "fixed",
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 50,
+                display: "flex",
+                flexDirection: "column",
+                borderRadius: "20px 20px 0 0",
+                overflow: "hidden",
+                background: "linear-gradient(180deg, #0f172a 0%, #0a0f1e 100%)",
+                borderTop: "1px solid #334155",
+                height: "82vh",
+                maxHeight: "82vh",
+                boxShadow: "0 -12px 40px rgba(0,0,0,0.7)",
+              }
+            : {
+                position: "fixed",
+                right: 0,
+                top: 0,
+                height: "100%",
+                width: "100%",
+                maxWidth: "448px",
+                zIndex: 50,
+                display: "flex",
+                flexDirection: "column",
+                background: "linear-gradient(180deg, #0f172a 0%, #0a0f1e 100%)",
+                borderLeft: "1px solid #1e293b",
+                boxShadow: "-8px 0 32px rgba(0,0,0,0.6)",
+              }
+        }
       >
+        {/* モバイル: ドラッグハンドル */}
+        {isMobile && (
+          <div style={{ display: "flex", justifyContent: "center", paddingTop: "12px", paddingBottom: "4px", flexShrink: 0 }}>
+            <div style={{ width: "40px", height: "4px", borderRadius: "2px", background: "#334155" }} />
+          </div>
+        )}
+
+        {/* ヘッダー */}
         <div
           style={{
-            width: "44px",
-            height: "44px",
-            borderRadius: "12px",
-            background: `${topic.color}18`,
-            border: `1px solid ${topic.color}33`,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "22px",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            padding: "20px 24px 16px",
+            borderBottom: "1px solid #1e293b",
             flexShrink: 0,
           }}
         >
-          {topic.icon}
-        </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ color: "#e2e8f0", fontWeight: "700", fontSize: "15px", marginBottom: "2px" }}>
-            {topic.name}
-          </p>
-          <p style={{ color: "#475569", fontSize: "12px" }}>{topic.sub}</p>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-          {isMastered && (
-            <span style={{ fontSize: "16px" }}>⭐</span>
-          )}
-          <div
-            style={{
-              color: "#475569",
-              fontSize: "18px",
-              transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.2s",
-            }}
-          >
-            ▼
-          </div>
-        </div>
-      </div>
-
-      {/* 展開コンテンツ */}
-      <AnimatePresence>
-        {expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            style={{ overflow: "hidden" }}
-          >
-            <div
-              style={{
-                borderTop: `1px solid ${topic.color}22`,
-                padding: "20px",
-              }}
-            >
-              {/* タブ切り替え */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "8px",
-                  marginBottom: "20px",
-                }}
-              >
-                {(["detail", "quiz"] as const).map((m) => (
-                  <button
-                    key={m}
-                    onClick={() => setMode(m)}
-                    style={{
-                      padding: "7px 18px",
-                      borderRadius: "20px",
-                      background: mode === m ? topic.color : "transparent",
-                      border: `1px solid ${mode === m ? topic.color : "#334155"}`,
-                      color: mode === m ? "#fff" : "#64748b",
-                      fontSize: "12px",
-                      fontWeight: "700",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {m === "detail" ? "📖 解説" : "✏️ 演習"}
-                  </button>
-                ))}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onToggleMastered(topic.id);
-                  }}
+          <div style={{ flex: 1, paddingRight: "16px", minWidth: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px", flexWrap: "wrap" }}>
+              {node.isExamFrequent && (
+                <span
                   style={{
-                    marginLeft: "auto",
-                    padding: "7px 14px",
-                    borderRadius: "20px",
-                    background: isMastered ? "rgba(251,191,36,0.15)" : "transparent",
-                    border: `1px solid ${isMastered ? "rgba(251,191,36,0.4)" : "#334155"}`,
-                    color: isMastered ? "#fbbf24" : "#64748b",
                     fontSize: "11px",
+                    padding: "2px 8px",
+                    borderRadius: "20px",
                     fontWeight: "700",
-                    cursor: "pointer",
+                    background: "rgba(251,191,36,0.15)",
+                    color: "#fbbf24",
+                    border: "1px solid #fbbf24",
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {isMastered ? "⭐ 習得済み" : "習得済みにする"}
-                </button>
-              </div>
+                  試験頻出
+                </span>
+              )}
+              <span
+                style={{
+                  fontSize: "11px",
+                  padding: "2px 8px",
+                  borderRadius: "20px",
+                  background: isMastered ? "rgba(124,58,237,0.2)" : "rgba(129,140,248,0.15)",
+                  color: isMastered ? "#a78bfa" : "#818cf8",
+                  border: `1px solid ${isMastered ? "#7c3aed" : "rgba(129,140,248,0.3)"}`,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {isMastered ? "⭐ 理解済み" : "👁 閲覧済み"}
+              </span>
+            </div>
+            <h2
+              style={{
+                fontSize: "18px",
+                fontWeight: "800",
+                color: "#f1f5f9",
+                marginBottom: "4px",
+                textShadow: isMastered ? "0 0 16px #a78bfa" : "0 0 8px #818cf8",
+              }}
+            >
+              {node.icon} {node.title}
+            </h2>
+            <p style={{ fontSize: "12px", color: "#64748b" }}>
+              難易度: {"★".repeat(node.difficulty)}{"☆".repeat(5 - node.difficulty)} | {node.sub}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              color: "#475569",
+              background: "none",
+              border: "none",
+              fontSize: "20px",
+              cursor: "pointer",
+              padding: "4px",
+              flexShrink: 0,
+              lineHeight: 1,
+            }}
+          >
+            ✕
+          </button>
+        </div>
 
-              {/* 詳細テキスト */}
-              {mode === "detail" && (
-                <div
+        {/* コンテンツ (スクロール可能) */}
+        <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px" }}>
+          {!showQuiz ? (
+            <>
+              {/* 詳細解説 */}
+              <div style={{ marginBottom: "20px" }}>
+                <h3
                   style={{
-                    color: "#94a3b8",
-                    fontSize: "13px",
-                    lineHeight: 1.8,
-                    whiteSpace: "pre-wrap",
+                    fontSize: "11px",
+                    fontWeight: "700",
+                    marginBottom: "12px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: "#4f46e5",
                   }}
                 >
-                  {topic.detail.split("\n").map((line, i) => {
+                  📖 詳細解説
+                </h3>
+                <div style={{ fontSize: "13px", lineHeight: 1.8, color: "#cbd5e1" }}>
+                  {node.detail.split("\n").map((line, i) => {
                     if (line.startsWith("**") && line.endsWith("**")) {
                       return (
-                        <p key={i} style={{ color: topic.color, fontWeight: "700", marginTop: "16px", marginBottom: "4px" }}>
+                        <p
+                          key={i}
+                          style={{
+                            color: "#818cf8",
+                            fontWeight: "700",
+                            marginTop: "16px",
+                            marginBottom: "4px",
+                          }}
+                        >
                           {line.replace(/\*\*/g, "")}
                         </p>
                       );
                     }
                     if (line.startsWith("・")) {
                       return (
-                        <p key={i} style={{ paddingLeft: "12px", marginBottom: "2px" }}>
+                        <p key={i} style={{ paddingLeft: "8px", marginBottom: "2px", color: "#94a3b8" }}>
                           {line}
                         </p>
                       );
                     }
-                    return line ? <p key={i} style={{ marginBottom: "2px" }}>{line}</p> : <br key={i} />;
+                    if (line.startsWith("  ")) {
+                      return (
+                        <p key={i} style={{ paddingLeft: "20px", marginBottom: "2px", color: "#64748b", fontSize: "12px" }}>
+                          {line}
+                        </p>
+                      );
+                    }
+                    return line ? (
+                      <p key={i} style={{ marginBottom: "2px", color: "#94a3b8" }}>
+                        {line}
+                      </p>
+                    ) : (
+                      <br key={i} />
+                    );
                   })}
                 </div>
-              )}
+              </div>
 
-              {/* クイズ */}
-              {mode === "quiz" && (
-                <QuizPanel questions={topic.questions} color={topic.color} />
-              )}
-            </div>
-          </motion.div>
+              {/* ボタン群 */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "20px" }}>
+                {node.questions.length > 0 && (
+                  <button
+                    onClick={() => setShowQuiz(true)}
+                    style={{
+                      width: "100%",
+                      padding: "14px",
+                      borderRadius: "14px",
+                      fontWeight: "700",
+                      fontSize: "15px",
+                      cursor: "pointer",
+                      background: "linear-gradient(135deg, #4f46e5, #818cf8)",
+                      color: "white",
+                      border: "none",
+                      boxShadow: "0 4px 24px rgba(79,70,229,0.4)",
+                    }}
+                  >
+                    ⚔️ 問題演習に挑戦 ({node.questions.length}問)
+                  </button>
+                )}
+
+                {!isMastered ? (
+                  <button
+                    onClick={onMastered}
+                    style={{
+                      width: "100%",
+                      padding: "14px",
+                      borderRadius: "14px",
+                      fontWeight: "700",
+                      fontSize: "15px",
+                      cursor: "pointer",
+                      background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+                      color: "white",
+                      border: "none",
+                      boxShadow: "0 4px 24px rgba(14,165,233,0.35)",
+                    }}
+                  >
+                    ✅ 理解した！次へ進む
+                  </button>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    style={{
+                      width: "100%",
+                      padding: "14px",
+                      borderRadius: "14px",
+                      textAlign: "center",
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      background: "rgba(124,58,237,0.1)",
+                      border: "1px solid #7c3aed",
+                      color: "#a78bfa",
+                    }}
+                  >
+                    ⭐ このノードは習得済みです
+                  </motion.div>
+                )}
+              </div>
+            </>
+          ) : (
+            <FEQuiz node={node} onBack={() => setShowQuiz(false)} />
+          )}
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────
+   スフィアノード（SphereNode と同じ見た目）
+───────────────────────────────────────── */
+function FESphereNode({
+  node,
+  status,
+  isSelected,
+  onClick,
+}: {
+  node: FENode;
+  status: NodeStatus;
+  isSelected: boolean;
+  onClick: () => void;
+}) {
+  const isMastered = status === "mastered";
+  const isViewed = status === "viewed";
+
+  const sphereBg = isMastered
+    ? "radial-gradient(circle at 35% 30%, #4c1d95, #7c3aed, #0f172a)"
+    : isViewed
+    ? "radial-gradient(circle at 35% 30%, #0d4f6e, #0c4a6e, #0f172a)"
+    : "radial-gradient(circle at 35% 30%, #1a2440, #0f172a)";
+
+  const sphereBorder = isMastered
+    ? "1.5px solid rgba(139,92,246,0.6)"
+    : isViewed
+    ? "1px solid rgba(6,182,212,0.5)"
+    : isSelected
+    ? "1.5px solid rgba(129,140,248,0.5)"
+    : "1px solid rgba(129,140,248,0.15)";
+
+  const sphereShadow = isMastered
+    ? "0 0 28px rgba(139,92,246,0.45)"
+    : isViewed
+    ? "0 0 24px rgba(6,182,212,0.35)"
+    : isSelected
+    ? "0 0 16px rgba(129,140,248,0.3)"
+    : "none";
+
+  const labelColor = isMastered ? "#a78bfa" : isViewed ? "#22d3ee" : "#64748b";
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "8px",
+        cursor: "pointer",
+      }}
+      onClick={onClick}
+    >
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.93 }}
+        style={{
+          width: "60px",
+          height: "60px",
+          borderRadius: "50%",
+          background: sphereBg,
+          border: sphereBorder,
+          boxShadow: sphereShadow,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+          overflow: "hidden",
+          transition: "box-shadow 0.3s",
+        }}
+      >
+        {/* 習得済みのとき回転リング */}
+        {isMastered && (
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            style={{
+              position: "absolute",
+              inset: "4px",
+              borderRadius: "50%",
+              border: "1px solid rgba(167,139,250,0.35)",
+            }}
+          />
         )}
-      </AnimatePresence>
-    </motion.div>
+        {/* 試験頻出のとき金リング */}
+        {node.isExamFrequent && !isMastered && (
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+            style={{
+              position: "absolute",
+              inset: "3px",
+              borderRadius: "50%",
+              border: "1px solid rgba(251,191,36,0.2)",
+            }}
+          />
+        )}
+        <span style={{ fontSize: "22px", position: "relative", zIndex: 1 }}>
+          {node.icon}
+        </span>
+      </motion.div>
+
+      {/* ラベル */}
+      <div style={{ textAlign: "center", maxWidth: "80px" }}>
+        <p
+          style={{
+            fontSize: "10px",
+            color: labelColor,
+            fontWeight: "600",
+            lineHeight: 1.3,
+            wordBreak: "break-all",
+          }}
+        >
+          {node.title.length > 10 ? node.title.slice(0, 10) + "…" : node.title}
+        </p>
+        {isMastered && (
+          <span style={{ fontSize: "9px", color: "#a78bfa" }}>⭐</span>
+        )}
+        {node.isExamFrequent && !isMastered && (
+          <span style={{ fontSize: "9px", color: "rgba(251,191,36,0.6)" }}>★</span>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -1134,52 +1410,105 @@ function TopicCard({
    メインページ
 ───────────────────────────────────────── */
 export default function FEPage() {
-  const [masteredTopics, setMasteredTopics] = useState<Set<string>>(new Set());
+  const [statuses, setStatuses] = useState<Record<string, NodeStatus>>({});
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
+  // localStorage から復元
   useEffect(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem("fe-mastered") || "[]");
-      setMasteredTopics(new Set(saved));
+      const saved = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+      setStatuses(saved);
     } catch {
       // ignore
     }
   }, []);
 
-  const toggleMastered = (id: string) => {
-    setMasteredTopics((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      localStorage.setItem("fe-mastered", JSON.stringify([...next]));
+  const updateStatus = useCallback((id: string, newStatus: NodeStatus) => {
+    setStatuses((prev) => {
+      // 既に mastered なら downgrade しない
+      if (prev[id] === "mastered" && newStatus === "viewed") return prev;
+      const next = { ...prev, [id]: newStatus };
+      localStorage.setItem(LS_KEY, JSON.stringify(next));
       return next;
     });
+  }, []);
+
+  const handleNodeClick = (node: FENode) => {
+    setSelectedId(node.id);
+    // 初めて開いたら viewed に
+    updateStatus(node.id, statuses[node.id] === "mastered" ? "mastered" : "viewed");
   };
 
-  const progress = Math.round((masteredTopics.size / FE_TOPICS.length) * 100);
+  const handleMastered = (id: string) => {
+    updateStatus(id, "mastered");
+  };
+
+  const masteredCount = FE_NODES.filter((n) => statuses[n.id] === "mastered").length;
+  const viewedCount = FE_NODES.filter((n) => statuses[n.id] !== "default" && statuses[n.id] !== undefined).length;
+  const progress = Math.round((masteredCount / FE_NODES.length) * 100);
+
+  const selectedNode = FE_NODES.find((n) => n.id === selectedId) ?? null;
+
+  // 3列グリッド用に行に分ける
+  const rows: FENode[][] = [];
+  for (let i = 0; i < FE_NODES.length; i += 3) {
+    rows.push(FE_NODES.slice(i, i + 3));
+  }
 
   return (
+    // globals.css で html/body が overflow:hidden のため
+    // このコンテナで height:100dvh + overflow-y:auto を設定してスクロールを自前で処理
     <div
       style={{
-        minHeight: "100dvh",
+        height: "100dvh",
+        overflowY: "auto",
+        overflowX: "hidden",
         background:
           "radial-gradient(ellipse 100% 80% at 50% 30%, #0d0b1e 0%, #060410 55%, #010108 100%)",
         color: "#e2e8f0",
         fontFamily: "system-ui, sans-serif",
+        position: "relative",
       }}
     >
-      {/* ヘッダー */}
+      {/* 背景パーティクル（星） */}
+      <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }}>
+        {[...Array(30)].map((_, i) => (
+          <motion.div
+            key={i}
+            animate={{ opacity: [0.2, 0.7, 0.2] }}
+            transition={{
+              duration: 2 + (i % 4),
+              delay: i * 0.15,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{
+              position: "absolute",
+              width: i % 5 === 0 ? "2px" : "1px",
+              height: i % 5 === 0 ? "2px" : "1px",
+              borderRadius: "50%",
+              background: i % 7 === 0 ? "#818cf8" : "#475569",
+              top: `${(i * 37 + 5) % 100}%`,
+              left: `${(i * 53 + 10) % 100}%`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* ─── ヘッダー ─── */}
       <div
         style={{
           position: "sticky",
           top: 0,
-          zIndex: 50,
-          background: "rgba(6,4,16,0.9)",
+          zIndex: 20,
+          background: "rgba(6,4,16,0.88)",
           backdropFilter: "blur(12px)",
           borderBottom: "1px solid #1e293b",
-          padding: "12px 20px",
+          padding: "10px 16px",
           display: "flex",
           alignItems: "center",
-          gap: "12px",
+          gap: "10px",
         }}
       >
         <Link
@@ -1192,56 +1521,66 @@ export default function FEPage() {
             display: "flex",
             alignItems: "center",
             gap: "4px",
+            flexShrink: 0,
           }}
         >
           🌌 マップ
         </Link>
         <span style={{ color: "#334155", fontSize: "12px" }}>/</span>
-        <span style={{ fontSize: "13px", color: "#818cf8", fontWeight: "700" }}>
+        <span style={{ fontSize: "13px", color: "#818cf8", fontWeight: "700", flexShrink: 0 }}>
           💻 基本情報技術者
         </span>
         <div style={{ flex: 1 }} />
-        {/* 進捗バー */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ fontSize: "12px", color: "#818cf8", fontWeight: "700" }}>
-            ⭐{masteredTopics.size}/{FE_TOPICS.length}
+
+        {/* 進捗表示 */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+          <span style={{ fontSize: "11px", color: "#818cf8", fontWeight: "700" }}>
+            ⭐{masteredCount}/{FE_NODES.length}
           </span>
           <div
             style={{
-              width: "80px",
+              width: "72px",
               height: "4px",
               borderRadius: "2px",
               background: "#1e293b",
               overflow: "hidden",
             }}
           >
-            <div
+            <motion.div
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.5 }}
               style={{
-                width: `${progress}%`,
                 height: "100%",
-                background: "linear-gradient(90deg, #818cf8, #c084fc)",
                 borderRadius: "2px",
-                transition: "width 0.4s",
+                background: "linear-gradient(90deg, #4f46e5, #818cf8)",
               }}
             />
           </div>
-          <span style={{ fontSize: "11px", color: "#818cf8" }}>{progress}%</span>
+          <span style={{ fontSize: "10px", color: "#475569" }}>{progress}%</span>
         </div>
       </div>
 
-      {/* メインコンテンツ */}
-      <div style={{ maxWidth: "720px", margin: "0 auto", padding: "32px 16px 80px" }}>
-        {/* タイトルセクション */}
+      {/* ─── メインコンテンツ ─── */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          padding: "40px 16px 120px",
+          maxWidth: "520px",
+          margin: "0 auto",
+        }}
+      >
+        {/* タイトル */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          style={{ textAlign: "center", marginBottom: "40px" }}
+          style={{ textAlign: "center", marginBottom: "48px" }}
         >
           <p
             style={{
               fontSize: "10px",
               letterSpacing: "0.25em",
-              color: "#475569",
+              color: "#334155",
               marginBottom: "8px",
               fontWeight: "700",
               textTransform: "uppercase",
@@ -1251,7 +1590,7 @@ export default function FEPage() {
           </p>
           <h1
             style={{
-              fontSize: "clamp(24px, 5vw, 38px)",
+              fontSize: "clamp(22px, 5vw, 32px)",
               fontWeight: "900",
               background: "linear-gradient(135deg, #818cf8, #c084fc)",
               WebkitBackgroundClip: "text",
@@ -1261,56 +1600,126 @@ export default function FEPage() {
           >
             💻 基本情報技術者
           </h1>
-
-          {/* ITパスポートからの継続 */}
           <div
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              padding: "8px 18px",
+              padding: "6px 16px",
               borderRadius: "20px",
-              background: "rgba(6,182,212,0.08)",
-              border: "1px solid rgba(6,182,212,0.2)",
-              marginBottom: "24px",
+              background: "rgba(6,182,212,0.07)",
+              border: "1px solid rgba(6,182,212,0.15)",
+              marginBottom: "16px",
             }}
           >
             <span style={{ fontSize: "12px", color: "#22d3ee", fontWeight: "700" }}>
               ⚡ ITパスポートの知識を土台に深化
             </span>
           </div>
-
-          <p style={{ color: "#64748b", fontSize: "13px", lineHeight: 1.7, maxWidth: "500px", margin: "0 auto" }}>
-            アルゴリズム・ネットワーク詳細・データベース・セキュリティ・ソフトウェア設計などの
-            高度な技術知識を体系的に学習します。
+          <p style={{ color: "#475569", fontSize: "12px" }}>
+            {viewedCount}/{FE_NODES.length} 閲覧 | {masteredCount}/{FE_NODES.length} 習得済み
           </p>
         </motion.div>
 
-        {/* トピック一覧 */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {FE_TOPICS.map((topic, i) => (
+        {/* ノードグリッド（3列） */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
+          {rows.map((row, rowIdx) => (
             <motion.div
-              key={topic.id}
+              key={rowIdx}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06 }}
+              transition={{ delay: rowIdx * 0.1 }}
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "flex-start",
+                position: "relative",
+              }}
             >
-              <TopicCard
-                topic={topic}
-                masteredTopics={masteredTopics}
-                onToggleMastered={toggleMastered}
-              />
+              {/* 接続線（SVGで行内ノードをつなぐ） */}
+              <svg
+                style={{
+                  position: "absolute",
+                  top: "30px",
+                  left: "15%",
+                  width: "70%",
+                  height: "1px",
+                  overflow: "visible",
+                  pointerEvents: "none",
+                }}
+              >
+                {row.length > 1 &&
+                  Array.from({ length: row.length - 1 }).map((_, li) => (
+                    <line
+                      key={li}
+                      x1={`${(li * 100) / (row.length - 1)}%`}
+                      y1="0"
+                      x2={`${((li + 1) * 100) / (row.length - 1)}%`}
+                      y2="0"
+                      stroke="rgba(129,140,248,0.12)"
+                      strokeWidth="1"
+                      strokeDasharray="4 4"
+                    />
+                  ))}
+              </svg>
+
+              {row.map((node) => (
+                <FESphereNode
+                  key={node.id}
+                  node={node}
+                  status={statuses[node.id] ?? "default"}
+                  isSelected={selectedId === node.id}
+                  onClick={() => handleNodeClick(node)}
+                />
+              ))}
             </motion.div>
           ))}
         </div>
 
-        {/* ナビゲーション */}
+        {/* 凡例 */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 0.6 }}
           style={{
-            marginTop: "48px",
+            marginTop: "56px",
+            padding: "16px 20px",
+            borderRadius: "16px",
+            background: "rgba(15,23,42,0.5)",
+            border: "1px solid #1e293b",
+            display: "flex",
+            gap: "20px",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          {[
+            { color: "#475569", label: "未閲覧" },
+            { color: "#22d3ee", label: "閲覧済み" },
+            { color: "#a78bfa", label: "習得済み ⭐" },
+          ].map((item) => (
+            <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <div
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  background: item.color,
+                }}
+              />
+              <span style={{ fontSize: "11px", color: "#475569" }}>{item.label}</span>
+            </div>
+          ))}
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <span style={{ fontSize: "11px", color: "rgba(251,191,36,0.6)" }}>★</span>
+            <span style={{ fontSize: "11px", color: "#475569" }}>試験頻出</span>
+          </div>
+        </motion.div>
+
+        {/* ナビゲーション */}
+        <div
+          style={{
+            marginTop: "32px",
             display: "flex",
             gap: "12px",
             justifyContent: "center",
@@ -1320,13 +1729,13 @@ export default function FEPage() {
           <Link
             href="/universe"
             style={{
-              padding: "12px 24px",
+              padding: "10px 22px",
               borderRadius: "14px",
               background: "rgba(30,41,59,0.5)",
               border: "1px solid #334155",
               color: "#94a3b8",
               textDecoration: "none",
-              fontSize: "14px",
+              fontSize: "13px",
               fontWeight: "600",
             }}
           >
@@ -1335,20 +1744,35 @@ export default function FEPage() {
           <Link
             href="/itp"
             style={{
-              padding: "12px 24px",
+              padding: "10px 22px",
               borderRadius: "14px",
-              background: "rgba(6,182,212,0.1)",
-              border: "1px solid rgba(6,182,212,0.25)",
+              background: "rgba(6,182,212,0.08)",
+              border: "1px solid rgba(6,182,212,0.2)",
               color: "#22d3ee",
               textDecoration: "none",
-              fontSize: "14px",
+              fontSize: "13px",
               fontWeight: "600",
             }}
           >
             ⚡ ITパスポートへ
           </Link>
-        </motion.div>
+        </div>
       </div>
+
+      {/* ─── 詳細パネル ─── */}
+      <AnimatePresence>
+        {selectedNode && (
+          <FENodeDetail
+            node={selectedNode}
+            status={statuses[selectedNode.id] ?? "default"}
+            isMobile={isMobile}
+            onClose={() => setSelectedId(null)}
+            onMastered={() => {
+              handleMastered(selectedNode.id);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -17,7 +17,7 @@ export default function BossCircle() {
 
   const masteredCount = nodes.filter((n) => n.status === "mastered").length;
   const isUnlocked = masteredCount >= BOSS_UNLOCK_THRESHOLD;
-  const canStart = isUnlocked && !galaxyCompleted;
+  const canStart = isUnlocked;
   const pct = Math.round((masteredCount / BOSS_UNLOCK_THRESHOLD) * 100);
 
   // Hide during exam or when a node detail is open (on mobile it blocks)
@@ -76,7 +76,7 @@ export default function BossCircle() {
               pointerEvents: "none",
             }}
           >
-            🏆 ITパスポート 制覇！
+            🏆 制覇済み — タップで再挑戦
           </motion.div>
         )}
         {!isUnlocked && masteredCount > 0 && (
@@ -103,7 +103,7 @@ export default function BossCircle() {
       <motion.button
         onClick={canStart ? startExam : undefined}
         animate={
-          canStart
+          isUnlocked
             ? {
                 boxShadow: [
                   "0 0 16px rgba(251,191,36,0.25)",
@@ -157,9 +157,18 @@ export default function BossCircle() {
 
         {galaxyCompleted ? (
           <>
-            <span style={{ fontSize: "28px", position: "relative" }}>🏆</span>
-            <span style={{ fontSize: "9px", color: "#fef3c7", fontWeight: "800", position: "relative" }}>
-              制覇！
+            <span style={{ fontSize: "26px", position: "relative" }}>🏆</span>
+            <span
+              style={{
+                fontSize: "8px",
+                color: "#fef3c7",
+                fontWeight: "800",
+                lineHeight: 1.2,
+                textAlign: "center",
+                position: "relative",
+              }}
+            >
+              再挑戦<br />する
             </span>
           </>
         ) : isUnlocked ? (
