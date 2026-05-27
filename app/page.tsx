@@ -42,7 +42,7 @@ export default function LandingPage() {
   const { user, signInWithGoogle } = useAuthStore();
 
   useEffect(() => {
-    if (user) router.replace("/universe");
+    if (user) router.replace("/itp");
   }, [user, router]);
 
   return (
@@ -268,7 +268,7 @@ export default function LandingPage() {
 
           {/* ゲスト */}
           <button
-            onClick={() => router.push("/universe")}
+            onClick={() => router.push("/itp")}
             style={{
               width: "100%",
               padding: "15px",

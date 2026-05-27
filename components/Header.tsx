@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useGameStore } from "@/lib/store";
 import { useAuthStore } from "@/lib/auth-store";
 
 export default function Header() {
-  const { nodes, galaxyCompleted } = useGameStore();
+  const { nodes } = useGameStore();
   const { user, openAuthModal, signOut } = useAuthStore();
 
   const itpNodes = nodes.filter((n) => n.topicId !== "fe");
@@ -24,75 +23,24 @@ export default function Header() {
         height: "52px",
       }}
     >
-      {/* 左: マップに戻る */}
-      <Link
-        href="/universe"
-        style={{ textDecoration: "none", flexShrink: 0 }}
-        className="flex items-center gap-1.5"
-      >
+      {/* 左: ロゴ */}
+      <div className="flex items-center gap-1.5 flex-shrink-0">
         <span style={{ fontSize: "16px" }}>🌌</span>
         <span
-          className="hidden sm:inline"
           style={{
-            fontSize: "11px",
-            color: "#475569",
-            fontWeight: "600",
+            fontSize: "13px",
+            color: "#818cf8",
+            fontWeight: "800",
             whiteSpace: "nowrap",
+            letterSpacing: "0.02em",
           }}
         >
-          マップ
+          KnowledgeMap
         </span>
-        <span
-          className="hidden sm:inline"
-          style={{ fontSize: "11px", color: "#334155" }}
-        >
-          /
-        </span>
-        <span
-          className="hidden sm:inline"
-          style={{
-            fontSize: "11px",
-            color: "#06b6d4",
-            fontWeight: "700",
-            whiteSpace: "nowrap",
-          }}
-        >
-          ⚡ ITパスポート
-        </span>
-      </Link>
-
-      {/* モバイル: ⚡ のみ */}
-      <Link
-        href="/universe"
-        className="flex sm:hidden items-center gap-1"
-        style={{ textDecoration: "none" }}
-      >
-        <span style={{ fontSize: "14px" }}>🌌</span>
-        <span style={{ fontSize: "10px", color: "#475569" }}>/</span>
-        <span style={{ fontSize: "13px" }}>⚡</span>
-      </Link>
+      </div>
 
       {/* 右: 進捗 + ログイン */}
       <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
-        {/* 統計（md以上） */}
-        <div
-          className="hidden md:flex items-center gap-3 text-xs"
-          style={{ color: "#64748b" }}
-        >
-          <span>
-            <span style={{ color: "#a78bfa" }}>⭐ {mastered}</span> 習得
-          </span>
-          <span style={{ color: "#475569" }}>/ {total}</span>
-        </div>
-
-        {/* モバイル: ⭐X/31 */}
-        <div
-          className="flex md:hidden items-center gap-1 text-xs flex-shrink-0"
-        >
-          <span style={{ color: "#a78bfa" }}>⭐{mastered}</span>
-          <span style={{ color: "#334155" }}>/{total}</span>
-        </div>
-
         {/* 進捗バー */}
         <div className="flex items-center gap-1.5">
           <div

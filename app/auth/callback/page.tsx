@@ -19,10 +19,10 @@ export default function AuthCallbackPage() {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
 
-  // user が設定されたら宇宙ページへ
+  // user が設定されたら ITマップへ
   useEffect(() => {
     if (user) {
-      router.replace("/universe");
+      router.replace("/itp");
     }
   }, [user, router]);
 
