@@ -123,18 +123,48 @@ export const useGameStore = create<GameStore>()(
 
       loadFromRemote: (row) => {
         // リモートのノードステータスをローカルノード配列に反映
-        set((state) => ({
-          nodes: state.nodes.map((n) => ({
+        set((state) => {
+          // Step 1: state にないノードを initialNodes から補完
+          const stateIds = new Set(state.nodes.map((n) => n.id));
+          const missingNodes = initialNodes
+            .filter((n) => !stateIds.has(n.id))
+            .map((n) =>
+              n.id === "binary" ? { ...n, status: "viewed" as NodeStatus } : n
+            );
+
+          // Step 2: Supabase のステータスを適用
+          let nodes = [...state.nodes, ...missingNodes].map((n) => ({
             ...n,
             status: row.node_statuses[n.id] ?? n.status,
-          })),
-          examCompleted: row.exam_completed,
-          examScore: row.exam_score,
-          examPassed: row.exam_passed,
-          galaxyCompleted: row.galaxy_completed,
-          // 制覇フラグだけ復元（セレブレーションは再表示しない）
-          showGalaxyComplete: false,
-        }));
+          }));
+
+          // Step 3: 整合性補正 — 解放済みノードの隣接は必ずアンロック
+          // （Supabase に古い "locked" が保存されていても正しく解放する）
+          const unlockedIds = new Set(
+            nodes.filter((n) => n.status !== "locked").map((n) => n.id)
+          );
+          nodes = nodes.map((node) => {
+            if (node.status !== "locked") return node;
+            const hasUnlockedPrereq = connections.some(
+              (c) => c.toNodeId === node.id && unlockedIds.has(c.fromNodeId)
+            );
+            return hasUnlockedPrereq
+              ? { ...node, status: "viewed" as NodeStatus }
+              : node;
+          });
+
+          return {
+            nodes,
+            examCompleted: row.exam_completed,
+            examScore: row.exam_score,
+            examPassed: row.exam_passed,
+            galaxyCompleted: row.galaxy_completed,
+            // 制覇フラグだけ復元（セレブレーションは再表示しない）
+            showGalaxyComplete: false,
+          };
+        });
+        // 補正後のステータスを Supabase に書き戻す
+        scheduleSyncToSupabase(get);
       },
 
       getSyncPayload: () => {
