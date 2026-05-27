@@ -5,6 +5,9 @@ import { feQuestions } from "./fe-questions";
 // ボスノード解放の閾値（31ノード中）
 export const BOSS_UNLOCK_THRESHOLD = 25;
 
+// FE 試験解放の閾値（FE ノード 15 個中）
+export const FE_BOSS_UNLOCK_THRESHOLD = 10;
+
 // 中心を(700,700)に設定 — 上方向のアームが画面外に出ないよう調整
 const CX = 700;
 const CY = 700;

@@ -8,13 +8,19 @@ interface GameStore {
   nodes: KnowledgeNode[];
   selectedNodeId: string | null;
   showQuiz: boolean;
-  // 試験 & 銀河系
+  // ITP 試験 & 銀河系
   examMode: boolean;
   examCompleted: boolean;
   examScore: number;
   examPassed: boolean;
   galaxyCompleted: boolean;
   showGalaxyComplete: boolean;
+  // FE 試験
+  feExamMode: boolean;
+  feExamCompleted: boolean;
+  feExamScoreA: number; // 科目A スコア (0-1000)
+  feExamScoreB: number; // 科目B スコア (0-1000)
+  feExamPassed: boolean; // 両科目 600 以上
   // アクション
   setSelectedNode: (id: string | null) => void;
   setShowQuiz: (show: boolean) => void;
@@ -25,6 +31,9 @@ interface GameStore {
   finishExam: (score: number) => void;
   closeExam: () => void;
   dismissGalaxyComplete: () => void;
+  startFEExam: () => void;
+  finishFEExam: (scoreA: number, scoreB: number) => void;
+  closeFEExam: () => void;
   // Supabaseリモート進捗の読み込み
   loadFromRemote: (row: UserProgressRow) => void;
   // Supabase同期用のスナップショット取得
@@ -72,6 +81,11 @@ export const useGameStore = create<GameStore>()(
       examPassed: false,
       galaxyCompleted: false,
       showGalaxyComplete: false,
+      feExamMode: false,
+      feExamCompleted: false,
+      feExamScoreA: 0,
+      feExamScoreB: 0,
+      feExamPassed: false,
 
       setSelectedNode: (id) => set({ selectedNodeId: id, showQuiz: false }),
       setShowQuiz: (show) => set({ showQuiz: show }),
@@ -120,6 +134,21 @@ export const useGameStore = create<GameStore>()(
       closeExam: () => set({ examMode: false }),
 
       dismissGalaxyComplete: () => set({ showGalaxyComplete: false }),
+
+      startFEExam: () => set({ feExamMode: true }),
+
+      finishFEExam: (scoreA, scoreB) => {
+        const passed = scoreA >= 600 && scoreB >= 600;
+        set({
+          feExamCompleted: true,
+          feExamScoreA: scoreA,
+          feExamScoreB: scoreB,
+          feExamPassed: passed,
+        });
+        scheduleSyncToSupabase(get);
+      },
+
+      closeFEExam: () => set({ feExamMode: false }),
 
       loadFromRemote: (row) => {
         // リモートのノードステータスをローカルノード配列に反映
@@ -190,6 +219,10 @@ export const useGameStore = create<GameStore>()(
         examScore: state.examScore,
         examPassed: state.examPassed,
         galaxyCompleted: state.galaxyCompleted,
+        feExamCompleted: state.feExamCompleted,
+        feExamScoreA: state.feExamScoreA,
+        feExamScoreB: state.feExamScoreB,
+        feExamPassed: state.feExamPassed,
       }),
       // 保存データに新ノードが追加されたとき・完了済みノードの隣接を自動解放
       merge: (persistedState: unknown, currentState: GameStore) => {

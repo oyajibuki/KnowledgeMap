@@ -11,6 +11,9 @@ const KnowledgeMap = dynamic(() => import("@/components/KnowledgeMap"), {
 const ExamMode = dynamic(() => import("@/components/ExamMode"), {
   ssr: false,
 });
+const FEExamMode = dynamic(() => import("@/components/FEExamMode"), {
+  ssr: false,
+});
 
 export default function ITPPage() {
   return (
@@ -78,6 +81,7 @@ export default function ITPPage() {
 
       <NodeDetail />
       <ExamMode />
+      <FEExamMode />
       <GalaxyComplete />
     </div>
   );

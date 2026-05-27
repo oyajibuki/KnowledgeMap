@@ -18,8 +18,9 @@ import { KnowledgeNode } from "@/types";
 import SphereNode from "./SphereNode";
 import GroupBubble from "./GroupBubble";
 import ExamNode from "./ExamNode";
+import FEExamNode from "./FEExamNode";
 
-const nodeTypes = { sphere: SphereNode, groupBubble: GroupBubble, examNode: ExamNode };
+const nodeTypes = { sphere: SphereNode, groupBubble: GroupBubble, examNode: ExamNode, feExamNode: FEExamNode };
 
 /* ──────────────────────────────────────────
    グループバブル設定
@@ -39,6 +40,18 @@ const EXAM_NODE: Node = {
   id: "__exam",
   type: "examNode",
   position: { x: ITP_CX - 45, y: 1430 }, // ITP 下部に配置（中心 y=700+730≈1430 ← r=950 内）
+  data: {},
+  draggable: false,
+  selectable: false,
+  focusable: false,
+  zIndex: 5,
+};
+
+/* FE 模擬試験ノード（FE バブル内・下部）*/
+const FE_EXAM_NODE: Node = {
+  id: "__fe-exam",
+  type: "feExamNode",
+  position: { x: FE_CX - 50, y: 1750 }, // FE 下部（FE_CY+1050=1750 ← r=1200 内）
   data: {},
   draggable: false,
   selectable: false,
@@ -111,6 +124,7 @@ export default function KnowledgeMap() {
   const [rfNodes, setRfNodes, onNodesChange] = useNodesState([
     ...buildGroupBubbleNodes(galaxyCompleted),
     EXAM_NODE,
+    FE_EXAM_NODE,
     ...znodes.map((kn) => makeFlowNode(kn, null, false)),
   ]);
 
