@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { KnowledgeNode, NodeStatus } from "@/types";
-import { initialNodes } from "@/lib/data";
+import { initialNodes, connections } from "@/lib/data";
 import type { UserProgressRow } from "@/lib/supabase";
 
 interface GameStore {
@@ -161,6 +161,37 @@ export const useGameStore = create<GameStore>()(
         examPassed: state.examPassed,
         galaxyCompleted: state.galaxyCompleted,
       }),
+      // 保存データに新ノードが追加されたとき・完了済みノードの隣接を自動解放
+      merge: (persistedState: unknown, currentState: GameStore) => {
+        const persisted = persistedState as Partial<GameStore> | null;
+        if (!persisted?.nodes) return currentState;
+
+        // Step 1: localStorage にないノードを initialNodes から補完
+        const savedIds = new Set(persisted.nodes.map((n) => n.id));
+        const missingNodes = initialNodes
+          .filter((n) => !savedIds.has(n.id))
+          .map((n) =>
+            n.id === "binary" ? { ...n, status: "viewed" as NodeStatus } : n
+          );
+
+        let merged = [...persisted.nodes, ...missingNodes];
+
+        // Step 2: 既に解放済みのノードから隣接ノードを自動アンロック（進捗補完）
+        const unlockedIds = new Set(
+          merged.filter((n) => n.status !== "locked").map((n) => n.id)
+        );
+        merged = merged.map((node) => {
+          if (node.status !== "locked") return node;
+          const hasUnlockedPrereq = connections.some(
+            (c) => c.toNodeId === node.id && unlockedIds.has(c.fromNodeId)
+          );
+          return hasUnlockedPrereq
+            ? { ...node, status: "viewed" as NodeStatus }
+            : node;
+        });
+
+        return { ...currentState, ...persisted, nodes: merged };
+      },
     }
   )
 );
