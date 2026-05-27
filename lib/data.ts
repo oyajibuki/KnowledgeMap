@@ -1,5 +1,6 @@
 import { KnowledgeNode, Connection, Question } from "@/types";
 import { extraQuestions } from "./questions-extra";
+import { feQuestions } from "./fe-questions";
 
 // ボスノード解放の閾値（31ノード中）
 export const BOSS_UNLOCK_THRESHOLD = 25;
@@ -411,6 +412,62 @@ export const initialNodes: KnowledgeNode[] = [
     position: { x: 2450, y: 1150 },
   },
 
+  // ── FE 追加ノード群（Row 0: 上段・Row 4: 下段）──
+  {
+    id: "fe-logic",
+    topicId: "fe",
+    title: "論理回路・デジタル技術",
+    description: "AND/OR/NOT・NAND・NOR・XOR・フリップフロップ・ド・モルガンの法則。",
+    detail: "**論理演算と論理ゲート**\n基本ゲート：AND（論理積）・OR（論理和）・NOT（否定）\n複合ゲート：NAND＝AND+NOT、NOR＝OR+NOT、XOR（排他的論理和）\n\n**ド・モルガンの法則**\n・NOT(A AND B) = NOT(A) OR NOT(B)\n・NOT(A OR B) = NOT(A) AND NOT(B)\n→ NANDゲートは全論理回路を表現できる万能ゲート\n\n**真理値表（A=1, B=0の場合）**\nAND=0、OR=1、XOR=1、NAND=1、NOR=0\n\n**カルノー図（Karnaugh Map）**\n論理式を最簡形に簡略化するグラフィカルな手法。\n隣り合うセルをグループ化することで回路を最小化。\n吸収法則：A AND (A OR B) = A\n\n**フリップフロップ（順序回路）**\n・SRフリップフロップ：Set/Resetで状態保持\n・Dフリップフロップ：クロック信号の立ち上がりでD入力を記憶\n・JKフリップフロップ：J=1,K=1でトグル動作\n1ビットの記憶素子。レジスタ・カウンタの基本部品。\n\n**加算器**\n・半加算器：2ビットの加算（桁上がり出力あり）\n・全加算器：3ビット入力（前の桁上がりを含む）",
+    difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
+    position: { x: 1750, y: -250 },
+  },
+  {
+    id: "fe-os",
+    topicId: "fe",
+    title: "OS・プロセス管理詳細",
+    description: "スレッド・スケジューリングアルゴリズム・デッドロック4条件・セマフォ・ページング。",
+    detail: "**プロセスとスレッド**\n・プロセス：独立したメモリ空間で実行される単位。切替コスト大。\n・スレッド：プロセス内の軽量な実行単位。メモリ共有。切替コスト小。\n・マルチスレッド：1プロセス内で複数スレッドが並行実行\n\n**CPUスケジューリングアルゴリズム**\n・FCFS（先着順）：到着順に実行。シンプルだが平均待ち時間が長い。\n・ラウンドロビン（RR）：タイムクォンタムで均等に割り当て。対話型に適切。\n・優先度スケジューリング：優先度高いジョブから実行。低優先度の飢餓が発生する可能性。\n・SJF（最短ジョブ優先）：実行時間が短いジョブから実行。平均待ち時間最小。\n\n**デッドロックの4条件（コフマン条件）**\n① 相互排除（Mutual Exclusion）\n② 保持と待機（Hold and Wait）\n③ 非剥奪（No Preemption）\n④ 循環待機（Circular Wait）\n→ 1つでも排除すれば防止可能\n\n**セマフォとミューテックス**\n・セマフォ：カウンタで複数リソースを管理。P操作（取得・カウンタ減少）・V操作（解放・カウンタ増加）。\n・ミューテックス：バイナリセマフォ。1スレッドのみ保持可能。\n\n**ページングとセグメンテーション**\n・ページング：固定長でメモリを分割。外部断片化なし・内部断片化あり。\n・セグメンテーション：論理単位で分割。外部断片化が発生。\n・デマンドページング：必要時にページをRAMにロードする方式。",
+    difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
+    position: { x: 2100, y: -250 },
+  },
+  {
+    id: "fe-rel",
+    topicId: "fe",
+    title: "システム信頼性・稼働率設計",
+    description: "MTBF・MTTR・稼働率計算・直列/並列・RAID・フォールトトレランス設計。",
+    detail: "**信頼性の基本指標**\n・MTBF（平均故障間隔）= 総稼働時間 ÷ 故障回数　→ 大きいほど良い\n・MTTR（平均修復時間）= 総停止時間 ÷ 故障回数　→ 小さいほど良い\n・稼働率（可用性）= MTBF ÷ (MTBF + MTTR)\n\n**システム稼働率の計算**\n**直列システム（全部が動作していることが必要）**\n稼働率 = A₁ × A₂ × … × Aₙ\n例：0.99 × 0.98 = 0.9702\n\n**並列システム（どちらか一方が動作すれば十分）**\n稼働率 = 1 - (1-A₁) × (1-A₂) × … × (1-Aₙ)\n例：1 - (1-0.9)(1-0.8) = 1 - 0.02 = 0.98\n\n**RAIDの種類と特徴**\n・RAID 0：ストライピングのみ。高速だが冗長性なし。\n・RAID 1：ミラーリング。全データを複製。1台故障でも継続。\n・RAID 5：ブロック単位ストライピング＋分散パリティ。1台故障まで対応。\n・RAID 6：2重分散パリティ。2台故障まで対応。\n・RAID 10：ミラーリングのストライピング。高速・高信頼。\n\n**フォールトトレランス設計**\n・フェイルオーバー：障害発生時に自動で待機系へ切替え\n・ホットスタンバイ：待機系が常時稼働状態で瞬時切替可能\n・コールドスタンバイ：障害時に待機系を起動（切替に時間がかかる）\n・デュアルシステム：同一処理を2系統で並行実行し結果を照合",
+    difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
+    position: { x: 2350, y: -150 },
+  },
+  {
+    id: "fe-lang",
+    topicId: "fe",
+    title: "プログラミング言語・コンパイラ",
+    description: "コンパイラ・インタプリタ・JIT・BNF・字句解析・構文解析・言語パラダイム。",
+    detail: "**コンパイラとインタプリタ**\n・コンパイラ：ソースコード全体を機械語に変換してから実行。高速。C/C++/Rustなど。\n・インタプリタ：1行ずつ解釈・実行。デバッグ容易。Python・Ruby。\n・JIT（Just-In-Time）コンパイラ：実行時に機械語へコンパイル。Java(JVM)・C#(.NET)。\n\n**コンパイルの4段階**\n① 字句解析（Lexical Analysis）：ソースを字句（トークン）に分解\n② 構文解析（Parsing）：BNFなどの文法規則に基づき構文木（AST）を生成\n③ 意味解析（Semantic Analysis）：型チェック・未定義変数検出\n④ コード生成（Code Generation）：最適化して機械語を生成\n\n**BNF（バッカス-ナウア記法）**\n文法規則を定義する記法。<記号>::= <定義> で表す。\n例：<数字> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9\n　　<整数> ::= <数字> | <整数><数字>\n\n**正規表現**\n・ * : 0回以上の繰り返し\n・ + : 1回以上の繰り返し\n・ ? : 0回または1回\n・ | : 選択（OR）\n・ [0-9] : 0〜9の数字クラス\n\n**プログラミングパラダイム**\n・手続き型（命令型）：処理手順を命令の列で記述。C言語。\n・オブジェクト指向：データと操作をクラスに。Java/Python。\n・関数型：副作用のない純粋関数で処理。Haskell/Scala。\n・論理型：事実と規則から推論エンジンが解を導出。Prolog。\n・宣言型：「何をするか」を宣言。SQL/HTML。",
+    difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
+    position: { x: 1750, y: 1450 },
+  },
+  {
+    id: "fe-pm-adv",
+    topicId: "fe",
+    title: "プロジェクト管理詳細・EVM",
+    description: "EVM（PV・EV・AC・CV・SV・CPI・SPI）・PERT期待時間・リスク管理戦略。",
+    detail: "**EVM（アーンドバリュー管理）**\nプロジェクトのコスト・スケジュールを客観的に測定する手法。\n\n**基本3指標**\n・PV（計画価値 Planned Value）：この時点までに計画していた作業量の予算\n・EV（アーンドバリュー Earned Value）：この時点までに実際に完了した作業量の予算\n・AC（実コスト Actual Cost）：この時点までの実際の支出\n\n**差異分析指標**\n・CV（コスト差異）= EV - AC　→ マイナスならコスト超過\n・SV（スケジュール差異）= EV - PV　→ マイナスなら遅延\n・CPI（コスト効率）= EV ÷ AC　→ 1.0未満ならコスト超過\n・SPI（スケジュール効率）= EV ÷ PV　→ 1.0未満なら遅延\n・EAC（完成時コスト予測）= BAC ÷ CPI\n\n**PERT（期待完了時間の計算）**\n期待時間 = (最楽観 + 4 × 最可能 + 最悲観) ÷ 6\n例：最楽観=4、最可能=7、最悲観=10 → (4+28+10)÷6 = 7\n\n**クリティカルパス**\nTotal Float（余裕時間）= 0 の経路。ここが遅れると全体が遅延する。\n\n**リスク管理の4戦略**\n・回避（Avoid）：リスク要因を取り除く計画変更\n・軽減（Mitigate）：発生確率または影響度を低下させる\n・転嫁（Transfer）：保険・外注でリスクを第三者に移転\n・受容（Accept）：影響が小さいリスクは承知の上で対処しない",
+    difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
+    position: { x: 2450, y: 1450 },
+  },
+  {
+    id: "fe-audit",
+    topicId: "fe",
+    title: "システム監査・IT統制",
+    description: "システム監査・ITGC・ITAC・COBIT・不正アクセス禁止法・情報倫理。",
+    detail: "**システム監査の目的**\n情報システムが有効性・効率性・信頼性・安全性の観点から適切に構築・運用されているかを第三者が評価する活動。\n\n**IT統制の2種類**\n・ITGC（IT一般統制 / IT General Controls）：システム全体に影響する基盤的管理。\n　例：アクセス制御・変更管理・バックアップ管理・障害対応\n・ITAC（業務処理統制 / IT Application Controls）：個別業務アプリの入力・処理・出力の正確性を保証。\n　例：入力データの妥当性チェック・照合確認・エラーレポート\n\n**COBIT（Control Objectives for IT）**\nISACA（情報システム監査・統制協会）が策定したITガバナンス・IT管理のフレームワーク。\n5つのドメイン：計画・組織・取得・提供・監視\n\n**脆弱性検査とペネトレーションテスト**\n・脆弱性検査：ツールを使いシステムの弱点を列挙・評価する\n・ペネトレーションテスト（侵入テスト）：実際に攻撃を試みてセキュリティを実証的に評価\n\n**主要法制度**\n・不正アクセス禁止法：認可を受けていないコンピュータへのアクセスを禁止\n・プロバイダ責任制限法：インターネット上の権利侵害に関するプロバイダの責任を制限\n・GDPR：EU一般データ保護規則。EU域内の個人データを扱う全組織に適用。\n\n**ITガバナンス**\n経営者がITを戦略的に活用し、リスク管理と価値創出のバランスをとる管理体制。",
+    difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
+    position: { x: 2100, y: 1500 },
+  },
+
   // ── マネジメント系 ARM (-35°) : プロジェクト管理 → システム開発 → サービス管理 ──
   {
     id: "pj-mgmt",
@@ -537,6 +594,29 @@ export const connections: Connection[] = [
   { fromNodeId: "fe-db",     toNodeId: "fe-sec",    relationType: "related" },
   { fromNodeId: "fe-design", toNodeId: "fe-test",   relationType: "related" },
   { fromNodeId: "fe-test",   toNodeId: "fe-prog",   relationType: "related" },
+
+  // ── ITP → 新FE 横断接続 ──
+  { fromNodeId: "logic",        toNodeId: "fe-logic",   relationType: "related" },
+  { fromNodeId: "cpu-basic",    toNodeId: "fe-logic",   relationType: "related" },
+  { fromNodeId: "os-basic",     toNodeId: "fe-os",      relationType: "related" },
+  { fromNodeId: "process",      toNodeId: "fe-os",      relationType: "related" },
+  { fromNodeId: "service-mgmt", toNodeId: "fe-rel",     relationType: "related" },
+  { fromNodeId: "storage",      toNodeId: "fe-rel",     relationType: "related" },
+  { fromNodeId: "logic",        toNodeId: "fe-lang",    relationType: "related" },
+  { fromNodeId: "pj-mgmt",      toNodeId: "fe-pm-adv",  relationType: "related" },
+  { fromNodeId: "isms",         toNodeId: "fe-audit",   relationType: "related" },
+
+  // ── FE 内部接続（新ノード） ──
+  { fromNodeId: "fe-logic",   toNodeId: "fe-cpu",     relationType: "related" },
+  { fromNodeId: "fe-logic",   toNodeId: "fe-prog",    relationType: "related" },
+  { fromNodeId: "fe-os",      toNodeId: "fe-prog",    relationType: "related" },
+  { fromNodeId: "fe-os",      toNodeId: "fe-rel",     relationType: "related" },
+  { fromNodeId: "fe-rel",     toNodeId: "fe-db",      relationType: "related" },
+  { fromNodeId: "fe-lang",    toNodeId: "fe-prog",    relationType: "related" },
+  { fromNodeId: "fe-lang",    toNodeId: "fe-algo",    relationType: "related" },
+  { fromNodeId: "fe-pm-adv",  toNodeId: "fe-design",  relationType: "related" },
+  { fromNodeId: "fe-pm-adv",  toNodeId: "fe-audit",   relationType: "related" },
+  { fromNodeId: "fe-audit",   toNodeId: "fe-sec",     relationType: "related" },
 ];
 
 // ─────────────────────────────────────────────────────────
@@ -1546,5 +1626,5 @@ const baseQuestions: Question[] = [
   },
 ];
 
-// 全問題（ベース + 追加）を結合してエクスポート
-export const questions: Question[] = [...baseQuestions, ...extraQuestions];
+// 全問題（ITP ベース + ITP 追加 + FE）を結合してエクスポート
+export const questions: Question[] = [...baseQuestions, ...extraQuestions, ...feQuestions];

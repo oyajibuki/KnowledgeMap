@@ -32,7 +32,7 @@ const nodeTypes = { sphere: SphereNode, groupBubble: GroupBubble, examNode: Exam
    ※ FE 固有ノード (fe-*) は x≈1800 以降に配置
 ────────────────────────────────────────── */
 const ITP_CX = 700,  ITP_CY = 700,  ITP_R = 950;
-const FE_CX  = 1600, FE_CY  = 700,  FE_R  = 1000;
+const FE_CX  = 1600, FE_CY  = 700,  FE_R  = 1200;
 
 /* 過去問ノード（ITP バブル内・下部）*/
 const EXAM_NODE: Node = {
