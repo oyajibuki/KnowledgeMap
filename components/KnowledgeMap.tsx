@@ -19,9 +19,16 @@ import SphereNode from "./SphereNode";
 import GroupBubble from "./GroupBubble";
 import ExamNode from "./ExamNode";
 import FEExamNode from "./FEExamNode";
+import LabelNode from "./LabelNode";
 import { ExamInfoPopup, EXAM_INFO } from "./ExamInfoPopup";
 
-const nodeTypes = { sphere: SphereNode, groupBubble: GroupBubble, examNode: ExamNode, feExamNode: FEExamNode };
+const nodeTypes = {
+  sphere: SphereNode,
+  groupBubble: GroupBubble,
+  examNode: ExamNode,
+  feExamNode: FEExamNode,
+  labelNode: LabelNode,
+};
 
 /* ──────────────────────────────────────────
    グループバブル設定
@@ -58,6 +65,37 @@ const FE_EXAM_NODE: Node = {
   selectable: false,
   focusable: false,
   zIndex: 5,
+};
+
+/* ──────────────────────────────────────────
+   バブルラベルノード（独立・zIndex:10）
+   GroupBubble(zIndex:-10) より必ず上に来るため
+   クリックが確実にラベルに届く。
+   ITP ラベルは FE バブル(x:400〜2800) より左側 x<400 に配置して
+   FE Wrapper との重なりによる誤クリックを完全回避。
+────────────────────────────────────────── */
+const ITP_LABEL_NODE: Node = {
+  id: "__label-itp",
+  type: "labelNode",
+  // ITP バブル上部・FE バブル外（FE wrapper 左端 x=400 より手前）に配置
+  position: { x: ITP_CX - ITP_R + 60, y: ITP_CY - ITP_R + 18 }, // x=-190, y=-232
+  data: { label: "ITパスポート" },
+  draggable: false,
+  selectable: false,
+  focusable: false,
+  zIndex: 10,
+};
+
+const FE_LABEL_NODE: Node = {
+  id: "__label-fe",
+  type: "labelNode",
+  // FE バブル上部・右寄り（FE 固有エリア）に配置
+  position: { x: FE_CX + 60, y: FE_CY - FE_R + 18 }, // x=1660, y=-482
+  data: { label: "基本情報技術者" },
+  draggable: false,
+  selectable: false,
+  focusable: false,
+  zIndex: 10,
 };
 
 function buildGroupBubbleNodes(galaxyCompleted: boolean): Node[] {
@@ -127,6 +165,8 @@ export default function KnowledgeMap() {
     ...buildGroupBubbleNodes(galaxyCompleted),
     EXAM_NODE,
     FE_EXAM_NODE,
+    ITP_LABEL_NODE,
+    FE_LABEL_NODE,
     ...znodes.map((kn) => makeFlowNode(kn, null, false)),
   ]);
 
@@ -227,8 +267,8 @@ export default function KnowledgeMap() {
   ────────────────────────── */
   const onNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
-      // グループバブルのクリック → 資格情報ポップアップ
-      if (node.type === "groupBubble") {
+      // ラベルノードのクリック → 資格情報ポップアップ
+      if (node.type === "labelNode") {
         const label = node.data.label as string;
         if (EXAM_INFO[label]) setActiveExamLabel(label);
         return;
