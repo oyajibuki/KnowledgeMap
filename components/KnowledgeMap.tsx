@@ -77,8 +77,8 @@ const FE_EXAM_NODE: Node = {
 const ITP_LABEL_NODE: Node = {
   id: "__label-itp",
   type: "labelNode",
-  // ITP バブル上部・FE バブル外（FE wrapper 左端 x=400 より手前）に配置
-  position: { x: ITP_CX - ITP_R + 60, y: ITP_CY - ITP_R + 18 }, // x=-190, y=-232
+  // ITP バブル上部・中央寄り（zIndex:10 で FE wrapper より上に来るので重なりは問題なし）
+  position: { x: ITP_CX - 75, y: ITP_CY - ITP_R + 18 }, // x=625, y=-232
   data: { label: "ITパスポート" },
   draggable: false,
   selectable: false,
