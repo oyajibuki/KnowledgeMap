@@ -19,6 +19,7 @@ import SphereNode from "./SphereNode";
 import GroupBubble from "./GroupBubble";
 import ExamNode from "./ExamNode";
 import FEExamNode from "./FEExamNode";
+import { ExamInfoPopup, EXAM_INFO } from "./ExamInfoPopup";
 
 const nodeTypes = { sphere: SphereNode, groupBubble: GroupBubble, examNode: ExamNode, feExamNode: FEExamNode };
 
@@ -116,6 +117,7 @@ function makeFlowNode(kn: KnowledgeNode, selectedNodeId: string | null, bouncing
 export default function KnowledgeMap() {
   const { nodes: znodes, selectedNodeId, setSelectedNode, galaxyCompleted } = useGameStore();
   const [droppedId, setDroppedId] = useState<string | null>(null);
+  const [activeExamLabel, setActiveExamLabel] = useState<string | null>(null);
 
   /* ──────────────────────────
      ReactFlow ノード初期化
@@ -225,6 +227,12 @@ export default function KnowledgeMap() {
   ────────────────────────── */
   const onNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
+      // グループバブルのクリック → 資格情報ポップアップ
+      if (node.type === "groupBubble") {
+        const label = node.data.label as string;
+        if (EXAM_INFO[label]) setActiveExamLabel(label);
+        return;
+      }
       if (node.type !== "sphere") return;
       const allNodes = [...znodes, ...initialNodes.filter((n) => !znodes.find((z) => z.id === n.id))];
       const kn = allNodes.find((n) => n.id === node.id);
@@ -273,6 +281,14 @@ export default function KnowledgeMap() {
           }}
         />
       </ReactFlow>
+
+      {/* 資格情報ポップアップ */}
+      {activeExamLabel && (
+        <ExamInfoPopup
+          label={activeExamLabel}
+          onClose={() => setActiveExamLabel(null)}
+        />
+      )}
 
       {/* 配置リセットボタン */}
       <button
