@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import NodeDetail from "@/components/NodeDetail";
@@ -16,6 +17,12 @@ const FEExamMode = dynamic(() => import("@/components/FEExamMode"), {
 });
 
 export default function ITPPage() {
+  useEffect(() => {
+    fetch(
+      "https://script.google.com/macros/s/AKfycbznxYkj5ixnK_pHkGR8LUYhEYdvSYpaiF3x4LaZy964wlu068oak1X1uuIiyqCEtGWF/exec?page=KnowledgeMap"
+    ).catch(() => {});
+  }, []);
+
   return (
     <div
       className="flex flex-col"
