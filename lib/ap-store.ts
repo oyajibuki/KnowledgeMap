@@ -8,6 +8,7 @@ interface APStore {
   selectedNodeId: string | null;
   showQuiz: boolean;
   examMode: boolean;
+  examModeType: "gozen" | "gogo"; // 午前 or 午後
   examCompleted: boolean;
   examScore: number;
   examPassed: boolean;
@@ -17,7 +18,7 @@ interface APStore {
   updateNodeStatus: (id: string, status: NodeStatus) => void;
   unlockAdjacentNodes: (id: string) => void;
   getNode: (id: string) => KnowledgeNode | undefined;
-  startExam: () => void;
+  startExam: (mode?: "gozen" | "gogo") => void;
   finishExam: (score: number) => void;
   closeExam: () => void;
 }
@@ -34,6 +35,7 @@ export const useAPStore = create<APStore>()(
       selectedNodeId: null,
       showQuiz: false,
       examMode: false,
+      examModeType: "gozen",
       examCompleted: false,
       examScore: 0,
       examPassed: false,
@@ -61,7 +63,7 @@ export const useAPStore = create<APStore>()(
 
       getNode: (id) => get().nodes.find((n) => n.id === id),
 
-      startExam: () => set({ examMode: true }),
+      startExam: (mode = "gozen") => set({ examMode: true, examModeType: mode }),
 
       finishExam: (score) =>
         set({

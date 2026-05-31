@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAPStore } from "@/lib/ap-store";
-import { apQuestions } from "@/lib/ap-data";
+import { apGozenQuestions, apPMQuestions } from "@/lib/ap-data";
+const apQuestions = [...apGozenQuestions, ...apPMQuestions];
 import { Question } from "@/types";
 
 function APQuiz({ questions, onBack, onComplete }: { questions: Question[]; onBack: () => void; onComplete: () => void }) {

@@ -217,47 +217,65 @@ export const apNodes: KnowledgeNode[] = [
 ];
 
 export const apConnections: Connection[] = [
-  { fromNodeId: "ap-math", toNodeId: "ap-ai", relationType: "related" },
-  { fromNodeId: "ap-math", toNodeId: "ap-algo", relationType: "dependency" },
-  { fromNodeId: "ap-algo", toNodeId: "ap-arch", relationType: "related" },
-  { fromNodeId: "ap-arch", toNodeId: "ap-sys", relationType: "dependency" },
-  { fromNodeId: "ap-sys", toNodeId: "ap-os", relationType: "dependency" },
-  { fromNodeId: "ap-os", toNodeId: "ap-hw", relationType: "related" },
-  { fromNodeId: "ap-db", toNodeId: "ap-net", relationType: "related" },
-  { fromNodeId: "ap-net", toNodeId: "ap-sec", relationType: "dependency" },
-  { fromNodeId: "ap-sec", toNodeId: "ap-dev", relationType: "related" },
-  { fromNodeId: "ap-dev", toNodeId: "ap-pm", relationType: "dependency" },
-  { fromNodeId: "ap-pm", toNodeId: "ap-sm", relationType: "related" },
-  { fromNodeId: "ap-sm", toNodeId: "ap-audit", relationType: "dependency" },
-  { fromNodeId: "ap-strategy", toNodeId: "ap-biz", relationType: "dependency" },
-  { fromNodeId: "ap-biz", toNodeId: "ap-legal", relationType: "related" },
-  { fromNodeId: "ap-math", toNodeId: "ap-db", relationType: "related" },
-  { fromNodeId: "ap-dev", toNodeId: "ap-audit", relationType: "related" },
-  { fromNodeId: "ap-strategy", toNodeId: "ap-pm", relationType: "related" },
-  { fromNodeId: "ap-ui", toNodeId: "ap-dev", relationType: "related" },
+  // ── テクノロジ系（中心から放射）──
+  { fromNodeId: "ap-math",     toNodeId: "ap-ai",       relationType: "related" },
+  { fromNodeId: "ap-math",     toNodeId: "ap-algo",     relationType: "dependency" },
+  { fromNodeId: "ap-math",     toNodeId: "ap-db",       relationType: "related" },
+  { fromNodeId: "ap-math",     toNodeId: "ap-ui",       relationType: "related" },    // ★ ap-ui に入口
+  { fromNodeId: "ap-math",     toNodeId: "ap-strategy", relationType: "related" },    // ★ ap-strategy に入口
+  { fromNodeId: "ap-algo",     toNodeId: "ap-arch",     relationType: "related" },
+  { fromNodeId: "ap-arch",     toNodeId: "ap-sys",      relationType: "dependency" },
+  { fromNodeId: "ap-sys",      toNodeId: "ap-os",       relationType: "dependency" },
+  { fromNodeId: "ap-os",       toNodeId: "ap-hw",       relationType: "related" },
+  { fromNodeId: "ap-db",       toNodeId: "ap-net",      relationType: "related" },
+  { fromNodeId: "ap-net",      toNodeId: "ap-sec",      relationType: "dependency" },
+  { fromNodeId: "ap-ui",       toNodeId: "ap-dev",      relationType: "related" },
+  { fromNodeId: "ap-sec",      toNodeId: "ap-dev",      relationType: "related" },
+  // ── マネジメント系 ──
+  { fromNodeId: "ap-dev",      toNodeId: "ap-pm",       relationType: "dependency" },
+  { fromNodeId: "ap-strategy", toNodeId: "ap-pm",       relationType: "related" },
+  { fromNodeId: "ap-pm",       toNodeId: "ap-sm",       relationType: "related" },
+  { fromNodeId: "ap-sm",       toNodeId: "ap-audit",    relationType: "dependency" },
+  { fromNodeId: "ap-dev",      toNodeId: "ap-audit",    relationType: "related" },
+  // ── ストラテジ系 ──
+  { fromNodeId: "ap-strategy", toNodeId: "ap-biz",      relationType: "dependency" },
+  { fromNodeId: "ap-biz",      toNodeId: "ap-legal",    relationType: "related" },
 ];
 
-export const apQuestions = [...apQuestions1, ...apQuestions2, ...apQuestions3, ...apQuestions4, ...apPMQuestions];
+// 午前問題プール（バッチ1〜4）
+export const apGozenQuestions = [...apQuestions1, ...apQuestions2, ...apQuestions3, ...apQuestions4];
+// 午後問題プール
+export { apPMQuestions };
+// 全問合算（互換性のため維持）
+export const apQuestions = [...apGozenQuestions, ...apPMQuestions];
 
 // ─────────────────────────────────────────────────────────
 // 試験間クロス接続（ITP/FE ↔ AP の共通知識リンク）
 // KnowledgeMap.tsx で視覚的な破線エッジとして描画する
 // ─────────────────────────────────────────────────────────
 export const crossExamLinks: { from: string; to: string }[] = [
-  // テクノロジ系
-  { from: "binary",           to: "ap-math"    }, // 2進数・数値表現
-  { from: "cpu-basic",        to: "ap-arch"    }, // CPU・アーキテクチャ
-  { from: "ram",              to: "ap-sys"     }, // メモリ・システム構成
-  { from: "storage",          to: "ap-sys"     }, // 補助記憶装置
-  { from: "os-basic",         to: "ap-os"      }, // OS
-  { from: "process",          to: "ap-os"      }, // プロセス管理
-  { from: "ip",               to: "ap-net"     }, // IPアドレス
-  { from: "tcp-ip",           to: "ap-net"     }, // TCP/IP
-  { from: "http",             to: "ap-net"     }, // HTTP/Web
-  { from: "encryption",       to: "ap-sec"     }, // 暗号化
-  { from: "digital-signature",to: "ap-sec"     }, // デジタル署名
-  { from: "rdbms",            to: "ap-db"      }, // リレーショナルDB
-  { from: "sql-basic",        to: "ap-db"      }, // SQL
-  { from: "data-structure",   to: "ap-algo"    }, // データ構造
-  { from: "sort",             to: "ap-algo"    }, // 整列アルゴリズム
+  // ── テクノロジ系（ITP↔AP）──
+  { from: "binary",            to: "ap-math"     }, // 2進数・数値表現
+  { from: "cpu-basic",         to: "ap-arch"     }, // CPU・アーキテクチャ
+  { from: "ram",               to: "ap-sys"      }, // メモリ・システム構成
+  { from: "storage",           to: "ap-sys"      }, // 補助記憶装置
+  { from: "os-basic",          to: "ap-os"       }, // OS
+  { from: "process",           to: "ap-os"       }, // プロセス管理
+  { from: "ip",                to: "ap-net"      }, // IPアドレス
+  { from: "tcp-ip",            to: "ap-net"      }, // TCP/IP
+  { from: "http",              to: "ap-net"      }, // HTTP/Web
+  { from: "encryption",        to: "ap-sec"      }, // 暗号化
+  { from: "digital-signature", to: "ap-sec"      }, // デジタル署名
+  { from: "rdbms",             to: "ap-db"       }, // リレーショナルDB
+  { from: "sql-basic",         to: "ap-db"       }, // SQL
+  { from: "data-structure",    to: "ap-algo"     }, // データ構造
+  { from: "sort",              to: "ap-algo"     }, // 整列アルゴリズム
+  { from: "cloud",             to: "ap-sys"      }, // クラウド↔システム構成
+  { from: "cloud",             to: "ap-strategy" }, // クラウド↔IT戦略
+  // ── マネジメント・ストラテジ系（ITP↔AP）──
+  { from: "encryption",        to: "ap-sm"       }, // 暗号化↔セキュリティ管理
+  { from: "digital-signature", to: "ap-legal"    }, // 電子署名↔法務
+  { from: "os-basic",          to: "ap-dev"      }, // OS↔ソフトウェア開発
+  { from: "rdbms",             to: "ap-pm"       }, // DB管理↔プロジェクト管理
+  { from: "storage",           to: "ap-sm"       }, // 記憶装置↔サービス管理（バックアップ）
 ];

@@ -3,6 +3,7 @@
 import { memo } from "react";
 import { NodeProps } from "@xyflow/react";
 import { useGameStore } from "@/lib/store";
+import { useAPStore } from "@/lib/ap-store";
 import { EXAM_INFO } from "./ExamInfoPopup";
 
 /**
@@ -14,10 +15,12 @@ import { EXAM_INFO } from "./ExamInfoPopup";
 function LabelNode({ data }: NodeProps) {
   const label = data.label as string;
   const { galaxyCompleted } = useGameStore();
+  const { examCompleted: apExamCompleted } = useAPStore();
   const info = EXAM_INFO[label];
 
   const isItpLabel = label === "ITパスポート";
-  const isCompleted = isItpLabel && galaxyCompleted;
+  const isApLabel  = label === "応用情報技術者";
+  const isCompleted = (isItpLabel && galaxyCompleted) || (isApLabel && apExamCompleted);
 
   const color = isCompleted ? "rgba(251,191,36,0.92)" : (info?.color ?? "#888");
   const shadow = isCompleted

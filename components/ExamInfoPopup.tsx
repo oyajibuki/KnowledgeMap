@@ -37,6 +37,16 @@ export const EXAM_INFO: Record<string, ExamInfo> = {
     color: "#818cf8",
     icon: "💻",
   },
+  応用情報技術者: {
+    subtitle: "IT応用技術・マネジメント・ストラテジ（高度IT人材の登竜門）",
+    difficulty: "中級〜上級",
+    difficultyStars: 4,
+    time: "午前: 150分 ／ 午後: 150分",
+    questions: "午前: 80問（4択式）／ 午後: 11問中5問選択（記述式）",
+    passing: "午前・午後それぞれ60点以上（100点満点）",
+    color: "#34d399",
+    icon: "🎯",
+  },
 };
 
 export function ExamInfoPopup({

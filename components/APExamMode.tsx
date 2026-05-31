@@ -3,12 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAPStore } from "@/lib/ap-store";
-import { apQuestions } from "@/lib/ap-data";
+import { apGozenQuestions, apPMQuestions } from "@/lib/ap-data";
 import { Question } from "@/types";
 
-const EXAM_TOTAL = 50;
-const EXAM_PASS = 70;
-const EXAM_TIME = 5400; // 90分
+// 午前: 80問・150分（合格60%以上）
+// 午後: 20問・150分（合格60%以上）
+const EXAM_PASS = 60;
+const EXAM_TIME_GOZEN = 9000; // 150分
+const EXAM_TIME_GOGO  = 9000; // 150分
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -19,11 +21,19 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+const gozenPool = apGozenQuestions;
+const gogoPool  = apPMQuestions;
+
 export default function APExamMode() {
-  const { examMode, closeExam, finishExam } = useAPStore();
+  const { examMode, examModeType, closeExam, finishExam } = useAPStore();
+
+  const isGozen = examModeType === "gozen";
+  const EXAM_TOTAL = isGozen ? 80 : 20;
+  const EXAM_TIME  = isGozen ? EXAM_TIME_GOZEN : EXAM_TIME_GOGO;
+  const pool       = isGozen ? gozenPool : gogoPool;
 
   const [examQuestions, setExamQuestions] = useState<Question[]>(() =>
-    shuffle(apQuestions).slice(0, Math.min(EXAM_TOTAL, apQuestions.length))
+    shuffle(pool).slice(0, Math.min(EXAM_TOTAL, pool.length))
   );
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -37,7 +47,7 @@ export default function APExamMode() {
 
   useEffect(() => {
     if (!examMode) {
-      setExamQuestions(shuffle(apQuestions).slice(0, Math.min(EXAM_TOTAL, apQuestions.length)));
+      setExamQuestions(shuffle(pool).slice(0, Math.min(EXAM_TOTAL, pool.length)));
       setCurrent(0);
       setSelected(null);
       setAnswered(false);
@@ -126,10 +136,10 @@ export default function APExamMode() {
             >
               <div>
                 <span className="text-xs font-semibold" style={{ color: "#34d399" }}>
-                  応用情報 模擬試験
+                  応用情報 {isGozen ? "午前" : "午後"} 模擬試験
                 </span>
                 <div className="text-xs mt-0.5" style={{ color: "#475569" }}>
-                  問 {current + 1} / {totalQ}
+                  問 {current + 1} / {totalQ}（{isGozen ? "80問・150分・合格60%" : "20問・150分・合格60%"}）
                 </div>
               </div>
               <div

@@ -21,6 +21,7 @@ import SphereNode from "./SphereNode";
 import GroupBubble from "./GroupBubble";
 import ExamNode from "./ExamNode";
 import FEExamNode from "./FEExamNode";
+import APExamNode from "./APExamNode";
 import LabelNode from "./LabelNode";
 import { ExamInfoPopup, EXAM_INFO } from "./ExamInfoPopup";
 
@@ -28,6 +29,7 @@ const nodeTypes = {
   sphere: SphereNode,
   groupBubble: GroupBubble,
   examNode: ExamNode,
+  apExamNode: APExamNode,
   feExamNode: FEExamNode,
   labelNode: LabelNode,
 };
@@ -73,9 +75,9 @@ const FE_EXAM_NODE: Node = {
 /* AP 模擬試験ノード（AP バブル内・下部）*/
 const AP_EXAM_NODE: Node = {
   id: "__ap-exam",
-  type: "examNode",
-  position: { x: AP_CX - 45, y: AP_CY + 1200 },
-  data: { label: "AP模擬試験", href: "/ap" },
+  type: "apExamNode",
+  position: { x: AP_CX - 100, y: AP_CY + 1200 },
+  data: {},
   draggable: false,
   selectable: false,
   focusable: false,

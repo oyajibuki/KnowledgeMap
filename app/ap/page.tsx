@@ -74,7 +74,7 @@ export default function APPage() {
         }}
       >
         <button
-          onClick={startExam}
+          onClick={() => startExam("gozen")}
           className="px-6 py-3 rounded-2xl text-sm font-bold transition-all hover:scale-105 active:scale-95"
           style={{
             background: "linear-gradient(135deg, #059669, #10b981)",
