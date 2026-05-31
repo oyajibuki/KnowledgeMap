@@ -22,19 +22,47 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 const gozenPool = apGozenQuestions;
-const gogoPool  = apPMQuestions;
+
+// ── 午後問題プール構成 ────────────────────────────────
+// 実際の AP 午後試験: 11問、問1必須+問2〜11から4問選択 = 5問を解答
+// 本クイズ: 問1(セキュリティ)から5問必須 + 選択4グループから各4問 = 合計20問
+function buildGogoExam(): Question[] {
+  // 問1（セキュリティ必須）: sec問題からランダム5問
+  const secPool = apPMQuestions.filter((q) => q.id.includes("-sec"));
+  const secQ    = shuffle(secPool).slice(0, Math.min(5, secPool.length));
+
+  // 問2〜11（選択）: それ以外を topic グループ別に分けてランダム4グループ×4問
+  const otherPool = apPMQuestions.filter((q) => !q.id.includes("-sec"));
+  // グループ化（id の接頭辞 ap-pm?-xxx で判定）
+  const groups: Map<string, Question[]> = new Map();
+  for (const q of otherPool) {
+    const m = q.id.match(/ap-pm\d-([a-z]+)\d/);
+    const key = m ? m[1] : "other";
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(q);
+  }
+  // グループをシャッフルして4グループ選択、各グループから4問
+  const groupKeys = shuffle([...groups.keys()]);
+  const selectedGroups = groupKeys.slice(0, 4);
+  const otherQ = selectedGroups.flatMap((k) =>
+    shuffle(groups.get(k)!).slice(0, 4)
+  );
+
+  return [...secQ, ...otherQ];
+}
 
 export default function APExamMode() {
   const { examMode, examModeType, closeExam, finishExam } = useAPStore();
 
   const isGozen = examModeType === "gozen";
-  const EXAM_TOTAL = isGozen ? 80 : 20;
-  const EXAM_TIME  = isGozen ? EXAM_TIME_GOZEN : EXAM_TIME_GOGO;
-  const pool       = isGozen ? gozenPool : gogoPool;
+  const EXAM_TIME = isGozen ? EXAM_TIME_GOZEN : EXAM_TIME_GOGO;
 
   const [examQuestions, setExamQuestions] = useState<Question[]>(() =>
-    shuffle(pool).slice(0, Math.min(EXAM_TOTAL, pool.length))
+    isGozen
+      ? shuffle(gozenPool).slice(0, Math.min(80, gozenPool.length))
+      : buildGogoExam()
   );
+  const EXAM_TOTAL = examQuestions.length;
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
@@ -47,7 +75,11 @@ export default function APExamMode() {
 
   useEffect(() => {
     if (!examMode) {
-      setExamQuestions(shuffle(pool).slice(0, Math.min(EXAM_TOTAL, pool.length)));
+      setExamQuestions(
+        isGozen
+          ? shuffle(gozenPool).slice(0, Math.min(80, gozenPool.length))
+          : buildGogoExam()
+      );
       setCurrent(0);
       setSelected(null);
       setAnswered(false);
@@ -139,7 +171,7 @@ export default function APExamMode() {
                   応用情報 {isGozen ? "午前" : "午後"} 模擬試験
                 </span>
                 <div className="text-xs mt-0.5" style={{ color: "#475569" }}>
-                  問 {current + 1} / {totalQ}（{isGozen ? "80問・150分・合格60%" : "20問・150分・合格60%"}）
+                  問 {current + 1} / {totalQ}（{isGozen ? "全80問・150分・60%合格" : "問1必須+選択4問・計20問・150分"}）
                 </div>
               </div>
               <div

@@ -44,9 +44,12 @@ const nodeTypes = {
       重なり部分に binary・cpu・メモリ等の共通知識が入る
    ※ FE 固有ノード (fe-*) は x≈1800 以降に配置
 ────────────────────────────────────────── */
-const ITP_CX = 700,  ITP_CY = 700,  ITP_R = 950;
-const FE_CX  = 1600, FE_CY  = 700,  FE_R  = 1200;
-const AP_CX  = 3300, AP_CY  = 700,  AP_R  = 1400; // APはFEより大きいバブル
+// ── 同心円レイアウト（全て中心 700,700） ──────────────
+// ITP が FE に包まれ、FE が AP に包まれる「知識の層」構造
+// 簿記など IT 外の知識を追加するときは AP の外側に配置
+const ITP_CX = 700, ITP_CY = 700, ITP_R = 950;
+const FE_CX  = 700, FE_CY  = 700, FE_R  = 1850;  // FE が ITP を覆う
+const AP_CX  = 700, AP_CY  = 700, AP_R  = 2750;  // AP が FE を覆う
 
 /* 過去問ノード（ITP バブル内・下部）*/
 const EXAM_NODE: Node = {
@@ -60,11 +63,11 @@ const EXAM_NODE: Node = {
   zIndex: 5,
 };
 
-/* FE 模擬試験ノード（FE バブル内・下部）*/
+/* FE 模擬試験ノード（FE リング内・ITP 外・底部）*/
 const FE_EXAM_NODE: Node = {
   id: "__fe-exam",
   type: "feExamNode",
-  position: { x: FE_CX - 50, y: 1750 }, // FE 下部（FE_CY+1050=1750 ← r=1200 内）
+  position: { x: FE_CX - 50, y: FE_CY + 1400 }, // ITP 外(r>950)・FE 内(r<1850) 底部
   data: {},
   draggable: false,
   selectable: false,
@@ -72,11 +75,11 @@ const FE_EXAM_NODE: Node = {
   zIndex: 5,
 };
 
-/* AP 模擬試験ノード（AP バブル内・下部）*/
+/* AP 模擬試験ノード（AP リング内・FE 外・底部）*/
 const AP_EXAM_NODE: Node = {
   id: "__ap-exam",
   type: "apExamNode",
-  position: { x: AP_CX - 100, y: AP_CY + 1200 },
+  position: { x: AP_CX - 100, y: AP_CY + 2300 }, // FE 外(r>1850)・AP 内(r<2750) 底部
   data: {},
   draggable: false,
   selectable: false,
@@ -106,8 +109,8 @@ const ITP_LABEL_NODE: Node = {
 const FE_LABEL_NODE: Node = {
   id: "__label-fe",
   type: "labelNode",
-  // FE バブル上部・右寄り（FE 固有エリア）に配置
-  position: { x: FE_CX + 60, y: FE_CY - FE_R + 18 }, // x=1660, y=-482
+  // FE バブル上部（同心円: ITP ラベル x=625,y=-232 より少し右上）
+  position: { x: FE_CX + 200, y: FE_CY - FE_R + 18 }, // y=-1814
   data: { label: "基本情報技術者" },
   draggable: false,
   selectable: false,
@@ -118,7 +121,8 @@ const FE_LABEL_NODE: Node = {
 const AP_LABEL_NODE: Node = {
   id: "__label-ap",
   type: "labelNode",
-  position: { x: AP_CX + 100, y: AP_CY - AP_R + 18 },
+  // AP バブル上部（同心円最外周）
+  position: { x: AP_CX + 350, y: AP_CY - AP_R + 18 }, // y=-2714
   data: { label: "応用情報技術者" },
   draggable: false,
   selectable: false,
