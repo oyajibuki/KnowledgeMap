@@ -42,7 +42,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "コンピュータの頭脳。命令を取り出し・解読・実行する。",
     detail: "CPUはコンピュータの中核部品です。\n\n**演算装置(ALU)** — 四則演算・論理演算を実行\n**制御装置** — 命令の解読と各装置への指示\n**レジスタ** — CPU内部の超高速一時記憶\n**クロック周波数** — 1秒間の処理サイクル数。3GHz=30億回/秒\n**コア数** — 複数コアで並列処理が可能。マルチコアプロセッサ。",
     difficulty: 2, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(0, 210),
+    position: polar(-30, 210),  // アーキテクチャ arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E4%B8%AD%E5%A4%AE%E5%87%A6%E7%90%86%E8%A3%85%E7%BD%AE",
   },
   {
@@ -52,7 +52,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "ハードウェアとアプリの橋渡し。Windows・macOS・Linux など。",
     detail: "OSはコンピュータ全体を管理するソフトウェアです。\n\n**プロセス管理** — 複数プログラムの実行制御\n**メモリ管理** — アプリへのRAM割り当て\n**ファイル管理** — ファイルの読み書き・整理\n**デバイス管理** — 周辺機器の制御\n**カーネル** — OSの中核。ハードウェアを直接制御。\n**ミドルウェア** — OSとアプリの中間に位置するソフトウェア。DBMSやWebサーバなど。",
     difficulty: 2, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(0, 400),
+    position: polar(-60, 590),  // OS arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%9A%E3%83%AC%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0",
   },
   {
@@ -62,7 +62,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "複数のプログラムを同時に動かす仕組み。マルチタスク。",
     detail: "現代OSは複数プログラムを同時実行します。\n\n**プロセス** — 実行中プログラムの単位\n**マルチタスク** — CPUが高速に切替えることで「同時実行」に見せる\n**スケジューリング** — ラウンドロビン・優先度方式など\n**デッドロック** — 複数プロセスが互いに待ち合い停止する状態\n**スプーリング** — 低速I/Oとの速度差を吸収するバッファリング技術\n**仮想記憶** — RAMの不足をHDDで補う仕組み",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(0, 590),
+    position: polar(-60, 780),  // OS arm（プロセス管理）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9_(%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF)",
   },
 
@@ -94,7 +94,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "インターネット経由でIT資源を利用するサービス形態。",
     detail: "クラウドはITリソースをネット経由で提供します。\n\n**IaaS** — インフラ（サーバ・NW）を提供。AWS EC2など。[問12]\n**PaaS** — 開発・実行環境を提供。Google App Engineなど。\n**SaaS** — アプリをサービスとして提供。Gmail・Office365など。\n**メリット** — 初期コスト削減・スケールアウト容易・場所を選ばない\n**デメリット** — インターネット依存・セキュリティリスク・通信コスト\n**ハイブリッドクラウド** — オンプレミスとクラウドを組み合わせた形態",
     difficulty: 2, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(-60, 590),
+    position: polar(-90, 350),  // クラウド/IoT arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0",
   },
 
@@ -148,7 +148,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "データを守る暗号技術。共通鍵・公開鍵・ハッシュ関数。",
     detail: "暗号化はデータを保護する基本技術です。\n\n**共通鍵暗号（対称暗号）** — 暗号化・復号に同じ鍵。高速。AES・DES。\n**公開鍵暗号（非対称暗号）** — 公開鍵で暗号化・秘密鍵で復号。RSA。[問7]\n**ハイブリッド暗号** — 公開鍵で共通鍵を交換し実通信は共通鍵。SSL/TLS。\n**ハッシュ関数** — 任意データ→固定長値。SHA-256/MD5。一方向性・改ざん検知。[問91]\n**機密性** — 権限ある者だけが情報にアクセスできる特性 [問77]",
     difficulty: 3, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(180, 210),
+    position: polar(-150, 210),  // セキュリティ arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E6%9A%97%E5%8F%B7",
   },
   {
@@ -158,7 +158,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "送信者の正当性と改ざん検知を実現する技術とその基盤。",
     detail: "デジタル署名は電子的な印鑑です。\n\n**デジタル署名の仕組み** — ①秘密鍵で署名 ②公開鍵で検証\n**保証** — 認証（本人確認）・完全性（改ざんなし）・否認防止\n**PKI（公開鍵基盤）** — 認証局(CA)が電子証明書の正当性を保証する仕組み [問90]\n**電子証明書(SSL証明書)** — WebサイトのHTTPS通信に使用\n**リスクベース認証** — 普段と異なる環境からのログインで追加認証を求める [問71]\n**バイオメトリクス認証** — 指紋・虹彩・顔など生体情報で認証 [問80]",
     difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(180, 400),
+    position: polar(-150, 400),  // セキュリティ arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E7%BD%B2%E5%90%8D",
   },
   {
@@ -168,7 +168,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "悪意あるソフトウェアの種類とサイバー攻撃の手口・対策。",
     detail: "マルウェアはMalicious Software（悪意のあるソフトウェア）です。\n\n**マルウェアの種類**\n- ウイルス：他ファイルに寄生して感染を広げる\n- ランサムウェア：ファイルを暗号化し身代金要求 [問63/11]\n- トロイの木馬：正規ソフトに偽装して侵入\n- スパイウェア：個人情報を密かに収集\n\n**攻撃手法**\n- フィッシング：偽サイトで情報を騙し取る\n- APT攻撃：特定組織への長期継続型サイバー攻撃 [問96]\n- SQLインジェクション：不正SQLでDB攻撃\n- DDoS攻撃：大量リクエストでサービス停止\n- ゼロデイ攻撃：未発見脆弱性の悪用\n\n**対策**\n- セキュリティパッチ適用（OSの脆弱性修正） [問83]\n- バックアップ取得",
     difficulty: 3, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(180, 590),
+    position: polar(-150, 590),  // セキュリティ arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2",
   },
 
@@ -180,7 +180,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "不正通信を遮断するネットワーク防御と、ゼロトラストセキュリティ。",
     detail: "ファイアウォールはネットワークの門番です。\n\n**ファイアウォール** — ルールに基づき内外の通信を許可・遮断 [問15]\n**DMZ（非武装地帯）** — 公開サーバを内外両ネットワークから切り離した中間ゾーン\n**WAF** — Webアプリへの攻撃（SQLインジェクション等）を防ぐ専用FW\n**サニタイジング** — ユーザー入力に含まれる有害文字列を無害に置換する処理 [問95]\n**脅威と脆弱性** — 脅威=情報資産に悪影響を及ぼす可能性のある原因、脆弱性=情報資産の弱点 [問89]\n**ゼロトラスト** — 「全アクセスを信頼しない」。社内外問わず常に認証・認可 [問92]",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(150, 400),
+    position: polar(-150, 780),  // セキュリティ arm（外側）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB",
   },
 
@@ -192,7 +192,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "表形式でデータを管理するデータベース。Excelのような構造。",
     detail: "リレーショナルデータベース（RDB）は最もポピュラーなDB形式です。\n\n**テーブル** — Excelのシートのようなデータの表\n**主キー** — 各行を一意に識別する列\n**外部キー** — 他テーブルの主キーを参照する列。制約により参照整合性を保証 [問72]\n**正規化** — データの重複を排除し整合性を保つ設計技法 [問69]\n**代表的RDBMS** — MySQL・PostgreSQL・Oracle・SQL Server\n**ビュー** — 実データを持たない仮想的なテーブル",
     difficulty: 3, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(120, 210),
+    position: polar(180, 210),  // データベース arm ← ITP/FE/AP が同じ方向
     wikiUrl: "https://ja.wikipedia.org/wiki/%E9%96%A2%E4%BF%82%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E7%AE%A1%E7%90%86%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0",
   },
   {
@@ -202,7 +202,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "データベースを操作する言語。SELECT・INSERT・UPDATE・DELETE。",
     detail: "SQLはデータベース操作の標準言語です。\n\n**DML（データ操作言語）**\n```\nSELECT * FROM users WHERE age > 20 ORDER BY name;\nINSERT INTO users VALUES ('山田', 25);\nUPDATE users SET age=26 WHERE name='山田';\nDELETE FROM users WHERE name='山田';\n```\n**DDL** — CREATE/ALTER/DROP でテーブル定義を操作\n**JOIN** — INNER JOIN(両方一致)・LEFT JOIN(左テーブル全件)\n**GROUP BY・集計関数** — COUNT()・SUM()・AVG()・MAX()・MIN()",
     difficulty: 3, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(120, 400),
+    position: polar(180, 400),  // データベース arm
     wikiUrl: "https://ja.wikipedia.org/wiki/SQL",
   },
   {
@@ -212,7 +212,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "DB整合性を保つトランザクション管理と障害対策バックアップ。",
     detail: "トランザクションはDBの整合性を守ります。\n\n**ACID特性**\n- 原子性(Atomicity)：全部成功 or 全部失敗 [問13]\n- 一貫性(Consistency)：常に整合性を保つ\n- 独立性(Isolation)：他のトランザクションの影響を受けない\n- 耐久性(Durability)：確定データは消えない\n\n**COMMIT/ROLLBACK** — 処理の確定/取り消し\n\n**バックアップ種類** [問86]\n- フルバックアップ：全データを毎回バックアップ\n- 差分バックアップ：前回フルバックアップからの変更分\n- 増分バックアップ：前回バックアップからの変更分\n\n**復旧** — 差分：フル＋最新差分の2ファイルで復元可能",
     difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(120, 590),
+    position: polar(180, 590),  // データベース arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%88%E3%83%A9%E3%83%B3%E3%82%B6%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3_(%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9)",
   },
 
@@ -224,7 +224,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "データの格納・操作方法。配列・スタック・キュー・木構造。",
     detail: "データ構造はアルゴリズムの基盤です。\n\n**配列** — 順番に並んだデータ。添字でO(1)アクセス。\n**スタック(LIFO)** — 後入れ先出し。関数呼び出し管理に使用。\n**キュー(FIFO)** — 先入れ先出し。印刷スプーラに使用。\n**木構造(Tree)** — 階層的データ。2分探索木：左<親<右。\n**グラフ** — ノードとエッジの集合。地図・ネットワーク表現。\n**ハッシュテーブル** — キーから格納場所を計算。平均O(1)検索。",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(60, 210),
+    position: polar(0, 210),   // アルゴリズム arm ← ITP/FE/AP が同じ方向
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0",
   },
   {
@@ -234,7 +234,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "データを並べ替える方法と目的データを見つける方法。",
     detail: "アルゴリズムの計算量を理解することが重要です。\n\n**整列（ソート）**\n- バブルソート：隣接要素を比較・交換。O(n²) [問67概念]\n- 選択ソート：最小値を先頭へ移動を繰り返す。O(n²)\n- クイックソート：ピボットで分割。平均O(n log n)\n- マージソート：分割して結合。O(n log n)・安定ソート\n\n**探索（サーチ）**\n- 線形探索：先頭から順番。O(n)\n- 2分探索：ソート済みデータを半分ずつ絞る。O(log n)\n\n**ビッグO記法** — O(1)<O(log n)<O(n)<O(n log n)<O(n²)",
     difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
-    position: polar(60, 400),
+    position: polar(0, 420),   // アルゴリズム arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%82%BD%E3%83%BC%E3%83%88",
   },
   {
@@ -244,7 +244,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "AND・OR・NOTなどの論理演算とプログラムの基本構造。",
     detail: "論理演算はCPUとプログラムの基礎です。\n\n**基本論理演算**\n- AND(論理積)：両方1のとき1\n- OR(論理和)：どちらかが1のとき1\n- NOT(否定)：0→1、1→0\n- XOR(排他的論理和)：どちらかだけが1のとき1\n- NAND：ANDの否定\n\n**プログラムの基本構造** — 順次・分岐(if)・繰り返し(for/while)\n\n**演繹推論** — 一般的規則→個別結論（三段論法）[問84]\n**帰納推論** — 個別事例→一般規則\n\n**素数判定プログラム** — 2からnの平方根まで割り切れなければ素数 [問85概念]",
     difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
-    position: polar(60, 590),
+    position: polar(0, 620),   // アルゴリズム arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E8%AB%96%E7%90%86%E6%BC%94%E7%AE%97",
   },
 
@@ -256,7 +256,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "組織全体で情報セキュリティを管理するマネジメントシステム。",
     detail: "ISMSは情報セキュリティマネジメントシステムです。(ISO 27001)\n\n**ISMS活動の順序** [問93]\n1. 適用範囲の決定（最初に行う）\n2. リスクアセスメント（特定・分析・評価）\n3. リスク対応の実施\n4. 内部監査\n\n**CIAトライアド**\n- 機密性(Confidentiality)：権限者のみアクセス可\n- 完全性(Integrity)：改ざんされていない\n- 可用性(Availability)：必要時に使える\n\n**物理的対策** — 遠隔地バックアップ・入退室管理 [問94]\n**人的対策** — 教育・訓練\n**技術的対策** — ファイアウォール・暗号化\n\n**情報セキュリティインシデント管理** — 報告経路を事前に整備 [問70]\n**経営者の役割** — 自らリーダーシップを発揮してサイバー対策を推進 [問79]",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(165, 560),
+    position: polar(150, 560),  // ISMS arm（セキュリティ管理）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E6%83%85%E5%A0%B1%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E3%83%9E%E3%83%8D%E3%82%B8%E3%83%A1%E3%83%B3%E3%83%88%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0",
   },
 
@@ -268,7 +268,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "モノのインターネット。センサーで物理世界とデジタルを接続。",
     detail: "IoT（Internet of Things）はあらゆる物がネット接続する概念です。\n\n**センサー** — 温度・光・音などの物理情報を電気信号に変換 [問78]\n**アクチュエーター** — 電気信号を受けて物理的に動作（モーター・バルブなど）\n**エッジコンピューティング** — IoTデバイス近くでデータを処理してクラウド負荷を軽減\n\n**IoT向け通信規格**\n- BLE（Bluetooth Low Energy）— Bluetooth規格の省電力版 [問81]\n- LPWA — 省電力・広範囲（数km〜数十km）。4Gより消費電力が少ない [問76]\n- キャリアアグリゲーション — 複数の周波数帯を束ねて高速化する技術 [問64]\n\n**組込みシステム** — 特定機能のために機器に組み込まれたコンピュータシステム",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(-90, 450),
+    position: polar(-90, 560),  // クラウド/IoT arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%A2%E3%83%8E%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%8D%E3%83%83%E3%83%88",
   },
 
@@ -280,7 +280,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "人工知能と機械学習の仕組み。ニューラルネットワークと推論。",
     detail: "AIは人工知能、機械学習はその実現手法です。\n\n**機械学習の種類**\n- 教師あり学習：正解データから学習\n- 教師なし学習：データのパターンを自動発見\n- 強化学習：報酬を最大化する行動を学習\n\n**ニューラルネットワーク** — 脳の神経細胞を模した計算モデル\n**ディープラーニング** — 多層ニューラルネットワークによる深層学習\n**バックプロパゲーション（誤差逆伝搬法）** — 出力の誤差を逆向きに伝えながら各ノードの重みを調整する学習手法 [問82]\n\n**推論の種類** [問84]\n- 演繹推論：一般規則→個別結論（三段論法）\n- 帰納推論：個別事例→一般規則\n- 仮説形成：結論から仮説を推測\n\n**プロンプトエンジニアリング** — 生成AIから意図した回答を得るため、質問・指示を最適化する技術 [問98]",
     difficulty: 3, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(20, 480),
+    position: polar(30, 480),  // AI/SW開発 arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92",
   },
 
@@ -304,7 +304,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "企業が競争優位を確立するための戦略立案手法。SWOT・PPM・BSCなど。",
     detail: "経営戦略は企業が長期的に競争優位を確立するための計画です。\n\n**SWOT分析** — 強み(S)・弱み(W)・機会(O)・脅威(T)で内外環境を分析\n**PPM（プロダクト・ポートフォリオ・マネジメント）** — 市場成長率×市場占有率で「花形」「金のなる木」「問題児」「負け犬」に分類\n**バランスドスコアカード（BSC）** — 財務・顧客・業務プロセス・学習と成長の4視点で戦略達成度を管理\n**コアコンピタンス** — 他社に真似されない自社固有の中核的な強み・能力\n**BCP（事業継続計画）** — 災害・緊急事態時に重要業務を継続するための計画\n**KPI** — 目標達成度を測定する重要業績評価指標",
     difficulty: 2, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(-15, 420),
+    position: polar(105, 420),  // 経営戦略 arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E7%B5%8C%E5%96%B6%E6%88%A6%E7%95%A5",
   },
   {
@@ -314,7 +314,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "顧客ニーズを把握し価値を届けるマーケティング活動の基礎。4P・CRM・EC。",
     detail: "マーケティングは顧客ニーズを見つけ価値を届ける活動全体です。\n\n**マーケティングミックス（4P）**\n- Product（製品）：何を売るか\n- Price（価格）：いくらで売るか\n- Place（流通）：どこで売るか\n- Promotion（プロモーション）：どう知らせるか\n\n**STP分析** — Segmentation（市場細分化）・Targeting（標的市場選択）・Positioning（位置付け）\n**CRM（顧客関係管理）** — 顧客情報を一元管理し長期関係を構築する戦略・システム\n**ロングテール** — 多数の少量販売品の売上合計がヒット商品を上回る現象。ECサイトで顕著。\n**eコマース** — インターネット上での商品・サービス売買",
     difficulty: 2, importance: 3, isExamFrequent: false, status: "locked",
-    position: polar(-15, 620),
+    position: polar(105, 620),  // 経営戦略 arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B1%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0",
   },
   {
@@ -324,7 +324,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "著作権・特許・個人情報保護法など企業活動に必要な法律知識。",
     detail: "企業活動に関わる法律・知的財産権・コンプライアンスの知識です。\n\n**著作権** — 創作物の創作時点で自動発生。登録不要。死後70年間保護。\n**産業財産権**\n- 特許権：発明の保護（存続期間20年）。出願・審査・登録が必要。\n- 実用新案権：物品の形状・構造に関する考案（10年）\n- 商標権：商品・サービスの識別マーク（10年・更新可）\n- 意匠権：物品のデザイン・外観（25年）\n\n**個人情報保護法** — 個人情報の取得・利用・安全管理を義務付け\n**不正競争防止法** — 営業秘密の不正取得・使用・開示等を禁止\n**コンプライアンス** — 法令・社内規則・社会規範の遵守\n**内部統制** — リスク管理と業務プロセスの適切な管理体制",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(-15, 820),
+    position: polar(105, 820),  // 経営戦略 arm（法務）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E7%9F%A5%E7%9A%84%E8%B2%A1%E7%94%A3%E6%A8%A9",
   },
 
@@ -340,7 +340,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "O記法・整列アルゴリズム・探索・再帰。FE最重要分野。",
     detail: "**計算量（O記法）**\nアルゴリズムの効率を入力サイズ n の関数で評価。\n・O(1) — 定数時間：配列インデックスアクセス\n・O(log n) — 対数時間：2分探索\n・O(n) — 線形時間：線形探索\n・O(n log n) — クイックソート平均・マージソート\n・O(n²) — バブルソート・選択ソート最悪\n\n**主な整列アルゴリズム**\n・バブルソート：隣接要素を比較交換。O(n²)。安定。\n・選択ソート：最小値を先頭へ。O(n²)。不安定。\n・クイックソート：ピボットで分割。平均O(n log n)。不安定。\n・マージソート：分割して結合。常にO(n log n)。安定。\n・ヒープソート：ヒープ構造を利用。O(n log n)。不安定。\n\n**探索アルゴリズム**\n・線形探索：先頭から順番に比較。O(n)。\n・2分探索：ソート済み配列を半分に絞る。O(log n)。\n・ハッシュ探索：ハッシュ関数で格納先を計算。平均O(1)。\n\n**再帰アルゴリズム**\n・終了条件（基底ケース）が必須\n・ハノイの塔：移動回数 = 2ⁿ - 1\n・フィボナッチ：F(n) = F(n-1) + F(n-2)",
     difficulty: 4, importance: 5, isExamFrequent: true, status: "locked",
-    position: { x: 1750, y: 250 },
+    position: polar(0, 1200),  // アルゴリズム arm FEリング
   },
   {
     id: "fe-ds",
@@ -349,7 +349,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "2分探索木・ヒープ・グラフ・ハッシュテーブル。ITPより深化。",
     detail: "**2分探索木（BST）**\n左の子 < 親 < 右の子 の性質を保つ木。\n・中順走査（In-order）: 昇順でデータを出力\n・前順（Pre-order）: 根→左→右\n・後順（Post-order）: 左→右→根\n\n**ヒープ（Heap）**\n完全2分木で親が常に子より大きい(最大)/小さい(最小)。\n・最大要素の取得：O(1)\n・挿入・削除：O(log n)\n\n**グラフ探索**\n・BFS（幅優先探索）：キューを使用。最短経路に適する。\n・DFS（深さ優先探索）：スタックまたは再帰。連結成分の検出。\n\n**ハッシュテーブル**\n・チェイン法：同じハッシュ値の要素をリンクリストでつなぐ\n・オープンアドレス法：別のスロットを探索\n・平均探索時間：O(1)",
     difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
-    position: { x: 2100, y: 250 },
+    position: polar(0, 1500),  // アルゴリズム arm FEリング（外側）
   },
   {
     id: "fe-cpu",
@@ -358,7 +358,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "パイプライン・割り込み・DMA・TLB・スラッシング。",
     detail: "**パイプライン処理**\n複数命令をフェッチ→デコード→実行→書き戻しの各段階で並列実行。\n・スループット向上：複数命令を同時処理\n・ハザード：データ依存・制御依存・構造ハザードが発生\n\n**キャッシュメモリ**\n・L1/L2/L3キャッシュ：CPU近傍順に高速・小容量\n・実効アクセス時間 = ヒット率×キャッシュ時間 + (1-ヒット率)×主記憶時間\n\n**割り込み（Interrupt）**\n・ハードウェア割り込み：外部デバイス（キーボード・タイマー）\n・ソフトウェア割り込み：例外・システムコール\n\n**DMA（Direct Memory Access）**\nCPUを介さずメモリとI/O装置が直接データ転送。\n・CPU負荷軽減・転送完了時に割り込みで通知\n\n**仮想記憶とページング**\n・TLB：ページテーブルのキャッシュ。アドレス変換を高速化\n・ページフォルト：アクセスしたページがRAMにない→スワップから読込\n・スラッシング：ページフォルト頻発でパフォーマンスが著しく低下",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: { x: 2450, y: 250 },
+    position: polar(-30, 1200),  // アーキテクチャ arm FEリング
   },
   {
     id: "fe-net",
@@ -367,7 +367,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "OSI7層詳細・サブネット計算・VLAN・ルーティングプロトコル。",
     detail: "**OSI参照モデル（7層）**\n第7層 応用層：HTTP・FTP・SMTP・DNS\n第6層 プレゼンテーション層：データ形式変換・暗号化\n第5層 セッション層：通信セッション管理\n第4層 トランスポート層：TCP・UDP・ポート番号・信頼性制御\n第3層 ネットワーク層：IP・ルーティング\n第2層 データリンク層：MACアドレス・フレーム・スイッチ\n第1層 物理層：ビット転送・ケーブル・ハブ\n\n**サブネット計算**\n・/24 = 255.255.255.0 → ホスト部8ビット → 254台使用可\n・ホスト数 = 2^(ホストビット数) - 2\n\n**ルーティングプロトコル**\n・RIP：ホップ数で経路選択。最大15ホップ。\n・OSPF：コストで経路選択。大規模NWに適す。\n・BGP：ISP間の経路交換。インターネットの基盤。\n\n**VLAN（仮想LAN）**\n物理的なLANを論理的に分割。セキュリティとブロードキャスト制御。\n802.1Q タグVLAN：スイッチ間でVLAN情報をタグで伝送",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: { x: 1750, y: 700 },
+    position: polar(-120, 1200),  // ネットワーク arm FEリング
   },
   {
     id: "fe-db",
@@ -376,7 +376,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "SQL応用・正規化手順・ロック制御・MVCC・B+木。",
     detail: "**SQL応用**\n・サブクエリ：SELECT文の中にSELECT文を記述\n・HAVING句：GROUP BY後の集計結果に条件を付ける\n・UNION：複数SELECT結果を統合（重複除去）\n・UNION ALL：重複を含めて統合\n\n**正規化の手順**\n・第1NF：繰り返し項目を排除。1セルに1値。\n・第2NF：主キーの一部への部分関数従属を排除。\n・第3NF：推移的関数従属を排除。\n・BCNF：全ての決定子が候補キー。\n\n**ロック制御（並行制御）**\n・共有ロック（S）：READ操作。複数トランザクション同時保持可。\n・排他ロック（X）：WRITE操作。他のロックと競合。\n・デッドロック：T1がAをロックしBを待ち、T2がBをロックしAを待つ状態\n\n**MVCC（Multi-Version Concurrency Control）**\nデータ更新時に新バージョンを作成し読み取りは古いバージョンを参照。\nPostgreSQL・MySQLのInnoDBが採用。\n\n**インデックス**\n・B+木：葉ノードがリンクリストで連結。範囲検索に優れる。\n・ハッシュ：等値検索に最速。範囲検索不可。",
     difficulty: 3, importance: 5, isExamFrequent: true, status: "locked",
-    position: { x: 2100, y: 700 },
+    position: polar(180, 1200),  // データベース arm FEリング ← AP/ITP と同方向!
   },
   {
     id: "fe-sec",
@@ -385,7 +385,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "PKI詳細・攻撃手法・AES/RSA/ECC・セキュリティ設計原則。",
     detail: "**PKI（公開鍵基盤）の詳細**\n・CA（認証局）：電子証明書を発行する第三者機関\n・ルートCA：信頼の起点。OSやブラウザが事前に信頼リストに保持。\n・CRL：失効した証明書のシリアル番号リスト\n・OCSP：リアルタイムで証明書の失効状態を確認するプロトコル\n\n**主要な攻撃手法**\n・SQLインジェクション：対策＝プリペアドステートメント\n・XSS：対策＝エスケープ処理\n・CSRF：対策＝CSRFトークン\n・ディレクトリトラバーサル：対策＝パス検証\n・バッファオーバーフロー：対策＝入力長チェック\n\n**暗号化アルゴリズム**\n・AES：共通鍵暗号。128/192/256ビット鍵。\n・RSA：公開鍵暗号。大きな素数の積の因数分解困難性に基づく。\n・ECC（楕円曲線暗号）：RSAより短い鍵長で同等の安全性。\n・SHA-256/SHA-3：ハッシュ関数。256ビットのダイジェスト値。\n\n**セキュリティ設計原則**\n・最小権限の原則：必要最小限の権限のみ付与\n・多層防御（Defense in Depth）：複数の防御層を設ける\n・フェイルセーフ：障害時に安全側に倒す設計",
     difficulty: 4, importance: 5, isExamFrequent: true, status: "locked",
-    position: { x: 2450, y: 700 },
+    position: polar(-150, 1200),  // セキュリティ arm FEリング ← AP/ITP と同方向!
   },
   {
     id: "fe-design",
@@ -394,7 +394,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "UML・デザインパターン（GoF）・SOLID原則・オブジェクト指向。",
     detail: "**UML図の種類**\n構造図（静的）：クラス図・コンポーネント図・配置図\n振る舞い図（動的）：シーケンス図・ユースケース図・アクティビティ図・状態機械図\n\n**オブジェクト指向の3大原則**\n・カプセル化：データと操作を1クラスに封じ外部からのアクセスを制御\n・継承：親クラスの属性・操作を子クラスが引き継ぐ\n・ポリモーフィズム：同じメッセージに対して異なるクラスが異なる振る舞いをする\n\n**SOLID原則**\n・S：単一責任の原則（1クラス1責任）\n・O：開放閉鎖の原則（拡張に開いて修正に閉じる）\n・L：リスコフの置換原則\n・I：インタフェース分離の原則\n・D：依存性逆転の原則\n\n**主要デザインパターン（GoF）**\n・Singleton：インスタンスを1つに制限\n・Adapter：インタフェースを変換して互換性を持たせる\n・Observer：状態変化を他のオブジェクトに通知\n・Strategy：アルゴリズムを差し替え可能にする",
     difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
-    position: { x: 1750, y: 1150 },
+    position: polar(60, 1200),  // SW設計 arm FEリング（60°専用）
   },
   {
     id: "fe-test",
@@ -403,7 +403,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "ブラックボックス/ホワイトボックステスト・境界値分析・回帰テスト。",
     detail: "**ブラックボックステスト技法**\n内部構造を考慮せず仕様書から入出力を検証。\n・同値分割法：入力を「有効クラス」「無効クラス」に分類し代表値でテスト\n・境界値分析：クラスの境界上の値（直前・ちょうど・直後）でテスト\n  例：有効範囲1〜120 → 0, 1, 120, 121 をテスト\n・デシジョンテーブル：複数条件の組み合わせを表で網羅\n\n**ホワイトボックステスト技法**\n内部ロジック（コード）を検証。\n・命令網羅（C0）：全命令を1回以上実行。最も基本。\n・分岐網羅（C1）：全分岐（true/false）を1回以上通過。\n\n**テストの種類と順序**\n・単体テスト → 結合テスト → システムテスト → 受入テスト（UAT）\n・トップダウン結合：スタブ（仮下位モジュール）を使用\n・ボトムアップ結合：ドライバ（仮上位モジュール）を使用\n\n**回帰テスト（リグレッションテスト）**\n修正後に既存機能が壊れていないかを確認。CI/CDで自動化が一般的。",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: { x: 2100, y: 1150 },
+    position: polar(45, 1200),  // テスト arm FEリング（45°専用）
   },
   {
     id: "fe-prog",
@@ -412,7 +412,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "FE試験の擬似言語・再帰・オーバーライド・スコープ。",
     detail: "**FE試験の擬似言語**\n・if（条件）→ 分岐\n・while（条件）→ 繰り返し\n・for（変数：開始 to 終了）→ 繰り返し\n・配列：a[i] のように表記\n\n**再帰アルゴリズムの読み方**\nfactorial(n) = n × factorial(n-1)、factorial(0) = 1\nfactorial(5) = 5×4×3×2×1 = 120\n\n**オブジェクト指向**\n・クラス：オブジェクトの設計図（属性＋メソッド）\n・コンストラクタ：インスタンス生成時に呼ばれる特殊メソッド\n・オーバーライド：継承したメソッドを子クラスで再定義\n・オーバーロード：同名メソッドを引数の型・数で区別\n\n**プログラミングパラダイム**\n・手続き型：処理を順番に記述（C言語等）\n・オブジェクト指向：データと操作をクラスにまとめる（Java・Python等）\n・関数型：副作用のない純粋関数で処理（Haskell・Scala等）\n\n**変数のスコープ**\n・局所変数（ローカル変数）：関数内で宣言。関数が終わると消える。\n・大域変数（グローバル変数）：プログラム全体でアクセス可。多用は危険。",
     difficulty: 4, importance: 5, isExamFrequent: true, status: "locked",
-    position: { x: 2450, y: 1150 },
+    position: polar(30, 1200),  // プログラミング arm FEリング（30°専用）
   },
 
   // ── FE 追加ノード群（Row 0: 上段・Row 4: 下段）──
@@ -423,7 +423,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "AND/OR/NOT・NAND・NOR・XOR・フリップフロップ・ド・モルガンの法則。",
     detail: "**論理演算と論理ゲート**\n基本ゲート：AND（論理積）・OR（論理和）・NOT（否定）\n複合ゲート：NAND＝AND+NOT、NOR＝OR+NOT、XOR（排他的論理和）\n\n**ド・モルガンの法則**\n・NOT(A AND B) = NOT(A) OR NOT(B)\n・NOT(A OR B) = NOT(A) AND NOT(B)\n→ NANDゲートは全論理回路を表現できる万能ゲート\n\n**真理値表（A=1, B=0の場合）**\nAND=0、OR=1、XOR=1、NAND=1、NOR=0\n\n**カルノー図（Karnaugh Map）**\n論理式を最簡形に簡略化するグラフィカルな手法。\n隣り合うセルをグループ化することで回路を最小化。\n吸収法則：A AND (A OR B) = A\n\n**フリップフロップ（順序回路）**\n・SRフリップフロップ：Set/Resetで状態保持\n・Dフリップフロップ：クロック信号の立ち上がりでD入力を記憶\n・JKフリップフロップ：J=1,K=1でトグル動作\n1ビットの記憶素子。レジスタ・カウンタの基本部品。\n\n**加算器**\n・半加算器：2ビットの加算（桁上がり出力あり）\n・全加算器：3ビット入力（前の桁上がりを含む）",
     difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
-    position: { x: 1750, y: -250 },
+    position: polar(-45, 1200),  // 論理回路 arm FEリング（-45°専用）
   },
   {
     id: "fe-os",
@@ -432,7 +432,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "スレッド・スケジューリングアルゴリズム・デッドロック4条件・セマフォ・ページング。",
     detail: "**プロセスとスレッド**\n・プロセス：独立したメモリ空間で実行される単位。切替コスト大。\n・スレッド：プロセス内の軽量な実行単位。メモリ共有。切替コスト小。\n・マルチスレッド：1プロセス内で複数スレッドが並行実行\n\n**CPUスケジューリングアルゴリズム**\n・FCFS（先着順）：到着順に実行。シンプルだが平均待ち時間が長い。\n・ラウンドロビン（RR）：タイムクォンタムで均等に割り当て。対話型に適切。\n・優先度スケジューリング：優先度高いジョブから実行。低優先度の飢餓が発生する可能性。\n・SJF（最短ジョブ優先）：実行時間が短いジョブから実行。平均待ち時間最小。\n\n**デッドロックの4条件（コフマン条件）**\n① 相互排除（Mutual Exclusion）\n② 保持と待機（Hold and Wait）\n③ 非剥奪（No Preemption）\n④ 循環待機（Circular Wait）\n→ 1つでも排除すれば防止可能\n\n**セマフォとミューテックス**\n・セマフォ：カウンタで複数リソースを管理。P操作（取得・カウンタ減少）・V操作（解放・カウンタ増加）。\n・ミューテックス：バイナリセマフォ。1スレッドのみ保持可能。\n\n**ページングとセグメンテーション**\n・ページング：固定長でメモリを分割。外部断片化なし・内部断片化あり。\n・セグメンテーション：論理単位で分割。外部断片化が発生。\n・デマンドページング：必要時にページをRAMにロードする方式。",
     difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
-    position: { x: 2100, y: -250 },
+    position: polar(-60, 1200),  // OS arm FEリング
   },
   {
     id: "fe-rel",
@@ -441,7 +441,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "MTBF・MTTR・稼働率計算・直列/並列・RAID・フォールトトレランス設計。",
     detail: "**信頼性の基本指標**\n・MTBF（平均故障間隔）= 総稼働時間 ÷ 故障回数　→ 大きいほど良い\n・MTTR（平均修復時間）= 総停止時間 ÷ 故障回数　→ 小さいほど良い\n・稼働率（可用性）= MTBF ÷ (MTBF + MTTR)\n\n**システム稼働率の計算**\n**直列システム（全部が動作していることが必要）**\n稼働率 = A₁ × A₂ × … × Aₙ\n例：0.99 × 0.98 = 0.9702\n\n**並列システム（どちらか一方が動作すれば十分）**\n稼働率 = 1 - (1-A₁) × (1-A₂) × … × (1-Aₙ)\n例：1 - (1-0.9)(1-0.8) = 1 - 0.02 = 0.98\n\n**RAIDの種類と特徴**\n・RAID 0：ストライピングのみ。高速だが冗長性なし。\n・RAID 1：ミラーリング。全データを複製。1台故障でも継続。\n・RAID 5：ブロック単位ストライピング＋分散パリティ。1台故障まで対応。\n・RAID 6：2重分散パリティ。2台故障まで対応。\n・RAID 10：ミラーリングのストライピング。高速・高信頼。\n\n**フォールトトレランス設計**\n・フェイルオーバー：障害発生時に自動で待機系へ切替え\n・ホットスタンバイ：待機系が常時稼働状態で瞬時切替可能\n・コールドスタンバイ：障害時に待機系を起動（切替に時間がかかる）\n・デュアルシステム：同一処理を2系統で並行実行し結果を照合",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: { x: 2350, y: -150 },
+    position: polar(-90, 1200),  // システム信頼性 arm FEリング
   },
   {
     id: "fe-lang",
@@ -450,7 +450,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "コンパイラ・インタプリタ・JIT・BNF・字句解析・構文解析・言語パラダイム。",
     detail: "**コンパイラとインタプリタ**\n・コンパイラ：ソースコード全体を機械語に変換してから実行。高速。C/C++/Rustなど。\n・インタプリタ：1行ずつ解釈・実行。デバッグ容易。Python・Ruby。\n・JIT（Just-In-Time）コンパイラ：実行時に機械語へコンパイル。Java(JVM)・C#(.NET)。\n\n**コンパイルの4段階**\n① 字句解析（Lexical Analysis）：ソースを字句（トークン）に分解\n② 構文解析（Parsing）：BNFなどの文法規則に基づき構文木（AST）を生成\n③ 意味解析（Semantic Analysis）：型チェック・未定義変数検出\n④ コード生成（Code Generation）：最適化して機械語を生成\n\n**BNF（バッカス-ナウア記法）**\n文法規則を定義する記法。<記号>::= <定義> で表す。\n例：<数字> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9\n　　<整数> ::= <数字> | <整数><数字>\n\n**正規表現**\n・ * : 0回以上の繰り返し\n・ + : 1回以上の繰り返し\n・ ? : 0回または1回\n・ | : 選択（OR）\n・ [0-9] : 0〜9の数字クラス\n\n**プログラミングパラダイム**\n・手続き型（命令型）：処理手順を命令の列で記述。C言語。\n・オブジェクト指向：データと操作をクラスに。Java/Python。\n・関数型：副作用のない純粋関数で処理。Haskell/Scala。\n・論理型：事実と規則から推論エンジンが解を導出。Prolog。\n・宣言型：「何をするか」を宣言。SQL/HTML。",
     difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
-    position: { x: 1750, y: 1450 },
+    position: polar(15, 1200),  // 言語・コンパイラ arm FEリング（15°専用）
   },
   {
     id: "fe-pm-adv",
@@ -459,7 +459,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "EVM（PV・EV・AC・CV・SV・CPI・SPI）・PERT期待時間・リスク管理戦略。",
     detail: "**EVM（アーンドバリュー管理）**\nプロジェクトのコスト・スケジュールを客観的に測定する手法。\n\n**基本3指標**\n・PV（計画価値 Planned Value）：この時点までに計画していた作業量の予算\n・EV（アーンドバリュー Earned Value）：この時点までに実際に完了した作業量の予算\n・AC（実コスト Actual Cost）：この時点までの実際の支出\n\n**差異分析指標**\n・CV（コスト差異）= EV - AC　→ マイナスならコスト超過\n・SV（スケジュール差異）= EV - PV　→ マイナスなら遅延\n・CPI（コスト効率）= EV ÷ AC　→ 1.0未満ならコスト超過\n・SPI（スケジュール効率）= EV ÷ PV　→ 1.0未満なら遅延\n・EAC（完成時コスト予測）= BAC ÷ CPI\n\n**PERT（期待完了時間の計算）**\n期待時間 = (最楽観 + 4 × 最可能 + 最悲観) ÷ 6\n例：最楽観=4、最可能=7、最悲観=10 → (4+28+10)÷6 = 7\n\n**クリティカルパス**\nTotal Float（余裕時間）= 0 の経路。ここが遅れると全体が遅延する。\n\n**リスク管理の4戦略**\n・回避（Avoid）：リスク要因を取り除く計画変更\n・軽減（Mitigate）：発生確率または影響度を低下させる\n・転嫁（Transfer）：保険・外注でリスクを第三者に移転\n・受容（Accept）：影響が小さいリスクは承知の上で対処しない",
     difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
-    position: { x: 2450, y: 1450 },
+    position: polar(90, 1200),  // PM arm FEリング ← AP pm と同方向!
   },
   {
     id: "fe-audit",
@@ -468,7 +468,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "システム監査・ITGC・ITAC・COBIT・不正アクセス禁止法・情報倫理。",
     detail: "**システム監査の目的**\n情報システムが有効性・効率性・信頼性・安全性の観点から適切に構築・運用されているかを第三者が評価する活動。\n\n**IT統制の2種類**\n・ITGC（IT一般統制 / IT General Controls）：システム全体に影響する基盤的管理。\n　例：アクセス制御・変更管理・バックアップ管理・障害対応\n・ITAC（業務処理統制 / IT Application Controls）：個別業務アプリの入力・処理・出力の正確性を保証。\n　例：入力データの妥当性チェック・照合確認・エラーレポート\n\n**COBIT（Control Objectives for IT）**\nISACA（情報システム監査・統制協会）が策定したITガバナンス・IT管理のフレームワーク。\n5つのドメイン：計画・組織・取得・提供・監視\n\n**脆弱性検査とペネトレーションテスト**\n・脆弱性検査：ツールを使いシステムの弱点を列挙・評価する\n・ペネトレーションテスト（侵入テスト）：実際に攻撃を試みてセキュリティを実証的に評価\n\n**主要法制度**\n・不正アクセス禁止法：認可を受けていないコンピュータへのアクセスを禁止\n・プロバイダ責任制限法：インターネット上の権利侵害に関するプロバイダの責任を制限\n・GDPR：EU一般データ保護規則。EU域内の個人データを扱う全組織に適用。\n\n**ITガバナンス**\n経営者がITを戦略的に活用し、リスク管理と価値創出のバランスをとる管理体制。",
     difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
-    position: { x: 2100, y: 1500 },
+    position: polar(120, 1200),  // 監査 arm FEリング（120°専用）
   },
 
   // ── マネジメント系 ARM (-35°) : プロジェクト管理 → システム開発 → サービス管理 ──
@@ -479,7 +479,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "プロジェクトを成功させるための計画・実行・管理手法。PMBOK・WBS・ガントチャート。",
     detail: "プロジェクトマネジメントはプロジェクトを成功に導く知識・手法の体系です。\n\n**PMBOK** — PMIが策定したプロジェクトマネジメントの標準的な知識体系\n**WBS（Work Breakdown Structure）** — プロジェクト作業を階層的に分解した成果物ベースの構造図\n**ガントチャート** — 作業の開始・終了・進捗を横棒グラフで表示するスケジュール管理図\n**アロー図（PERT）** — 作業の依存関係を矢線で表したネットワーク図。最長経路を分析。\n**クリティカルパス** — 開始から終了までの最長経路。ここが遅れると全体が遅延する。\n**マイルストーン** — プロジェクトの重要な節目・中間目標地点\n\n**プロジェクトの3大制約** — スコープ（範囲）・コスト（費用）・スケジュール（時間）のバランス管理",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(-35, 420),
+    position: polar(90, 420),  // PM arm
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%83%9E%E3%83%8D%E3%82%B8%E3%83%A1%E3%83%B3%E3%83%88",
   },
   {
@@ -489,7 +489,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "ソフトウェア開発の手法。ウォーターフォール・アジャイル・各種テスト技法。",
     detail: "システム開発プロセスはソフトウェアを構築する際の標準的な手順です。\n\n**開発プロセスモデル**\n- ウォーターフォール：要件定義→設計→実装→テスト→運用を順番に実施。手戻りは困難。\n- プロトタイプ：試作品を作り利用者の確認を繰り返す\n- スパイラル：リスク分析を繰り返しながら段階的に開発\n- アジャイル：短期反復（スプリント）でリリースを繰り返す。スクラム・XP等。変化に強い。\n\n**テスト技法**\n- ブラックボックステスト：内部構造を考慮せず入出力仕様からテストを設計\n- ホワイトボックステスト：内部ロジックを検証。命令網羅・分岐網羅。\n- リグレッションテスト：修正後に既存機能が壊れていないか再テスト\n\n**DevOps** — 開発(Dev)と運用(Ops)が連携し継続的にデリバリーする手法",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(-35, 620),
+    position: polar(20, 420),  // SW開発 arm（アルゴリズム寄り・PMとは分離）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E9%96%8B%E7%99%BA%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9",
   },
   {
@@ -499,7 +499,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "ITサービスの品質・可用性を継続管理するフレームワーク。ITIL・SLA・MTBF。",
     detail: "サービスマネジメントはITサービスの品質を継続的に維持・改善するための体系です。\n\n**ITIL（IT Infrastructure Library）** — ITサービスマネジメントのベストプラクティス集\n**SLA（Service Level Agreement）** — サービス提供者と利用者間でサービス品質水準を合意した文書\n\n**ITILの主要プロセス**\n- インシデント管理：発生した障害を迅速に復旧する（速度優先、根本原因は後回し）\n- 問題管理：インシデントの根本原因を特定・排除する（再発防止）\n- 変更管理：システム変更を計画的に管理しリスクを最小化\n- 構成管理：IT資産(CMDB)を正確に把握・管理\n\n**可用性・信頼性指標**\n- MTBF（平均故障間隔）= 稼働中の平均時間（大きいほど良い）\n- MTTR（平均修復時間）= 故障から復旧の平均時間（小さいほど良い）\n- 稼働率 = MTBF ÷ (MTBF + MTTR)\n\n**サービスデスク** — ITサービスの問い合わせ一元窓口（SPOC）",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(-35, 820),
+    position: polar(95, 620),  // サービスマネジメント arm（PMと経営戦略の中間・独立）
     wikiUrl: "https://ja.wikipedia.org/wiki/ITIL",
   },
 ];

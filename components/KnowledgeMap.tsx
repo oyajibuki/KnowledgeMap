@@ -390,7 +390,7 @@ export default function KnowledgeMap() {
       // AP ノードの判定（IDが "ap-" で始まる）
       if (node.id.startsWith("ap-")) {
         const apKn = apZnodes.find((n) => n.id === node.id);
-        if (apKn && apKn.status !== "locked") {
+        if (apKn) {
           setSelectedNode(null);          // ITP 選択を解除
           apSetSelectedNode(node.id);
         }
@@ -400,7 +400,7 @@ export default function KnowledgeMap() {
       // ITP/FE ノード
       const allNodes = [...znodes, ...initialNodes.filter((n) => !znodes.find((z) => z.id === n.id))];
       const kn = allNodes.find((n) => n.id === node.id);
-      if (kn && kn.status !== "locked") {
+      if (kn) {
         apSetSelectedNode(null);          // AP 選択を解除
         setSelectedNode(node.id);
       }
