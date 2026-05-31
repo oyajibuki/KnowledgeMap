@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import NodeDetail from "@/components/NodeDetail";
+import APNodeDetail from "@/components/APNodeDetail";
+import APExamMode from "@/components/APExamMode";
 import GalaxyComplete from "@/components/GalaxyComplete";
 
 const KnowledgeMap = dynamic(() => import("@/components/KnowledgeMap"), {
@@ -87,8 +89,10 @@ export default function ITPPage() {
       </main>
 
       <NodeDetail />
+      <APNodeDetail />
       <ExamMode />
       <FEExamMode />
+      <APExamMode />
       <GalaxyComplete />
     </div>
   );

@@ -11,6 +11,7 @@ interface SphereNodeData {
   isCenter: boolean;
   selected: boolean;
   bouncing?: boolean;
+  size?: number; // カスタムサイズ（省略時: isCenter→80, 通常→56）
   [key: string]: unknown;
 }
 
@@ -48,7 +49,7 @@ function SphereNode({ data }: NodeProps) {
   const d = data as SphereNodeData;
   const cfg = SPHERE_CONFIG[d.status];
   const isLocked = d.status === "locked";
-  const size = d.isCenter ? 80 : 56;
+  const size = d.size ?? (d.isCenter ? 80 : 56);
   const ringSize = size + 14;
 
   return (
