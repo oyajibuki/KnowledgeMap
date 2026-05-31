@@ -256,7 +256,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "組織全体で情報セキュリティを管理するマネジメントシステム。",
     detail: "ISMSは情報セキュリティマネジメントシステムです。(ISO 27001)\n\n**ISMS活動の順序** [問93]\n1. 適用範囲の決定（最初に行う）\n2. リスクアセスメント（特定・分析・評価）\n3. リスク対応の実施\n4. 内部監査\n\n**CIAトライアド**\n- 機密性(Confidentiality)：権限者のみアクセス可\n- 完全性(Integrity)：改ざんされていない\n- 可用性(Availability)：必要時に使える\n\n**物理的対策** — 遠隔地バックアップ・入退室管理 [問94]\n**人的対策** — 教育・訓練\n**技術的対策** — ファイアウォール・暗号化\n\n**情報セキュリティインシデント管理** — 報告経路を事前に整備 [問70]\n**経営者の役割** — 自らリーダーシップを発揮してサイバー対策を推進 [問79]",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(150, 560),  // ISMS arm（セキュリティ管理）
+    position: polar(150, 380),  // ISMS arm（150°）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E6%83%85%E5%A0%B1%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E3%83%9E%E3%83%8D%E3%82%B8%E3%83%A1%E3%83%B3%E3%83%88%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0",
   },
 
@@ -280,7 +280,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "人工知能と機械学習の仕組み。ニューラルネットワークと推論。",
     detail: "AIは人工知能、機械学習はその実現手法です。\n\n**機械学習の種類**\n- 教師あり学習：正解データから学習\n- 教師なし学習：データのパターンを自動発見\n- 強化学習：報酬を最大化する行動を学習\n\n**ニューラルネットワーク** — 脳の神経細胞を模した計算モデル\n**ディープラーニング** — 多層ニューラルネットワークによる深層学習\n**バックプロパゲーション（誤差逆伝搬法）** — 出力の誤差を逆向きに伝えながら各ノードの重みを調整する学習手法 [問82]\n\n**推論の種類** [問84]\n- 演繹推論：一般規則→個別結論（三段論法）\n- 帰納推論：個別事例→一般規則\n- 仮説形成：結論から仮説を推測\n\n**プロンプトエンジニアリング** — 生成AIから意図した回答を得るため、質問・指示を最適化する技術 [問98]",
     difficulty: 3, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(30, 480),  // AI/SW開発 arm
+    position: polar(30, 380),  // AI・SW開発 arm（30°）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92",
   },
 
@@ -292,7 +292,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "オープンソースソフトウェアの定義・ライセンスと著作権の基礎。",
     detail: "OSSとライセンスはIT利用の法的基盤です。\n\n**OSS（オープンソースソフトウェア）** — ソースコードを公開・改変・再配布可能なソフトウェア\n\n**コピーレフト** — OSSを改変した派生ソフトも同じライセンスで公開しなければならない原則 [問73]\n**GPL** — コピーレフトを強制する代表的ライセンス\n**MITライセンス** — 条件が少なく商用利用も自由\n\n**著作権とAI** [問1概念]\n- 生成AIの生成物をインターネット公開→著作権者の許諾が必要な場合あり\n- 私的使用の複製→許諾不要\n\n**ベンチマークテスト** — 標準的な処理を実際のシステムで実行し性能を定量評価する手法 [問62]",
     difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
-    position: polar(-150, 430),
+    position: polar(110, 960),  // 法務 arm 最外周（OSSライセンス・著作権）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%BC%E3%83%97%E3%83%B3%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2",
   },
 
@@ -304,7 +304,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "企業が競争優位を確立するための戦略立案手法。SWOT・PPM・BSCなど。",
     detail: "経営戦略は企業が長期的に競争優位を確立するための計画です。\n\n**SWOT分析** — 強み(S)・弱み(W)・機会(O)・脅威(T)で内外環境を分析\n**PPM（プロダクト・ポートフォリオ・マネジメント）** — 市場成長率×市場占有率で「花形」「金のなる木」「問題児」「負け犬」に分類\n**バランスドスコアカード（BSC）** — 財務・顧客・業務プロセス・学習と成長の4視点で戦略達成度を管理\n**コアコンピタンス** — 他社に真似されない自社固有の中核的な強み・能力\n**BCP（事業継続計画）** — 災害・緊急事態時に重要業務を継続するための計画\n**KPI** — 目標達成度を測定する重要業績評価指標",
     difficulty: 2, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(105, 420),  // 経営戦略 arm
+    position: polar(110, 320),  // 経営戦略 arm（110°）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E7%B5%8C%E5%96%B6%E6%88%A6%E7%95%A5",
   },
   {
@@ -314,7 +314,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "顧客ニーズを把握し価値を届けるマーケティング活動の基礎。4P・CRM・EC。",
     detail: "マーケティングは顧客ニーズを見つけ価値を届ける活動全体です。\n\n**マーケティングミックス（4P）**\n- Product（製品）：何を売るか\n- Price（価格）：いくらで売るか\n- Place（流通）：どこで売るか\n- Promotion（プロモーション）：どう知らせるか\n\n**STP分析** — Segmentation（市場細分化）・Targeting（標的市場選択）・Positioning（位置付け）\n**CRM（顧客関係管理）** — 顧客情報を一元管理し長期関係を構築する戦略・システム\n**ロングテール** — 多数の少量販売品の売上合計がヒット商品を上回る現象。ECサイトで顕著。\n**eコマース** — インターネット上での商品・サービス売買",
     difficulty: 2, importance: 3, isExamFrequent: false, status: "locked",
-    position: polar(105, 620),  // 経営戦略 arm
+    position: polar(110, 540),  // 経営戦略 arm（110°）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B1%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0",
   },
   {
@@ -324,7 +324,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "著作権・特許・個人情報保護法など企業活動に必要な法律知識。",
     detail: "企業活動に関わる法律・知的財産権・コンプライアンスの知識です。\n\n**著作権** — 創作物の創作時点で自動発生。登録不要。死後70年間保護。\n**産業財産権**\n- 特許権：発明の保護（存続期間20年）。出願・審査・登録が必要。\n- 実用新案権：物品の形状・構造に関する考案（10年）\n- 商標権：商品・サービスの識別マーク（10年・更新可）\n- 意匠権：物品のデザイン・外観（25年）\n\n**個人情報保護法** — 個人情報の取得・利用・安全管理を義務付け\n**不正競争防止法** — 営業秘密の不正取得・使用・開示等を禁止\n**コンプライアンス** — 法令・社内規則・社会規範の遵守\n**内部統制** — リスク管理と業務プロセスの適切な管理体制",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(105, 820),  // 経営戦略 arm（法務）
+    position: polar(110, 760),  // 法務 arm（110°）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E7%9F%A5%E7%9A%84%E8%B2%A1%E7%94%A3%E6%A8%A9",
   },
 
@@ -394,7 +394,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "UML・デザインパターン（GoF）・SOLID原則・オブジェクト指向。",
     detail: "**UML図の種類**\n構造図（静的）：クラス図・コンポーネント図・配置図\n振る舞い図（動的）：シーケンス図・ユースケース図・アクティビティ図・状態機械図\n\n**オブジェクト指向の3大原則**\n・カプセル化：データと操作を1クラスに封じ外部からのアクセスを制御\n・継承：親クラスの属性・操作を子クラスが引き継ぐ\n・ポリモーフィズム：同じメッセージに対して異なるクラスが異なる振る舞いをする\n\n**SOLID原則**\n・S：単一責任の原則（1クラス1責任）\n・O：開放閉鎖の原則（拡張に開いて修正に閉じる）\n・L：リスコフの置換原則\n・I：インタフェース分離の原則\n・D：依存性逆転の原則\n\n**主要デザインパターン（GoF）**\n・Singleton：インスタンスを1つに制限\n・Adapter：インタフェースを変換して互換性を持たせる\n・Observer：状態変化を他のオブジェクトに通知\n・Strategy：アルゴリズムを差し替え可能にする",
     difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
-    position: polar(60, 1200),  // SW設計 arm FEリング（60°専用）
+    position: polar(30, 1200),  // SW開発 arm FEリング（30°・ITP sys-dev と同方向）
   },
   {
     id: "fe-test",
@@ -403,7 +403,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "ブラックボックス/ホワイトボックステスト・境界値分析・回帰テスト。",
     detail: "**ブラックボックステスト技法**\n内部構造を考慮せず仕様書から入出力を検証。\n・同値分割法：入力を「有効クラス」「無効クラス」に分類し代表値でテスト\n・境界値分析：クラスの境界上の値（直前・ちょうど・直後）でテスト\n  例：有効範囲1〜120 → 0, 1, 120, 121 をテスト\n・デシジョンテーブル：複数条件の組み合わせを表で網羅\n\n**ホワイトボックステスト技法**\n内部ロジック（コード）を検証。\n・命令網羅（C0）：全命令を1回以上実行。最も基本。\n・分岐網羅（C1）：全分岐（true/false）を1回以上通過。\n\n**テストの種類と順序**\n・単体テスト → 結合テスト → システムテスト → 受入テスト（UAT）\n・トップダウン結合：スタブ（仮下位モジュール）を使用\n・ボトムアップ結合：ドライバ（仮上位モジュール）を使用\n\n**回帰テスト（リグレッションテスト）**\n修正後に既存機能が壊れていないかを確認。CI/CDで自動化が一般的。",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(45, 1200),  // テスト arm FEリング（45°専用）
+    position: polar(30, 1450),  // SW開発 arm FEリング（テスト・30°延長）
   },
   {
     id: "fe-prog",
@@ -412,7 +412,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "FE試験の擬似言語・再帰・オーバーライド・スコープ。",
     detail: "**FE試験の擬似言語**\n・if（条件）→ 分岐\n・while（条件）→ 繰り返し\n・for（変数：開始 to 終了）→ 繰り返し\n・配列：a[i] のように表記\n\n**再帰アルゴリズムの読み方**\nfactorial(n) = n × factorial(n-1)、factorial(0) = 1\nfactorial(5) = 5×4×3×2×1 = 120\n\n**オブジェクト指向**\n・クラス：オブジェクトの設計図（属性＋メソッド）\n・コンストラクタ：インスタンス生成時に呼ばれる特殊メソッド\n・オーバーライド：継承したメソッドを子クラスで再定義\n・オーバーロード：同名メソッドを引数の型・数で区別\n\n**プログラミングパラダイム**\n・手続き型：処理を順番に記述（C言語等）\n・オブジェクト指向：データと操作をクラスにまとめる（Java・Python等）\n・関数型：副作用のない純粋関数で処理（Haskell・Scala等）\n\n**変数のスコープ**\n・局所変数（ローカル変数）：関数内で宣言。関数が終わると消える。\n・大域変数（グローバル変数）：プログラム全体でアクセス可。多用は危険。",
     difficulty: 4, importance: 5, isExamFrequent: true, status: "locked",
-    position: polar(30, 1200),  // プログラミング arm FEリング（30°専用）
+    position: polar(30, 1700),  // SW開発 arm FEリング（プログラミング・30°最外周）
   },
 
   // ── FE 追加ノード群（Row 0: 上段・Row 4: 下段）──
@@ -423,7 +423,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "AND/OR/NOT・NAND・NOR・XOR・フリップフロップ・ド・モルガンの法則。",
     detail: "**論理演算と論理ゲート**\n基本ゲート：AND（論理積）・OR（論理和）・NOT（否定）\n複合ゲート：NAND＝AND+NOT、NOR＝OR+NOT、XOR（排他的論理和）\n\n**ド・モルガンの法則**\n・NOT(A AND B) = NOT(A) OR NOT(B)\n・NOT(A OR B) = NOT(A) AND NOT(B)\n→ NANDゲートは全論理回路を表現できる万能ゲート\n\n**真理値表（A=1, B=0の場合）**\nAND=0、OR=1、XOR=1、NAND=1、NOR=0\n\n**カルノー図（Karnaugh Map）**\n論理式を最簡形に簡略化するグラフィカルな手法。\n隣り合うセルをグループ化することで回路を最小化。\n吸収法則：A AND (A OR B) = A\n\n**フリップフロップ（順序回路）**\n・SRフリップフロップ：Set/Resetで状態保持\n・Dフリップフロップ：クロック信号の立ち上がりでD入力を記憶\n・JKフリップフロップ：J=1,K=1でトグル動作\n1ビットの記憶素子。レジスタ・カウンタの基本部品。\n\n**加算器**\n・半加算器：2ビットの加算（桁上がり出力あり）\n・全加算器：3ビット入力（前の桁上がりを含む）",
     difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(-45, 1200),  // 論理回路 arm FEリング（-45°専用）
+    position: polar(-60, 1200),  // OS/HW arm FEリング（-60°・メモリOSと同方向）
   },
   {
     id: "fe-os",
@@ -432,7 +432,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "スレッド・スケジューリングアルゴリズム・デッドロック4条件・セマフォ・ページング。",
     detail: "**プロセスとスレッド**\n・プロセス：独立したメモリ空間で実行される単位。切替コスト大。\n・スレッド：プロセス内の軽量な実行単位。メモリ共有。切替コスト小。\n・マルチスレッド：1プロセス内で複数スレッドが並行実行\n\n**CPUスケジューリングアルゴリズム**\n・FCFS（先着順）：到着順に実行。シンプルだが平均待ち時間が長い。\n・ラウンドロビン（RR）：タイムクォンタムで均等に割り当て。対話型に適切。\n・優先度スケジューリング：優先度高いジョブから実行。低優先度の飢餓が発生する可能性。\n・SJF（最短ジョブ優先）：実行時間が短いジョブから実行。平均待ち時間最小。\n\n**デッドロックの4条件（コフマン条件）**\n① 相互排除（Mutual Exclusion）\n② 保持と待機（Hold and Wait）\n③ 非剥奪（No Preemption）\n④ 循環待機（Circular Wait）\n→ 1つでも排除すれば防止可能\n\n**セマフォとミューテックス**\n・セマフォ：カウンタで複数リソースを管理。P操作（取得・カウンタ減少）・V操作（解放・カウンタ増加）。\n・ミューテックス：バイナリセマフォ。1スレッドのみ保持可能。\n\n**ページングとセグメンテーション**\n・ページング：固定長でメモリを分割。外部断片化なし・内部断片化あり。\n・セグメンテーション：論理単位で分割。外部断片化が発生。\n・デマンドページング：必要時にページをRAMにロードする方式。",
     difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(-60, 1200),  // OS arm FEリング
+    position: polar(-60, 1450),  // OS arm FEリング（-60°延長）
   },
   {
     id: "fe-rel",
@@ -450,7 +450,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "コンパイラ・インタプリタ・JIT・BNF・字句解析・構文解析・言語パラダイム。",
     detail: "**コンパイラとインタプリタ**\n・コンパイラ：ソースコード全体を機械語に変換してから実行。高速。C/C++/Rustなど。\n・インタプリタ：1行ずつ解釈・実行。デバッグ容易。Python・Ruby。\n・JIT（Just-In-Time）コンパイラ：実行時に機械語へコンパイル。Java(JVM)・C#(.NET)。\n\n**コンパイルの4段階**\n① 字句解析（Lexical Analysis）：ソースを字句（トークン）に分解\n② 構文解析（Parsing）：BNFなどの文法規則に基づき構文木（AST）を生成\n③ 意味解析（Semantic Analysis）：型チェック・未定義変数検出\n④ コード生成（Code Generation）：最適化して機械語を生成\n\n**BNF（バッカス-ナウア記法）**\n文法規則を定義する記法。<記号>::= <定義> で表す。\n例：<数字> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9\n　　<整数> ::= <数字> | <整数><数字>\n\n**正規表現**\n・ * : 0回以上の繰り返し\n・ + : 1回以上の繰り返し\n・ ? : 0回または1回\n・ | : 選択（OR）\n・ [0-9] : 0〜9の数字クラス\n\n**プログラミングパラダイム**\n・手続き型（命令型）：処理手順を命令の列で記述。C言語。\n・オブジェクト指向：データと操作をクラスに。Java/Python。\n・関数型：副作用のない純粋関数で処理。Haskell/Scala。\n・論理型：事実と規則から推論エンジンが解を導出。Prolog。\n・宣言型：「何をするか」を宣言。SQL/HTML。",
     difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
-    position: polar(15, 1200),  // 言語・コンパイラ arm FEリング（15°専用）
+    position: polar(0, 1750),   // アルゴリズム arm FEリング（0°最外周・言語理論）
   },
   {
     id: "fe-pm-adv",
@@ -459,7 +459,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "EVM（PV・EV・AC・CV・SV・CPI・SPI）・PERT期待時間・リスク管理戦略。",
     detail: "**EVM（アーンドバリュー管理）**\nプロジェクトのコスト・スケジュールを客観的に測定する手法。\n\n**基本3指標**\n・PV（計画価値 Planned Value）：この時点までに計画していた作業量の予算\n・EV（アーンドバリュー Earned Value）：この時点までに実際に完了した作業量の予算\n・AC（実コスト Actual Cost）：この時点までの実際の支出\n\n**差異分析指標**\n・CV（コスト差異）= EV - AC　→ マイナスならコスト超過\n・SV（スケジュール差異）= EV - PV　→ マイナスなら遅延\n・CPI（コスト効率）= EV ÷ AC　→ 1.0未満ならコスト超過\n・SPI（スケジュール効率）= EV ÷ PV　→ 1.0未満なら遅延\n・EAC（完成時コスト予測）= BAC ÷ CPI\n\n**PERT（期待完了時間の計算）**\n期待時間 = (最楽観 + 4 × 最可能 + 最悲観) ÷ 6\n例：最楽観=4、最可能=7、最悲観=10 → (4+28+10)÷6 = 7\n\n**クリティカルパス**\nTotal Float（余裕時間）= 0 の経路。ここが遅れると全体が遅延する。\n\n**リスク管理の4戦略**\n・回避（Avoid）：リスク要因を取り除く計画変更\n・軽減（Mitigate）：発生確率または影響度を低下させる\n・転嫁（Transfer）：保険・外注でリスクを第三者に移転\n・受容（Accept）：影響が小さいリスクは承知の上で対処しない",
     difficulty: 4, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(90, 1200),  // PM arm FEリング ← AP pm と同方向!
+    position: polar(90, 1200),  // PM arm FEリング（90°・ITP pj-mgmt と同方向）
   },
   {
     id: "fe-audit",
@@ -468,7 +468,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "システム監査・ITGC・ITAC・COBIT・不正アクセス禁止法・情報倫理。",
     detail: "**システム監査の目的**\n情報システムが有効性・効率性・信頼性・安全性の観点から適切に構築・運用されているかを第三者が評価する活動。\n\n**IT統制の2種類**\n・ITGC（IT一般統制 / IT General Controls）：システム全体に影響する基盤的管理。\n　例：アクセス制御・変更管理・バックアップ管理・障害対応\n・ITAC（業務処理統制 / IT Application Controls）：個別業務アプリの入力・処理・出力の正確性を保証。\n　例：入力データの妥当性チェック・照合確認・エラーレポート\n\n**COBIT（Control Objectives for IT）**\nISACA（情報システム監査・統制協会）が策定したITガバナンス・IT管理のフレームワーク。\n5つのドメイン：計画・組織・取得・提供・監視\n\n**脆弱性検査とペネトレーションテスト**\n・脆弱性検査：ツールを使いシステムの弱点を列挙・評価する\n・ペネトレーションテスト（侵入テスト）：実際に攻撃を試みてセキュリティを実証的に評価\n\n**主要法制度**\n・不正アクセス禁止法：認可を受けていないコンピュータへのアクセスを禁止\n・プロバイダ責任制限法：インターネット上の権利侵害に関するプロバイダの責任を制限\n・GDPR：EU一般データ保護規則。EU域内の個人データを扱う全組織に適用。\n\n**ITガバナンス**\n経営者がITを戦略的に活用し、リスク管理と価値創出のバランスをとる管理体制。",
     difficulty: 3, importance: 3, isExamFrequent: false, status: "locked",
-    position: polar(120, 1200),  // 監査 arm FEリング（120°専用）
+    position: polar(60, 1200),   // 監査 arm FEリング（60°・AP audit と同方向）
   },
 
   // ── マネジメント系 ARM (-35°) : プロジェクト管理 → システム開発 → サービス管理 ──
@@ -479,7 +479,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "プロジェクトを成功させるための計画・実行・管理手法。PMBOK・WBS・ガントチャート。",
     detail: "プロジェクトマネジメントはプロジェクトを成功に導く知識・手法の体系です。\n\n**PMBOK** — PMIが策定したプロジェクトマネジメントの標準的な知識体系\n**WBS（Work Breakdown Structure）** — プロジェクト作業を階層的に分解した成果物ベースの構造図\n**ガントチャート** — 作業の開始・終了・進捗を横棒グラフで表示するスケジュール管理図\n**アロー図（PERT）** — 作業の依存関係を矢線で表したネットワーク図。最長経路を分析。\n**クリティカルパス** — 開始から終了までの最長経路。ここが遅れると全体が遅延する。\n**マイルストーン** — プロジェクトの重要な節目・中間目標地点\n\n**プロジェクトの3大制約** — スコープ（範囲）・コスト（費用）・スケジュール（時間）のバランス管理",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(90, 420),  // PM arm
+    position: polar(90, 350),  // PM arm（90°）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%83%9E%E3%83%8D%E3%82%B8%E3%83%A1%E3%83%B3%E3%83%88",
   },
   {
@@ -489,7 +489,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "ソフトウェア開発の手法。ウォーターフォール・アジャイル・各種テスト技法。",
     detail: "システム開発プロセスはソフトウェアを構築する際の標準的な手順です。\n\n**開発プロセスモデル**\n- ウォーターフォール：要件定義→設計→実装→テスト→運用を順番に実施。手戻りは困難。\n- プロトタイプ：試作品を作り利用者の確認を繰り返す\n- スパイラル：リスク分析を繰り返しながら段階的に開発\n- アジャイル：短期反復（スプリント）でリリースを繰り返す。スクラム・XP等。変化に強い。\n\n**テスト技法**\n- ブラックボックステスト：内部構造を考慮せず入出力仕様からテストを設計\n- ホワイトボックステスト：内部ロジックを検証。命令網羅・分岐網羅。\n- リグレッションテスト：修正後に既存機能が壊れていないか再テスト\n\n**DevOps** — 開発(Dev)と運用(Ops)が連携し継続的にデリバリーする手法",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(20, 420),  // SW開発 arm（アルゴリズム寄り・PMとは分離）
+    position: polar(30, 600),  // SW開発 arm（30°・AI/SW開発/UI arm）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E9%96%8B%E7%99%BA%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9",
   },
   {
@@ -499,7 +499,7 @@ export const initialNodes: KnowledgeNode[] = [
     description: "ITサービスの品質・可用性を継続管理するフレームワーク。ITIL・SLA・MTBF。",
     detail: "サービスマネジメントはITサービスの品質を継続的に維持・改善するための体系です。\n\n**ITIL（IT Infrastructure Library）** — ITサービスマネジメントのベストプラクティス集\n**SLA（Service Level Agreement）** — サービス提供者と利用者間でサービス品質水準を合意した文書\n\n**ITILの主要プロセス**\n- インシデント管理：発生した障害を迅速に復旧する（速度優先、根本原因は後回し）\n- 問題管理：インシデントの根本原因を特定・排除する（再発防止）\n- 変更管理：システム変更を計画的に管理しリスクを最小化\n- 構成管理：IT資産(CMDB)を正確に把握・管理\n\n**可用性・信頼性指標**\n- MTBF（平均故障間隔）= 稼働中の平均時間（大きいほど良い）\n- MTTR（平均修復時間）= 故障から復旧の平均時間（小さいほど良い）\n- 稼働率 = MTBF ÷ (MTBF + MTTR)\n\n**サービスデスク** — ITサービスの問い合わせ一元窓口（SPOC）",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(95, 620),  // サービスマネジメント arm（PMと経営戦略の中間・独立）
+    position: polar(75, 500),  // サービスマネジメント arm（75°専用）
     wikiUrl: "https://ja.wikipedia.org/wiki/ITIL",
   },
 ];
@@ -547,7 +547,7 @@ export const connections: Connection[] = [
   { fromNodeId: "firewall",  toNodeId: "isms",   relationType: "related" },
   { fromNodeId: "ip",        toNodeId: "iot",    relationType: "dependency" },
   { fromNodeId: "cpu-basic", toNodeId: "ai-ml",  relationType: "dependency" },
-  { fromNodeId: "os-basic",  toNodeId: "oss",    relationType: "dependency" },
+  { fromNodeId: "houmu",     toNodeId: "oss",    relationType: "related" },     // 法務→OSSライセンス
 
   // 横断接続（スフィア盤らしい斜め線）
   { fromNodeId: "cpu-basic", toNodeId: "ram",            relationType: "related" },
@@ -565,10 +565,10 @@ export const connections: Connection[] = [
   { fromNodeId: "keiei",     toNodeId: "marketing",    relationType: "dependency" },
   { fromNodeId: "keiei",     toNodeId: "houmu",        relationType: "dependency" },
 
-  // マネジメント系 (-35° arm)
-  { fromNodeId: "binary",    toNodeId: "pj-mgmt",      relationType: "dependency" },
-  { fromNodeId: "pj-mgmt",   toNodeId: "sys-dev",      relationType: "dependency" },
-  { fromNodeId: "sys-dev",   toNodeId: "service-mgmt", relationType: "dependency" },
+  // マネジメント系（各アームに独立配置）
+  { fromNodeId: "binary",    toNodeId: "pj-mgmt",      relationType: "dependency" },  // PM arm（90°）
+  { fromNodeId: "binary",    toNodeId: "sys-dev",      relationType: "dependency" },  // SW開発 arm（30°）
+  { fromNodeId: "binary",    toNodeId: "service-mgmt", relationType: "dependency" },  // SM arm（75°）
 
   // 横断接続
   { fromNodeId: "keiei",        toNodeId: "pj-mgmt",      relationType: "related" },

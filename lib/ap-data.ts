@@ -46,7 +46,7 @@ export const apNodes: KnowledgeNode[] = [
     description: "機械学習・ディープラーニング・過学習対策など。",
     detail: "近年出題頻度が上昇しているAI関連分野です。\n\n**機械学習の種類** — 教師あり学習・教師なし学習・強化学習\n**過学習（オーバーフィッティング）** — 訓練データに過剰適合し未知データに弱くなる状態。データ拡張・正則化・ドロップアウトで対策。[R7春 問3]\n**データ拡張** — 既存訓練データを加工して量を増やし汎化能力を高める手法。\n**ニューラルネットワーク** — 人間の神経回路を模倣した層構造モデル。深層学習はその多層版。\n**交差検証（クロスバリデーション）** — データを分割し複数回学習・検証を繰り返す評価手法。",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(0, 2350),   // アルゴリズム arm 延長（AIはアルゴの深化）
+    position: polar(30, 2250),  // AI・SW開発 arm（30°・FE/ITP sw-dev と同方向）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92",
   },
   {
@@ -142,7 +142,7 @@ export const apNodes: KnowledgeNode[] = [
     description: "ユーザビリティ評価・SVG・UX・アクセシビリティなど。",
     detail: "ユーザとシステムの接点に関する技術です。\n\n**ユーザビリティ評価** — 使いやすさの測定。ヒューリスティック評価・ユーザテスト・ウォークスルーなど。[R7春 問22]\n**SVG（Scalable Vector Graphics）** — XMLベースのベクター画像形式。拡大縮小しても劣化しない。[R7春 問23]\n**UX（User Experience）** — 製品の使用体験全体。UIだけでなく感情的満足度も含む。\n**アクセシビリティ** — 障害者・高齢者含む全ユーザが利用できる設計。Webは WCAG が国際規格。\n**インタラクションデザイン** — ユーザの行動とシステムの反応を設計する手法。ウィザード形式・直接操作など。",
     difficulty: 2, importance: 3, isExamFrequent: false, status: "locked",
-    position: polar(150, 2050),  // UI arm（データベース反対側）
+    position: polar(30, 2450),  // AI・SW開発・UI arm（30°最外周）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3",
   },
 
@@ -164,7 +164,7 @@ export const apNodes: KnowledgeNode[] = [
     description: "EVM・スケジュール・リスク・プロジェクト憲章など。",
     detail: "PMBOK準拠のプロジェクト管理手法です。\n\n**プロジェクト憲章** — プロジェクト正式認可文書。ビジネスニーズ・目標・PMの責任・権限を記載。立ち上げプロセスで作成。[R7春 問51]\n**EVM（アーンドバリュー管理）** — CPI=EV/AC（<1はコスト超過）、SPI=EV/PV（<1はスケジュール遅延）、TCPI=残作業/残予算。[R7春 問52]\n**クラッシング** — 資源追加でクリティカルパスを短縮。コスト増加を伴う。[R7春 問53]\n**クリティカルパス** — プロジェクト完了までの最長経路。ここの遅延が全体遅延に直結。\n**コンティンジェンシー予備費** — 特定リスク発生時のための予備コスト（マネジメント予備とは異なる）。",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(60, 2050),   // PM arm ← ITP pj-mgmt と同方向（60°専用）
+    position: polar(90, 2050),  // PM arm（90°・ITP pj-mgmt / FE fe-pm-adv と同方向）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%BC%E3%83%B3%E3%83%89%E3%83%90%E3%83%AA%E3%83%A5%E3%83%BC%E3%83%9E%E3%83%8D%E3%82%B8%E3%83%A1%E3%83%B3%E3%83%88",
   },
   {
@@ -174,7 +174,7 @@ export const apNodes: KnowledgeNode[] = [
     description: "ITIL・SLA・インシデント管理・変更管理など。",
     detail: "ITサービスの安定運用を支える管理フレームワークです。\n\n**ITIL（ITインフラストラクチャライブラリ）** — ITサービス管理のベストプラクティス集。\n**SLA（サービスレベル合意）** — 提供者と利用者間のサービス品質を定めた合意書。可用性・応答時間などを規定。\n**インシデント管理** — サービス障害を最短で復旧させることを目的。原因究明は問題管理が担当。\n**変更管理** — サービスへの変更を計画・承認・実施・レビューするプロセス。リスク評価が重要。\n**サービス継続的改善（CSI）** — Plan-Do-Check-Actサイクルでサービスを継続改善。[R7春 問57]",
     difficulty: 3, importance: 3, isExamFrequent: true, status: "locked",
-    position: polar(90, 2050),   // サービスマネジメント arm（90°専用・PMとは分離）
+    position: polar(75, 2050),  // サービスマネジメント arm（75°・ITP service-mgmt と同方向）
     wikiUrl: "https://ja.wikipedia.org/wiki/ITIL",
   },
   {
@@ -184,7 +184,7 @@ export const apNodes: KnowledgeNode[] = [
     description: "監査手続・ウォークスルー法・内部統制など。",
     detail: "ITシステムの適切性を第三者が検証する活動です。\n\n**ウォークスルー法** — データの生成から処理・出力まで一連のコントロールをプロセスに沿って追跡確認する手法。[R7春 問58]\n**インタビュー法** — 関係者に口頭で聞き取り・確認する手法。\n**テストデータ法** — テストデータを実際のシステムで処理し期待する結果が出るか検証。\n**ドキュメントレビュー** — 文書・資料を入手して内容を点検。\n**内部統制** — 組織が業務の有効性・信頼性・法令遵守を確保するための仕組み。COSOフレームワーク。",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(90, 2250),   // 監査 arm（サービスマネジメントの延長）
+    position: polar(60, 2050),  // 監査 arm（60°・FE fe-audit と同方向）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E7%9B%A3%E6%9F%BB",
   },
 
@@ -196,7 +196,7 @@ export const apNodes: KnowledgeNode[] = [
     description: "PPM・BSC・SWOT・DX認定・システム化計画など。",
     detail: "経営とITを結ぶ戦略的思考が求められる分野です。\n\n**PPM（プロダクトポートフォリオマネジメント）** — 市場成長率×相対市場シェアのマトリックスで事業を「花形・金のなる木・問題児・負け犬」に分類し資源配分を最適化。[R7春 問67]\n**BSC（バランスドスコアカード）** — 財務・顧客・業務プロセス・学習と成長の4視点で企業戦略を評価。\n**DX認定制度** — デジタルガバナンス・コードに基づきDXに取り組む事業者を国が認定。[R7春 問61]\n**プライスライニング** — あらかじめ設定した価格帯に製品ラインナップを揃える価格戦略。[R7春 問68]\n**フリーミアム** — 基本機能無料・高機能有料で大量ユーザを獲得するビジネスモデル。[R7春 問70]",
     difficulty: 3, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(120, 2050),  // 経営戦略 arm（120°専用・マネジメントとは分離）
+    position: polar(110, 2050), // 経営戦略 arm（110°・ITP keiei と同方向）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AD%E3%83%80%E3%82%AF%E3%83%88%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AA%E3%82%AA%E3%83%9E%E3%83%8D%E3%82%B8%E3%83%A1%E3%83%B3%E3%83%88",
   },
   {
@@ -206,7 +206,7 @@ export const apNodes: KnowledgeNode[] = [
     description: "ビジネスモデルキャンバス・エッジAI・コンピテンシーなど。",
     detail: "ビジネスとITを結ぶ実践的な知識です。\n\n**ビジネスモデルキャンバス** — 9つのブロックでビジネスモデルを可視化するフレームワーク。顧客セグメント・価値提案・チャネル等。[R7春 問69]\n**エッジAI** — クラウドではなくデバイス側でAI処理を行う。低遅延・プライバシー保護に優れる。[R7春 問71]\n**マシンビジョン** — 画像センサとAIで製造工程の品質検査・計測を自動化するシステム。[R7春 問72]\n**コンピテンシーモデル** — 高業績者に共通する行動特性を体系化した人材評価モデル。[R7春 問73]\n**グルーピング（アフィニティ図法）** — KJ法の一種。付箋を親和性でグループ化して問題構造を発見。[R7春 問75]",
     difficulty: 2, importance: 3, isExamFrequent: true, status: "locked",
-    position: polar(120, 2250),  // 経営戦略 arm 延長
+    position: polar(110, 2250), // 経営戦略 arm（110°延長）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E3%83%93%E3%82%B8%E3%83%8D%E3%82%B9%E3%83%A2%E3%83%87%E3%83%AB%E3%82%AD%E3%83%A3%E3%83%B3%E3%83%90%E3%82%B9",
   },
   {
@@ -216,7 +216,7 @@ export const apNodes: KnowledgeNode[] = [
     description: "著作権法・不正アクセス禁止法・RoHS・個人情報保護法など。",
     detail: "IT関連の法令・規制に関する知識です。\n\n**著作権とAI** — 2018年著作権法改正でAI学習目的のデータ利用は原則許可。ただし生成物が既存著作物と類似・依拠性がある場合は侵害の可能性。[R7春 問78]\n**RoHS指令** — EUの電気電子製品に含まれる有害物質（鉛・水銀・カドミウムなど）の使用を制限する指令。環境・健康被害の最小化が目的。[R7春 問80]\n**不正アクセス禁止法** — アクセス権なしにコンピュータにログインする行為等を禁止。\n**個人情報保護法** — 個人情報の適切な取り扱いを定めた法律。改正により仮名加工・匿名加工の規定も整備。\n**特許権** — 発明を保護。出願から20年。業務上の発明（職務発明）は原則使用者に帰属。",
     difficulty: 2, importance: 4, isExamFrequent: true, status: "locked",
-    position: polar(120, 2450),  // 経営戦略 arm 最外周
+    position: polar(110, 2450), // 法務 arm（110°最外周）
     wikiUrl: "https://ja.wikipedia.org/wiki/%E4%B8%8D%E6%AD%A3%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E7%A6%81%E6%AD%A2%E6%B3%95",
   },
 ];
