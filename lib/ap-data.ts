@@ -277,10 +277,14 @@ export const crossExamLinks: { from: string; to: string }[] = [
   { from: "sort",              to: "ap-algo"     }, // 整列アルゴリズム
   { from: "cloud",             to: "ap-sys"      }, // クラウド↔システム構成
   { from: "cloud",             to: "ap-strategy" }, // クラウド↔IT戦略
-  // ── マネジメント・ストラテジ系（ITP↔AP）──
-  { from: "encryption",        to: "ap-sm"       }, // 暗号化↔セキュリティ管理
-  { from: "digital-signature", to: "ap-legal"    }, // 電子署名↔法務
-  { from: "os-basic",          to: "ap-dev"      }, // OS↔ソフトウェア開発
-  { from: "rdbms",             to: "ap-pm"       }, // DB管理↔プロジェクト管理
-  { from: "storage",           to: "ap-sm"       }, // 記憶装置↔サービス管理（バックアップ）
+  // ── マネジメント・ストラテジ系（ITP↔AP / FE↔AP）──
+  { from: "pj-mgmt",          to: "ap-pm"       }, // ITP PM → AP PM
+  { from: "fe-pm-adv",        to: "ap-pm"       }, // FE PM → AP PM
+  { from: "sys-dev",          to: "ap-dev"      }, // ITP SW開発 → AP SW開発
+  { from: "fe-design",        to: "ap-dev"      }, // FE SW設計 → AP SW開発
+  { from: "service-mgmt",     to: "ap-sm"       }, // ITP SM → AP SM
+  { from: "keiei",            to: "ap-strategy" }, // ITP 経営戦略 → AP 経営戦略
+  { from: "houmu",            to: "ap-legal"    }, // ITP 法務 → AP 法務
+  { from: "digital-signature", to: "ap-legal"   }, // 電子署名↔法務
+  { from: "isms",             to: "ap-sec"      }, // ISMS↔セキュリティ
 ];
