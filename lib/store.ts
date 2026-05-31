@@ -237,7 +237,13 @@ export const useGameStore = create<GameStore>()(
             n.id === "binary" ? { ...n, status: "viewed" as NodeStatus } : n
           );
 
-        let merged = [...persisted.nodes, ...missingNodes];
+        // position は常にコードの最新値を使う（localStorage の古い座標を無視）
+        const latestPositions = new Map(initialNodes.map((n) => [n.id, n.position]));
+
+        let merged = [...persisted.nodes, ...missingNodes].map((node) => ({
+          ...node,
+          position: latestPositions.get(node.id) ?? node.position,
+        }));
 
         // Step 2: 既に解放済みのノードから隣接ノードを自動アンロック（進捗補完）
         const unlockedIds = new Set(

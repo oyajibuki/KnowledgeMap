@@ -93,7 +93,13 @@ export const useAPStore = create<APStore>()(
             n.id === "ap-math" ? { ...n, status: "viewed" as NodeStatus } : n
           );
 
-        let merged = [...persisted.nodes, ...missingNodes];
+        // position は常にコードの最新値を使う（localStorage の古い座標を無視）
+        const latestPositions = new Map(apNodes.map((n) => [n.id, n.position]));
+
+        let merged = [...persisted.nodes, ...missingNodes].map((node) => ({
+          ...node,
+          position: latestPositions.get(node.id) ?? node.position,
+        }));
 
         const unlockedIds = new Set(
           merged.filter((n) => n.status !== "locked").map((n) => n.id)
