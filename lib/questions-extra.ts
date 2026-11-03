@@ -12,7 +12,7 @@ export const extraQuestions: Question[] = [
   { id:"eq-bin3", nodeId:"binary", question:"2進数の1010と0101の論理積（AND）はどれか。", choices:["0000","0101","1111","1010"], answer:0, explanation:"ANDは両方1のビットのみ1。1010 AND 0101 = 0000。" },
   { id:"eq-bin4", nodeId:"binary", question:"2進数の1010と0101の論理和（OR）はどれか。", choices:["0000","0101","1111","1010"], answer:2, explanation:"ORはどちらかが1なら1。1010 OR 0101 = 1111。" },
   { id:"eq-bin5", nodeId:"binary", question:"文字コードに関する説明として正しいものはどれか。", choices:["ASCIIは日本語を完全に表現できる","UTF-8は英字を1バイト、漢字を3バイトで表現できる","Shift-JISはUnicodeの一種である","UTF-8では全文字が固定長で格納される"], answer:1, explanation:"UTF-8は可変長エンコードで、英字1バイト・漢字3バイト。Unicodeの実装形式の一つ。" },
-  { id:"eq-bin6", nodeId:"binary", question:"1MBは何バイトか。", choices:["1,000バイト","1,024バイト","1,000,000バイト","1,048,576バイト"], answer:3, explanation:"1KB=1024B、1MB=1024KB=1,048,576バイト。（2¹⁰=1024）" },
+  { id:"eq-bin6", nodeId:"binary", question:"1KB=1,024バイトとして計算するとき、1MBは何バイトか。", choices:["1,000バイト","1,024バイト","1,000,000バイト","1,048,576バイト"], answer:3, explanation:"1MB=1,024KB=1,024×1,024=1,048,576バイト。（2¹⁰=1024）。1KB=1,000バイトとして数える場合は1MB=1,000,000バイトになるので、問題の前提を確認する。" },
 
   // ══════ cpu-basic（CPU）══════
   { id:"eq-cpu1", nodeId:"cpu-basic", question:"CPUの命令実行サイクルの順序として正しいものはどれか。", choices:["実行→解読→フェッチ","フェッチ→解読→実行","解読→フェッチ→実行","フェッチ→実行→解読"], answer:1, explanation:"CPUは①フェッチ（命令取り出し）→②デコード（解読）→③実行の順で処理する。" },
@@ -36,7 +36,7 @@ export const extraQuestions: Question[] = [
   { id:"eq-os3", nodeId:"os-basic", question:"GUIとCUIの説明として正しいものはどれか。", choices:["GUIはコマンド入力、CUIはマウス操作が中心","GUIはアイコンやウィンドウで操作、CUIはテキストコマンドで操作","GUIはサーバ向け、CUIはデスクトップ向け","両者とも同一の操作方法である"], answer:1, explanation:"GUIは視覚的な操作（Windows等）、CUIはコマンドライン操作（Linux ターミナル等）。" },
 
   // ══════ process（プロセス）══════
-  { id:"eq-proc1", nodeId:"process", question:"デッドロックの説明として正しいものはどれか。", choices:["CPUが過負荷になり停止する現象","複数プロセスが互いに相手のリソース解放を待ち全員停止する状態","メモリ不足によるシステムクラッシュ","ネットワークの帯域が枯渇した状態"], answer:1, explanation:"デッドロックはプロセスAがリソースRを持ちRを待ち、プロセスBがRを持ちRを待つような循環待ち状態。" },
+  { id:"eq-proc1", nodeId:"process", question:"デッドロックの説明として正しいものはどれか。", choices:["CPUが過負荷になり停止する現象","複数プロセスが互いに相手のリソース解放を待ち全員停止する状態","メモリ不足によるシステムクラッシュ","ネットワークの帯域が枯渇した状態"], answer:1, explanation:"デッドロックは、プロセスAがリソースXを持ったままYを待ち、プロセスBがYを持ったままXを待つような循環待ちの状態。互いに待ち続けて処理が進まなくなる。" },
   { id:"eq-proc2", nodeId:"process", question:"スプーリングの説明として正しいものはどれか。", choices:["CPUの処理を一時停止させる技術","低速な入出力装置との速度差を吸収するためデータをバッファに溜める技術","メモリを動的に割り当てる技術","プロセスを複数のCPUで並列実行する技術"], answer:1, explanation:"スプーリングは印刷等の低速処理をバッファに溜め、CPUが次の処理に移れるようにする技術。" },
   { id:"eq-proc3", nodeId:"process", question:"ラウンドロビン方式のスケジューリングの説明として正しいものはどれか。", choices:["優先度の高いプロセスを常に先に実行する","各プロセスに均等な時間（タイムクォンタム）を順番に割り当てる","最短実行時間のプロセスを優先する","到着順に処理する先着順方式"], answer:1, explanation:"ラウンドロビンは全プロセスに公平な時間スライスを与え順番に実行する。リアルタイム性が高い。" },
 
@@ -126,14 +126,14 @@ export const extraQuestions: Question[] = [
   { id:"eq-kei5", nodeId:"keiei", question:"コアコンピタンスの説明として正しいものはどれか。", choices:["企業の弱点や課題","他社が簡単には真似できない企業の中核的競争力","製品の中核機能","株主への配当方針"], answer:1, explanation:"コアコンピタンスはC.K.プラハラードとG.ハメルが提唱。競合他社が模倣困難な自社独自の核心的能力・強み。" },
 
   // ══════ marketing（マーケティング）══════
-  { id:"eq-mkt1", nodeId:"marketing", question:"4Pマーケティングミックスに含まれないものはどれか。", choices:["Product（製品）","Price（価格）","People（人材）","Promotion（プロモーション）"], answer:2, explanation:"4PはProduct・Price・Place（流通）・Promotion。Peopleは4Cや7Pには含まれるが伝統的4Pには含まれない。" },
+  { id:"eq-mkt1", nodeId:"marketing", question:"4Pマーケティングミックスに含まれないものはどれか。", choices:["Product（製品）","Price（価格）","People（人材）","Promotion（プロモーション）"], answer:2, explanation:"4PはProduct・Price・Place（流通）・Promotion。Peopleは7Pには含まれるが、4Pには含まれない。" },
   { id:"eq-mkt2", nodeId:"marketing", question:"CRM（顧客関係管理）の説明として正しいものはどれか。", choices:["企業のコスト削減を管理するシステム","顧客との継続的な関係を構築・管理し生涯価値を最大化する戦略とシステム","競合他社の製品を分析するツール","社員の勤怠を管理するシステム"], answer:1, explanation:"CRMは顧客情報を一元管理し、購買履歴や嗜好を活かした個別対応で顧客満足度とリピート率を向上させる。" },
   { id:"eq-mkt3", nodeId:"marketing", question:"SEO（Search Engine Optimization）の説明として正しいものはどれか。", choices:["検索エンジンに広告を出稿する有料施策","検索エンジンの検索結果で自社サイトの順位を高める技術的施策","SNSを使ったマーケティング手法","メールマガジンの配信最適化"], answer:1, explanation:"SEOはコンテンツの質向上・サイト構造最適化・被リンク獲得等により、検索エンジンからの自然流入を増やす無料施策。" },
   { id:"eq-mkt4", nodeId:"marketing", question:"LTV（顧客生涯価値）の説明として正しいものはどれか。", choices:["新規顧客を獲得するためのコスト","1人の顧客が生涯を通じて企業にもたらす総売上・利益","従業員1人当たりの生産性","製品の耐久年数"], answer:1, explanation:"LTV（Life Time Value）は顧客との取引開始から終了までの総収益。CRMやサブスクリプションビジネスで重視される指標。" },
 
   // ══════ houmu（法務）══════
   { id:"eq-hou1", nodeId:"houmu", question:"著作権の説明として正しいものはどれか。", choices:["登録しなければ権利が発生しない","創作物を制作した時点で自動的に発生する権利","特許と同一の権利","10年間のみ有効な権利"], answer:1, explanation:"著作権は創作と同時に自動発生（無方式主義）。登録不要。プログラムも著作権で保護される。保護期間は原則70年。" },
-  { id:"eq-hou2", nodeId:"houmu", question:"不正競争防止法が保護する対象として適切なものはどれか。", choices:["特許発明","商標登録済みのロゴのみ","企業の営業秘密・不正な競争行為全般","著作権のみ"], answer:1, explanation:"不正競争防止法は営業秘密（技術情報・顧客リスト等）の不正取得・使用や、商品形態の模倣、誤認させる行為等を規制する。" },
+  { id:"eq-hou2", nodeId:"houmu", question:"不正競争防止法が保護する対象として適切なものはどれか。", choices:["特許発明","商標登録済みのロゴのみ","企業の営業秘密・不正な競争行為全般","著作権のみ"], answer:2, explanation:"不正競争防止法は営業秘密（技術情報・顧客リスト等）の不正取得・使用や、商品形態の模倣、誤認させる行為等を規制する。" },
   { id:"eq-hou3", nodeId:"houmu", question:"個人情報保護法における「個人情報」の説明として正しいものはどれか。", choices:["氏名のみが個人情報に該当する","生存する特定の個人を識別できる情報全般","企業が収集したデータのみ","公開されている情報は個人情報に当たらない"], answer:1, explanation:"個人情報保護法の個人情報は、氏名・生年月日・住所・マイナンバー等、特定個人を識別できる情報全般が対象。公開情報でも該当する。" },
   { id:"eq-hou4", nodeId:"houmu", question:"特許権の保護期間として正しいものはどれか。", choices:["出願から5年","出願から10年","出願から20年","権利者が存在する限り無期限"], answer:2, explanation:"特許権の保護期間は出願日から20年。期間満了後は公衆に開放される。著作権（70年）や商標権（10年・更新可）とは異なる。" },
   { id:"eq-hou5", nodeId:"houmu", question:"サイバーセキュリティ基本法の説明として正しいものはどれか。", choices:["サイバー犯罪の刑事罰を規定する法律","サイバーセキュリティに関する国の基本的な施策の方向性を定めた法律","個人のPCを守るための法律","インターネット上の誹謗中傷を規制する法律"], answer:1, explanation:"サイバーセキュリティ基本法（2014年）は国・自治体・重要インフラ事業者等のサイバーセキュリティ確保に向けた基本理念と施策を定める。" },
