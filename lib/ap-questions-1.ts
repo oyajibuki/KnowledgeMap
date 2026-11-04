@@ -30,10 +30,10 @@ export const apQuestions1: Question[] = [
   },
   {
     id: "ap1-math2", nodeId: "ap-math",
-    question: "n個の相互に区別できるデータをBNF記法で定義された規則に従って分類するとき、分類数が最大になる場合の計算量はどれか。",
-    choices: ["O(log n)", "O(n log n)", "O(n)", "O(n²)"],
+    question: "BNFで <数字> ::= 0 | 1、<数> ::= <数字> | <数><数字> と定義するとき、<数> として生成できない文字列はどれか。",
+    choices: ["10", "0011", "12", "1"],
     answer: 2,
-    explanation: "BNFによる構文解析（線形スキャン）の基本的な分類は全データを1回走査すればよいので O(n)。枝刈りなしの全列挙は O(n²) 以上になりうるが、標準的な線形スキャンは O(n)。",
+    explanation: "<数> は <数字> を1個以上並べたものなので、0と1だけからなる文字列を生成できる。「12」は定義にない2を含むので生成できない。",
   },
   {
     id: "ap1-math3", nodeId: "ap-math",
@@ -201,7 +201,7 @@ export const apQuestions1: Question[] = [
   },
   {
     id: "ap1-sys3", nodeId: "ap-sys",
-    question: "稼働率αAと稼働率αBが等しい2つのシステムA・Bにおいて、常に成り立つ関係はどれか。",
+    question: "2つのシステムA・Bの稼働率をαA、αBとするとき、常に成り立つ関係はどれか。",
     choices: [
       "αA=αBならばMTBFA=MTBFBかつMTTRA=MTTRBである",
       "αA>αBならばMTBFA>MTBFBかつMTTRA>MTTRBである",
@@ -377,12 +377,12 @@ export const apQuestions1: Question[] = [
     question: "IPv6の特徴として正しいものはどれか。",
     choices: [
       "32ビットのアドレス空間を使用する",
-      "IPsecの使用が任意オプションであり必須ではない",
+      "IPv4と同様にヘッダチェックサムをもつ",
       "ブロードキャストアドレスを用いてネットワーク全体に送信できる",
       "128ビットのアドレス空間を使用し自動アドレス設定機能（SLAAC）をもつ",
     ],
     answer: 3,
-    explanation: "IPv6は128ビットアドレスでIPv4の枯渇問題を解決。SLAAC（Stateless Address Autoconfiguration）によりDHCPなしで自動アドレス設定可能。ブロードキャストはなくマルチキャストに置き換えられた。",
+    explanation: "IPv6は128ビットアドレスでIPv4の枯渇問題を解決。SLAAC（Stateless Address Autoconfiguration）によりDHCPなしで自動アドレス設定可能。ブロードキャストはなくマルチキャストに置き換えられた。ヘッダチェックサムも廃止された。",
   },
   {
     id: "ap1-net3", nodeId: "ap-net",
@@ -510,7 +510,7 @@ export const apQuestions1: Question[] = [
       "テスト完了後に本番環境への移行可否を判断する",
     ],
     answer: 1,
-    explanation: "デザインレビューは要件定義・設計フェーズで複数人が設計書を検討し欠陥を早期発見するQA活動。後工程で発見するより修正コストが大幅に安い（ボーム効果）。[令和7年春 問45]",
+    explanation: "デザインレビューは要件定義・設計フェーズで複数人が設計書を検討し欠陥を早期発見するQA活動。後工程で発見するより修正コストが大幅に安い。[令和7年春 問45]",
   },
   {
     id: "ap1-dev4", nodeId: "ap-dev",
@@ -653,7 +653,7 @@ export const apQuestions1: Question[] = [
       "中小企業のIT導入補助金申請のための資格制度",
     ],
     answer: 1,
-    explanation: "DX認定制度は経済産業省が整備した「デジタルガバナンス・コード」に基づき、優良なDXを実践している事業者を国が認定する制度。申請・審査を経て認定されると「DX認定事業者」として公表される。[令和7年春 問61]",
+    explanation: "DX認定制度は経済産業省が整備した「デジタルガバナンス・コード」に基づき、DX推進の準備が整っている事業者を国が認定する制度。申請・審査を経て認定されると「DX認定事業者」として公表される。[令和7年春 問61]",
   },
 
   // ══════════════════════════════════════════════
