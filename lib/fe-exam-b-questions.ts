@@ -33,8 +33,8 @@ export const feExamBQuestions: Question[] = [
 　　a ← a - b
 　end while
 　出力(a)`,
-    choices: ["1", "2", "3", "4"],
-    answer: 1,
+    choices: ["2", "1", "3", "4"],
+    answer: 0,
     explanation:
       "17−5=12, 12−5=7, 7−5=2。a=2 のとき 2≧5 が偽となりループ終了。出力は 2。この処理は 17 mod 5 = 2 に相当する。",
   },
@@ -50,8 +50,8 @@ export const feExamBQuestions: Question[] = [
 　　end if
 　end for
 　出力(max)`,
-    choices: ["5", "6", "7", "8"],
-    answer: 3,
+    choices: ["5", "8", "6", "7"],
+    answer: 1,
     explanation:
       "max=5から開始。a[2]=3(変化なし), a[3]=8→max=8, a[4]=1(変化なし), a[5]=6(変化なし)。最大値は 8。",
   },
@@ -65,8 +65,8 @@ export const feExamBQuestions: Question[] = [
 　　　return 0
 　　end if
 　　return n + f(n − 1)`,
-    choices: ["6", "8", "10", "12"],
-    answer: 2,
+    choices: ["6", "8", "12", "10"],
+    answer: 3,
     explanation:
       "f(4)=4+f(3)=4+3+f(2)=4+3+2+f(1)=4+3+2+1+f(0)=10。1 から n までの総和を求める再帰関数。",
   },
@@ -80,8 +80,8 @@ export const feExamBQuestions: Question[] = [
 　push(S, 4)
 　x ← pop(S)
 　push(S, x + 1)`,
-    choices: ["4", "5", "8", "9"],
-    answer: 1,
+    choices: ["5", "4", "8", "9"],
+    answer: 0,
     explanation:
       "push後: [2,8,4]。pop()→x=4, push(5)→[2,8,5]。先頭(top)は 5。",
   },
@@ -95,8 +95,8 @@ export const feExamBQuestions: Question[] = [
 　enqueue(Q, 30)
 　x ← dequeue(Q)
 　enqueue(Q, x * 2)`,
-    choices: ["10", "20", "30", "40"],
-    answer: 1,
+    choices: ["10", "30", "20", "40"],
+    answer: 2,
     explanation:
       "enqueue後: [10,20,30]。dequeue()→x=10, キュー:[20,30]。enqueue(20)→[20,30,20]。先頭(front)は 20。",
   },
@@ -129,8 +129,8 @@ export const feExamBQuestions: Question[] = [
 　　end for
 　end for
 　出力(count)`,
-    choices: ["8", "10", "12", "16"],
-    answer: 1,
+    choices: ["8", "12", "16", "10"],
+    answer: 3,
     explanation:
       "i=1:内側1回, i=2:2回, i=3:3回, i=4:4回。合計=1+2+3+4=10。",
   },
@@ -145,8 +145,8 @@ export const feExamBQuestions: Question[] = [
 　　a ← tmp
 　end while
 　出力(a)`,
-    choices: ["6", "8", "12", "24"],
-    answer: 2,
+    choices: ["12", "6", "8", "24"],
+    answer: 0,
     explanation:
       "1回目: tmp=24, b=36 mod 24=12, a=24。2回目: tmp=12, b=24 mod 12=0, a=12。b=0でループ終了。GCD(36,24)=12。",
   },
@@ -162,8 +162,8 @@ export const feExamBQuestions: Question[] = [
 　　end if
 　end for
 　出力(count)`,
-    choices: ["2", "3", "4", "5"],
-    answer: 1,
+    choices: ["2", "4", "3", "5"],
+    answer: 2,
     explanation: "負の値: −3, −1, −7 の 3 個。count=3。",
   },
   {
@@ -177,8 +177,8 @@ export const feExamBQuestions: Question[] = [
 　　result ← result * base
 　end for
 　出力(result)`,
-    choices: ["32", "64", "96", "128"],
-    answer: 1,
+    choices: ["32", "96", "128", "64"],
+    answer: 3,
     explanation:
       "result は 2 を 6 回掛けたもの。2¹=2, 2²=4, …, 2⁶=64。",
   },
@@ -206,8 +206,8 @@ export const feExamBQuestions: Question[] = [
 　　　return n
 　　end if
 　　return fib(n − 1) + fib(n − 2)`,
-    choices: ["5", "8", "11", "13"],
-    answer: 1,
+    choices: ["8", "5", "11", "13"],
+    answer: 0,
     explanation:
       "fib(0)=0, fib(1)=1, fib(2)=1, fib(3)=2, fib(4)=3, fib(5)=5, fib(6)=8。フィボナッチ数列の第 6 項は 8。",
   },
@@ -225,8 +225,8 @@ export const feExamBQuestions: Question[] = [
 　　end if
 　end for
 　出力(minIdx)`,
-    choices: ["1", "2", "3", "4"],
-    answer: 1,
+    choices: ["1", "3", "2", "4"],
+    answer: 2,
     explanation:
       "min=7(idx=1)。a[2]=2<7→min=2, idx=2。a[3]=9, a[4]=3(3>2), a[5]=5 変化なし。最小値 2 は index 2。",
   },
@@ -241,8 +241,8 @@ export const feExamBQuestions: Question[] = [
 　　a[i] ← a[n − i + 1]
 　　a[n − i + 1] ← tmp
 　end for`,
-    choices: ["2", "3", "4", "5"],
-    answer: 2,
+    choices: ["2", "4", "3", "5"],
+    answer: 1,
     explanation:
       "n/2=2。i=1: a[1]とa[5]交換→{5,2,3,4,1}。i=2: a[2]とa[4]交換→{5,4,3,2,1}。a[2]=4。配列を逆順にするアルゴリズム。",
   },
@@ -260,8 +260,8 @@ export const feExamBQuestions: Question[] = [
 　　else hi ← mid − 1
 　end while
 　出力(count)`,
-    choices: ["1", "2", "3", "4"],
-    answer: 1,
+    choices: ["1", "3", "4", "2"],
+    answer: 3,
     explanation:
       "1回目: mid=4, a[4]=7<11→lo=5。2回目: mid=6, a[6]=11=target→break。count=2。",
   },
@@ -312,8 +312,8 @@ export const feExamBQuestions: Question[] = [
 　　end if
 　end for
 　出力(sum)`,
-    choices: ["14", "16", "18", "20"],
-    answer: 1,
+    choices: ["16", "14", "18", "20"],
+    answer: 0,
     explanation:
       "偶数の要素: 2, 8, 6。sum=2+8+6=16。",
   },
@@ -333,8 +333,8 @@ export const feExamBQuestions: Question[] = [
 　　end if
 　end for
 　出力(max2)`,
-    choices: ["5", "7", "8", "9"],
-    answer: 1,
+    choices: ["5", "8", "9", "7"],
+    answer: 3,
     explanation:
       "max1=4, max2=−9999。i=2: 7>4→max2=4, max1=7。i=3: 2<7かつ2>4?→No。i=4: 9>7→max2=7, max1=9。i=5: 5<9かつ5>7?→No。max2=7。",
   },
