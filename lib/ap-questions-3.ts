@@ -112,8 +112,8 @@ export const apQuestions3: Question[] = [
     id: "ap3-algo2", nodeId: "ap-algo",
     question: "2分木を後行順（帰りがけ順、後置記法）で探索するとき、式木「A + (B × C) ÷ (D - E)」の出力順として正しいものはどれか。",
     choices: ["＋÷－EDCBA", "ABC×DE－÷＋", "A＋BC×DE－÷", "ED－CB×÷A＋"],
-    answer: 3,
-    explanation: "後行順（左→右→根）で走査すると逆ポーランド記法（後置記法）が得られる。式「A+(B×C)÷(D-E)」をツリーにして後行順で走査するとED－CB×÷A＋となる。[令和6年春 問6]",
+    answer: 1,
+    explanation: "後行順（左→右→根）で走査すると逆ポーランド記法（後置記法）が得られる。式の根は＋で、左の子がA、右の子が(B×C)÷(D-E)。右の部分木はBC×とDE－を並べて÷を置くのでBC×DE－÷となり、全体はABC×DE－÷＋となる。[令和6年春 問6]",
   },
   {
     id: "ap3-algo3", nodeId: "ap-algo",
@@ -168,7 +168,7 @@ export const apQuestions3: Question[] = [
     choices: [
       "h×tc + (1-h)×tm",
       "h×tc + (1-h)×(tc+tm)",
-      "tc + (1-h)×tm",
+      "tc + h×tm",
       "h×(tc+tm) + (1-h)×tm",
     ],
     answer: 1,
@@ -390,7 +390,7 @@ export const apQuestions3: Question[] = [
       "メール転送を暗号化するためのSMTP拡張プロトコル",
     ],
     answer: 0,
-    explanation: "IPsecはIP層でパケットの認証（AH：Authentication Header）と暗号化（ESP：Encapsulating Security Payload）を行うプロトコル群。IPv6では標準装備。VPN構築の主要技術。[令和6年春 問42]",
+    explanation: "IPsecはIP層でパケットの認証（AH：Authentication Header）と暗号化（ESP：Encapsulating Security Payload）を行うプロトコル群。IPv6では実装が推奨されている。VPN構築の主要技術。[令和6年春 問42]",
   },
   {
     id: "ap3-net4", nodeId: "ap-net",
@@ -599,7 +599,7 @@ export const apQuestions3: Question[] = [
       "IT戦略委員会がシステム投資の優先順位を決定する",
     ],
     answer: 2,
-    explanation: "IT業務処理統制はアプリケーションシステムが個々の業務処理（入力・処理・出力）の正確性・完全性を確保する統制。入力チェック・マッチングチェック・アクセス制御などが含まれる。ア・イ・エはIT全般統制。[令和6年春 問60]",
+    explanation: "IT業務処理統制はアプリケーションシステムが個々の業務処理（入力・処理・出力）の正確性・完全性を確保する統制。入力チェック・マッチングチェック・アクセス制御などが含まれる。イはIT全般統制、ア・エはITに係る全社的な統制。[令和6年春 問60]",
   },
 
   // ══════════════════════════════════════════════
